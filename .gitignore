@@ -1,0 +1,22 @@
+# dependencies
+.env
+dist/
+db/
+node_modules/
+
+# Output
+build/
+
+# macOS
+.DS_Store
+.python-version
+
+# WSL
+*.Identifier
+
+# Drive API credentials
+credentials.json
+token.json
+
+# misc
+npm-debug.log*
