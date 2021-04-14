@@ -1,10 +1,10 @@
-import express from "express";
-const PORT = 5000;
+import express from "express"
+const PORT = 5000
 
-const app = express();
+const app = express()
 
 app.get("/", (_, res) => {
-  res.status(200).send();
+  res.status(200).send()
 })
 
 app.listen(PORT, () => console.log(`Running on port ${PORT}`))
