@@ -4,7 +4,7 @@ import { model, Schema } from "mongoose"
  * Primary identification information for a user
  */
 const User: Schema = new Schema({
-  email: { type: String, requireed: true },
+  email: { type: String, required: true },
   password: { type: String, required: true },
   admin: { type: Boolean, required: true, default: false },
   name: String,

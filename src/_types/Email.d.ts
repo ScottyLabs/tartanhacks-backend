@@ -5,6 +5,7 @@ export enum EmailGroup {
   PARTICIPANTS_COMPLETED,
   PARTICIPANTS_CONFIRMED,
   SPONSORS,
+  ADMINS
 }
 
 export enum EmailStatus {

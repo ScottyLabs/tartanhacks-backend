@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose"
+import { EmailGroup, EmailStatus } from "../_types/Email"
 
 /**
  * Email logs for sent emails
@@ -19,36 +20,28 @@ const Email: Schema = new Schema(
       type: [
         {
           type: String,
-          enum: [
-            "PARTICIPANTS_VERIFIED",
-            "PARTICIPANTS_COMPLETED",
-            "PARTICIPANTS_CONFIRMED",
-            "SPONSORS",
-          ],
+          enum: Object.values(EmailGroup),
+          default: EmailGroup.ADMINS,
           required: true,
         },
       ],
-      required: true
+      required: true,
     },
     subject: {
       type: String,
-      required: true
+      required: true,
     },
     body: {
       type: String,
-      required: true
+      required: true,
     },
     sendTime: Number,
     status: {
       type: String,
-      enum: [
-        "QUEUED",
-        "SENT",
-        "ERROR",
-        "DELETED"
-      ],
-      required: true
-    }
+      enum: Object.values(EmailStatus),
+      default: EmailStatus.QUEUED,
+      required: true,
+    },
   },
   {
     timestamps: {

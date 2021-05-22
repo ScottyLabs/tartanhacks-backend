@@ -11,27 +11,27 @@ export enum CMUCollege {
 }
 
 export enum CollegeLevel {
-  UNDERGRADUATE,
-  MASTERS,
-  DOCTORATE,
-  OTHER,
+  UNDERGRADUATE = "Undergraduate",
+  MASTERS = "Masters",
+  DOCTORATE = "Doctorate",
+  OTHER = "Other",
 }
 
 export enum Gender {
-  MALE,
-  FEMALE,
-  PREFER_NOT_TO_SAY,
-  OTHER,
+  MALE = "Male",
+  FEMALE = "Female",
+  PREFER_NOT_TO_SAY = "Prefer not to say",
+  OTHER = "Other",
 }
 
 export enum Ethnicity {
-  NATIVE_AMERICAN,
-  ASIAN,
-  BLACK,
-  PACIFIC_ISLANDER,
-  WHITE,
-  HISPANIC,
-  OTHER,
+  NATIVE_AMERICAN = "Native American",
+  ASIAN = "Asian",
+  BLACK = "Black",
+  PACIFIC_ISLANDER = "Pacific Islander",
+  WHITE = "White",
+  HISPANIC = "Hispanic",
+  OTHER = "Other",
 }
 
 export enum HackathonExperience {
@@ -41,9 +41,9 @@ export enum HackathonExperience {
 }
 
 export enum WorkPermission {
-  CITIZEN,
-  SPONSORSHIP,
-  NO_SPONSORSHIP,
+  CITIZEN = "Citizen",
+  SPONSORSHIP = "Sponsorship",
+  NO_SPONSORSHIP = "No sponsorship",
 }
 
 /**
