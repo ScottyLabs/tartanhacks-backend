@@ -24,7 +24,7 @@ const Profile: Schema = new Schema({
   },
   level: {
     type: String,
-    enum: ["Undergraduatae", "Masters", "Doctorate", "Other"]
+    enum: ["Undergraduate", "Masters", "Doctorate", "Other"]
   },
   graduationYear: {
     type: Number,
@@ -34,13 +34,14 @@ const Profile: Schema = new Schema({
   },
   gender: {
     type: String,
-    enum: ["male", "female", "other", "prefer not to say"],
+    enum: ["Male", "Female", "Other", "Prefer not to say"],
     required: true
   },
   genderOther: String,
   ethnicity: {
     type: String,
-    enum: ["Native American", "Asian", "Black", "Pacific Islander", "White", "Hispanic", "Other" ]
+    enum: ["Native American", "Asian", "Black", "Pacific Islander", "White", "Hispanic", "Other" ],
+    required: true
   },
   ethnicityOther: String,
   phoneNumber: {
@@ -61,7 +62,10 @@ const Profile: Schema = new Schema({
   major: String,
   coursework: String,
   languages: String,
-  experience: String,
+  hackathonExperience: {
+    type: String,
+    enum: ["0", "1-3", "4+"]
+  },
   workPermission: {
     type: String,
     enum: ["citizen", "sponsorship", "no sponsorship"]
@@ -73,7 +77,10 @@ const Profile: Schema = new Schema({
     ref: "Sponsor"
   },
   resume: String,
-  github: String,
+  github: {
+    type: String,
+    required: true
+  },
   design: String,
   website: String,
   essays: [String]
