@@ -10,7 +10,7 @@ export enum CheckinAccessLevel {
 /**
  * Type for CheckinItem model
  */
-export interface CheckinItem extends Document {
+export interface ICheckinItem extends Document {
   event: Schema.Types.ObjectId
   name: string
   description: string

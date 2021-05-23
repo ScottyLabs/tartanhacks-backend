@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose"
-import { CheckinAccessLevel } from "../_types/CheckInItem"
+import { CheckinAccessLevel } from "../_types/CheckinItem"
 
 /**
  * Checkin items, e.g. arrival, attending a workshop

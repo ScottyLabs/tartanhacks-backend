@@ -1,9 +1,10 @@
-import { model, Schema } from "mongoose"
+import { Model, model, Schema } from "mongoose"
+import { IUser } from "../_types/User"
 
 /**
  * Primary identification information for a user
  */
-const User: Schema = new Schema({
+const UserSchema: Schema = new Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   admin: { type: Boolean, required: true, default: false },
@@ -20,4 +21,5 @@ const User: Schema = new Schema({
   }
 })
 
-export default model("User", User)
+const User: Model<IUser> = model("User", UserSchema)
+export default User;

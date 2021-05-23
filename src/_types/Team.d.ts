@@ -3,7 +3,7 @@ import { Document, Schema } from "mongoose"
 /**
  * Type for the Team model
  */
-interface Team extends Document {
+interface ITeam extends Document {
   event: Schema.Types.ObjectId
   name: string
   admin: string

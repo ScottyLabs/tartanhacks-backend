@@ -12,7 +12,7 @@ export enum Platform {
 /**
  * Type for the ScheduleItem model
  */
-export interface ScheduleItem extends Document {
+export interface IScheduleItem extends Document {
   event: Schema.Types.ObjectId
   name: string
   startTime: number

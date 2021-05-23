@@ -5,7 +5,7 @@ import { model, Schema } from "mongoose"
  * i.e. keeps track of when users complete checkin items
  * @see {@link CheckinItem}
  */
-const Checkin: Schema = new Schema({
+const CheckinSchema: Schema = new Schema({
   event: {
     type: Schema.Types.ObjectId,
     ref: "Event",
@@ -28,4 +28,4 @@ const Checkin: Schema = new Schema({
   }
 })
 
-export default model("Checkin", Checkin)
+export default model("Checkin", CheckinSchema)

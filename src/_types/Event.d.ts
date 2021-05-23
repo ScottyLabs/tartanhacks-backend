@@ -3,7 +3,7 @@ import { Document } from "mongoose"
 /**
  * Type for Event model
  */
-export interface Event extends Document {
+export interface IEvent extends Document {
   name: string,
   website: string,
   startTime?: number,

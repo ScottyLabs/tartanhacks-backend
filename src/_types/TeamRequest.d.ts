@@ -11,7 +11,7 @@ export enum TeamRequestStatus {
 /**
  * Type for the TeamRequest model
  */
-export interface TeamRequest extends Document {
+export interface ITeamRequest extends Document {
   event: Schema.Types.ObjectId,
   type: TeamRequestType,
   user: Schema.Types.ObjectId,

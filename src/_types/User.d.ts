@@ -3,7 +3,7 @@ import { Document, Schema } from "mongoose"
 /**
  * Type of User model
  */
-export interface User extends Document {
+export interface IUser extends Document {
   email: string
   password: string
   admin: boolean

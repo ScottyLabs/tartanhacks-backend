@@ -3,7 +3,7 @@ import { Document, Schema } from "mongoose"
 /**
  * Type for the Status model
  */
-interface Status extends Document {
+interface IStatus extends Document {
   user: Schema.Types.ObjectId,
   event: Schema.Types.ObjectId,
   verified?: boolean,
