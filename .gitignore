@@ -20,3 +20,7 @@ token.json
 
 # misc
 npm-debug.log*
+
+# Istanbul output
+.nyc_output/
+.vscode/

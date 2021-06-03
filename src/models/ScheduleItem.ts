@@ -1,10 +1,10 @@
 import { model, Schema } from "mongoose";
-import { Platform } from "../_types/ScheduleItem";
+import { IScheduleItem, Platform } from "../_types/ScheduleItem";
 
 /**
  * Schedule items for (potential) dynamic scheduling support
  */
-const ScheduleItem: Schema = new Schema(
+const ScheduleItem: Schema<IScheduleItem> = new Schema(
   {
     event: {
       type: Schema.Types.ObjectId,

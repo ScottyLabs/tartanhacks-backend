@@ -3,7 +3,7 @@ import { Document, Schema } from "mongoose";
 /**
  * Type for project
  */
-export interface Project extends Document {
+export interface IProject extends Document {
   event: Schema.Types.ObjectId;
   name: string;
   description: string;

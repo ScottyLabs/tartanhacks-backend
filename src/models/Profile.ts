@@ -6,12 +6,13 @@ import {
   Ethnicity,
   HackathonExperience,
   WorkPermission,
+  IProfile,
 } from "../_types/Profile";
 
 /**
  * Public user profile data
  */
-const Profile: Schema = new Schema(
+const Profile: Schema<IProfile> = new Schema(
   {
     event: {
       type: Schema.Types.ObjectId,

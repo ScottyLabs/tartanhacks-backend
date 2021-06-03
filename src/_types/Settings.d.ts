@@ -3,7 +3,7 @@ import { Document } from "mongoose";
 /**
  * Type for the Settings model
  */
-export interface Settings extends Document {
+export interface ISettings extends Document {
   timeOpen?: number;
   timeClose?: number;
   timeConfirm?: number;

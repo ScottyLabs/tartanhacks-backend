@@ -1,11 +1,12 @@
 import { model, Schema } from "mongoose";
+import { ICheckin } from "src/_types/Checkin";
 
 /**
  * User checkin instances,
  * i.e. keeps track of when users complete checkin items
  * @see {@link CheckinItem}
  */
-const CheckinSchema: Schema = new Schema(
+const Checkin: Schema<ICheckin> = new Schema(
   {
     event: {
       type: Schema.Types.ObjectId,
@@ -31,4 +32,4 @@ const CheckinSchema: Schema = new Schema(
   }
 );
 
-export default model("Checkin", CheckinSchema);
+export default model("Checkin", Checkin);

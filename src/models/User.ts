@@ -1,11 +1,18 @@
 import { Model, model, Schema } from "mongoose";
-import { User } from "../_types/User";
+import { IUser, IUserModel } from "../_types/User";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 /**
- * Primary identification information for a user
+ * Time before the generated JWT tokens expire
  */
-const UserSchema: Schema = new Schema<User>(
+const PASSWORD_RESET_EXPIRY = "1 hour";
+const EMAIL_TOKEN_EXPIRY = "1 hour";
+
+/**
+ * Identification information for a user
+ */
+const User: Schema<IUser> = new Schema(
   {
     email: { type: String, required: true },
     password: { type: String, required: true },
@@ -25,9 +32,63 @@ const UserSchema: Schema = new Schema<User>(
   }
 );
 
-UserSchema.methods.checkPassword = function (password) {
+/**
+ * Check if a password matches the stored hash
+ * @param password password to verify
+ */
+User.methods.checkPassword = function (password: string): boolean {
   return bcrypt.compareSync(password, this.password);
 };
 
-const User: Model<User> = model("User", UserSchema);
-export default User;
+/**
+ * Generate an authentication token for logging in
+ */
+User.methods.generateAuthToken = function (): string {
+  return jwt.sign(this._id, process.env.JWT_SECRET, {
+    expiresIn: process.env.AUTH_TOKEN_EXPIRY,
+  });
+};
+
+/**
+ * Generate a password reset token to change passwords
+ */
+User.methods.generatePasswordResetToken = function (): string {
+  return jwt.sign(this._id, process.env.JWT_SECRET, {
+    expiresIn: PASSWORD_RESET_EXPIRY,
+  });
+};
+
+/**
+ * Generate an email verification token for this account
+ */
+User.methods.generateEmailVerificationToken = function (): string {
+  return jwt.sign(this.email, process.env.JWT_SECRET, {
+    expiresIn: EMAIL_TOKEN_EXPIRY,
+  });
+};
+
+/**
+ * Generate the hash of a password
+ * @param password Password to hash
+ */
+User.statics.generateHash = (password: string): string => {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+};
+
+/**
+ * Check if an email verification token is valid for this user
+ * @param token email verification token to check
+ */
+User.statics.verifyEmailVerificationToken = function (token: string): string {
+  return jwt.verify(token, process.env.JWT_SECRET).toString();
+};
+
+/**
+ * Check if a password reset token is valid for this user
+ * @param token password reset token to check
+ */
+User.statics.verifyPasswordResetToken = (token: string): string => {
+  return jwt.verify(token, process.env.JWT_SECRET).toString();
+};
+
+export default model<IUser, IUserModel>("User", User);

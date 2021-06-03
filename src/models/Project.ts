@@ -1,20 +1,39 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
+import { IProject } from "src/_types/Project";
 
 /**
- * Type for project model
+ * Team-submitted projects
  */
-interface Project {
-  event: Schema.Types.ObjectId;
-  name: string;
-  description: string;
-  url: string;
-  slides?: string;
-  video?: string;
-  team: Schema.Types.ObjectId;
-  isDeleted: boolean;
-  prizes: [Schema.Types.ObjectId];
-  createdAt: number;
-  updatedAt: number;
-}
+const Project: Schema<IProject> = new Schema(
+  {
+    event: {
+      type: Schema.Types.ObjectId,
+      ref: "Event",
+      required: true,
+    },
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    url: { type: String, required: true },
+    slides: String,
+    video: String,
+    team: {
+      type: Schema.Types.ObjectId,
+      ref: "Team",
+      required: true,
+    },
+    isDeleted: { type: Boolean, required: true, default: false },
+    prizes: {
+      type: [Schema.Types.ObjectId],
+      ref: "Prize",
+      required: true,
+    },
+  },
+  {
+    timestamps: {
+      createdAt: "createdAt",
+      updatedAt: "updatedAt",
+    },
+  }
+);
 
-export default Project;
+export default model("Project", Project);

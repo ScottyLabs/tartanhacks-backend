@@ -1,9 +1,10 @@
 import { model, Schema } from "mongoose";
+import { IPrize } from "src/_types/Prize";
 
 /**
  * Prizes in each event e.g. Grand Prize, Best in Design
  */
-const Prize: Schema = new Schema(
+const Prize: Schema<IPrize> = new Schema(
   {
     event: {
       type: Schema.Types.ObjectId,

@@ -1,9 +1,10 @@
 import { model, Schema } from "mongoose";
+import { ISettings } from "src/_types/Settings";
 
 /**
  * Global application-wide settings
  */
-const Settings: Schema = new Schema(
+const Settings: Schema<ISettings> = new Schema(
   {
     timeOpen: Number,
     timeClose: Number,

@@ -1,10 +1,14 @@
 import { model, Schema } from "mongoose";
-import { TeamRequestType, TeamRequestStatus } from "../_types/TeamRequest";
+import {
+  TeamRequestType,
+  TeamRequestStatus,
+  ITeamRequest,
+} from "../_types/TeamRequest";
 
 /**
  * Requests from users to join teams and invitations from teams to individual users
  */
-const TeamRequest: Schema = new Schema(
+const TeamRequest: Schema<ITeamRequest> = new Schema(
   {
     event: {
       type: Schema.Types.ObjectId,

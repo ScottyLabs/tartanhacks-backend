@@ -1,9 +1,10 @@
 import { model, Schema } from "mongoose";
+import { IStatus } from "src/_types/Status";
 
 /**
  * Status of a user in the registration process
  */
-const Status: Schema = new Schema(
+const Status: Schema<IStatus> = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,

@@ -1,10 +1,11 @@
 import { model, Schema } from "mongoose";
+import { IEvent } from "src/_types/Event";
 
 /**
  * Schema for entire events e.g. TartanHacks, WDW
  * Added to model to support creating cross-event backend
  */
-const Event: Schema = new Schema(
+const Event: Schema<IEvent> = new Schema(
   {
     name: { type: String, required: true },
     website: { type: String, required: true },

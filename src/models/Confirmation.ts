@@ -1,10 +1,10 @@
 import { model, Schema } from "mongoose";
-import { ShirtSize, Region } from "../_types/Confirmation";
+import { ShirtSize, Region, IConfirmation } from "../_types/Confirmation";
 
 /**
  * User confirmation data
  */
-const Confirmation: Schema = new Schema(
+const Confirmation: Schema<IConfirmation> = new Schema(
   {
     event: {
       type: Schema.Types.ObjectId,

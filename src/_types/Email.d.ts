@@ -18,7 +18,7 @@ export enum EmailStatus {
 /**
  * Type for Email model
  */
-export interface Email extends Document {
+export interface IEmail extends Document {
   event: Schema.Types.ObjectId;
   sender: Schema.Types.ObjectId;
   groups: [EmailGroup];

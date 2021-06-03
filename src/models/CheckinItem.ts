@@ -1,10 +1,10 @@
 import { model, Schema } from "mongoose";
-import { CheckinAccessLevel } from "../_types/CheckinItem";
+import { CheckinAccessLevel, ICheckinItem } from "../_types/CheckinItem";
 
 /**
  * Checkin items, e.g. arrival, attending a workshop
  */
-const CheckinItem: Schema = new Schema(
+const CheckinItem: Schema<ICheckinItem> = new Schema(
   {
     event: {
       type: Schema.Types.ObjectId,

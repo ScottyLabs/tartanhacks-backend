@@ -1,10 +1,10 @@
 import { model, Schema } from "mongoose";
-import { EmailGroup, EmailStatus } from "../_types/Email";
+import { EmailGroup, EmailStatus, IEmail } from "../_types/Email";
 
 /**
  * Email logs for sent emails
  */
-const Email: Schema = new Schema(
+const Email: Schema<IEmail> = new Schema(
   {
     event: {
       type: Schema.Types.ObjectId,

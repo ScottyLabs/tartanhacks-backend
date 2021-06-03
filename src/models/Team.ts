@@ -1,9 +1,10 @@
 import { model, Schema } from "mongoose";
+import { ITeam } from "src/_types/Team";
 
 /**
  * A team with a single admin and other members
  */
-const Team: Schema = new Schema(
+const Team: Schema<ITeam> = new Schema(
   {
     event: {
       type: Schema.Types.ObjectId,

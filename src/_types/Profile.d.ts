@@ -49,7 +49,7 @@ export enum WorkPermission {
 /**
  * Type for the profile model
  */
-export interface Profile extends Document {
+export interface IProfile extends Document {
   event: Schema.Types.ObjectId;
   user: Schema.Types.ObjectId;
   firstName: string;

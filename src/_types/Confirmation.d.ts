@@ -24,7 +24,7 @@ export enum Region {
 /**
  * Type for Confirmation model
  */
-export interface Confirmation extends Document {
+export interface IConfirmation extends Document {
   event: Schema.Types.ObjectId;
   user: Schema.Types.ObjectId;
   dietaryRestrictions?: [string];
