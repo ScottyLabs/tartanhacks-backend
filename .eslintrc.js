@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 module.exports = {
   env: {
     browser: true,
@@ -14,12 +16,11 @@ module.exports = {
     "prettier/prettier": [
       1,
       {
-        trailingComma: "es6",
+        trailingComma: "es5",
         singleQuote: false,
-        semi: false,
+        semi: true,
       },
     ],
     ...require("eslint-config-prettier").rules,
-    ...require("eslint-config-prettier/@typescript-eslint").rules,
   },
-}
+};

@@ -1,4 +1,4 @@
-import { Document, Schema } from "mongoose"
+import { Document, Schema } from "mongoose";
 
 export enum Platform {
   IN_PERSON,
@@ -12,17 +12,17 @@ export enum Platform {
 /**
  * Type for the ScheduleItem model
  */
-export interface IScheduleItem extends Document {
-  event: Schema.Types.ObjectId
-  name: string
-  startTime: number
-  endTime: number
-  location: string
-  lat?: number
-  lng?: number
-  platform: Platform
-  platformUrl?: string
-  active: boolean
-  createdAt: number
-  updatedAt: number
+export interface ScheduleItem extends Document {
+  event: Schema.Types.ObjectId;
+  name: string;
+  startTime: number;
+  endTime: number;
+  location: string;
+  lat?: number;
+  lng?: number;
+  platform: Platform;
+  platformUrl?: string;
+  active: boolean;
+  createdAt: number;
+  updatedAt: number;
 }

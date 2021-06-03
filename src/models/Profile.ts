@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose"
+import { model, Schema } from "mongoose";
 import {
   CMUCollege,
   CollegeLevel,
@@ -6,7 +6,7 @@ import {
   Ethnicity,
   HackathonExperience,
   WorkPermission,
-} from "../_types/Profile"
+} from "../_types/Profile";
 
 /**
  * Public user profile data
@@ -67,7 +67,7 @@ const Profile: Schema = new Schema(
       */
         return this.phoneNumber.match(
           /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
-        )
+        );
       },
     },
     major: String,
@@ -102,6 +102,6 @@ const Profile: Schema = new Schema(
       updatedAt: "updatedAt",
     },
   }
-)
+);
 
-export default model("Profile", Profile)
+export default model("Profile", Profile);

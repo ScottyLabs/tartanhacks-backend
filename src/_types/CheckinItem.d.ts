@@ -1,4 +1,4 @@
-import { Schema, Document } from "mongoose"
+import { Schema, Document } from "mongoose";
 
 export enum CheckinAccessLevel {
   ALL,
@@ -10,16 +10,16 @@ export enum CheckinAccessLevel {
 /**
  * Type for CheckinItem model
  */
-export interface ICheckinItem extends Document {
-  event: Schema.Types.ObjectId
-  name: string
-  description: string
-  startTime: number
-  endTime: number
-  points: number
-  accessLevel: CheckinAccessLevel
-  active: boolean
-  enableSelfCheckin: boolean
-  createdAt: number
-  updatedAt: number
+export interface CheckinItem extends Document {
+  event: Schema.Types.ObjectId;
+  name: string;
+  description: string;
+  startTime: number;
+  endTime: number;
+  points: number;
+  accessLevel: CheckinAccessLevel;
+  active: boolean;
+  enableSelfCheckin: boolean;
+  createdAt: number;
+  updatedAt: number;
 }

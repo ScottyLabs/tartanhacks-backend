@@ -1,13 +1,13 @@
-import { MongoMemoryServer } from "mongodb-memory-server"
-import mongoose from "mongoose"
+import { MongoMemoryServer } from "mongodb-memory-server";
+import mongoose from "mongoose";
 
-const mongod = new MongoMemoryServer()
+const mongod = new MongoMemoryServer();
 
 export const mochaHooks = {
-  async beforeAll () {
-    const uri = await mongod.getUri()
+  async beforeAll() {
+    const uri = await mongod.getUri();
     await mongoose.connect(uri, {
       useNewUrlParser: true,
-    })
-  }
-}
+    });
+  },
+};

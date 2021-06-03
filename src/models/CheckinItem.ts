@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose"
-import { CheckinAccessLevel } from "../_types/CheckinItem"
+import { model, Schema } from "mongoose";
+import { CheckinAccessLevel } from "../_types/CheckinItem";
 
 /**
  * Checkin items, e.g. arrival, attending a workshop
@@ -31,6 +31,6 @@ const CheckinItem: Schema = new Schema(
       updatedAt: "updatedAt",
     },
   }
-)
+);
 
-export default model("CheckinItem", CheckinItem)
+export default model("CheckinItem", CheckinItem);

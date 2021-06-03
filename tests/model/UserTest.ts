@@ -1,18 +1,17 @@
-import { MongoMemoryServer } from "mongodb-memory-server"
-import mongoose from "mongoose"
-import assert from "assert"
-import User from "../../src/models/User"
-import { IUser } from "../../src/_types/User"
+import UserSchema from "../../src/models/User";
+import { User } from "../../src/_types/User";
+import assert from "assert";
 
 describe("User", () => {
   describe("User creation", () => {
     it("should save", async () => {
-      const user: IUser = new User({
+      const user: User = new UserSchema({
         email: "tartanhacks@scottylabs.org",
         password: "abc123",
         admin: false,
-      })
-      await user.save()
-    })
-  })
-})
+      });
+      const savedUser: User = await user.save();
+      assert(savedUser != null);
+    });
+  });
+});

@@ -1,4 +1,4 @@
-import { Document, Schema } from "mongoose"
+import { Document, Schema } from "mongoose";
 
 export enum CMUCollege {
   SCS = "SCS",
@@ -49,34 +49,34 @@ export enum WorkPermission {
 /**
  * Type for the profile model
  */
-export interface IProfile extends Document {
-  event: Schema.Types.ObjectId
-  user: Schema.Types.ObjectId
-  firstName: string
-  lastName: string
-  age: number
-  school: string
-  college?: CMUCollege
-  level?: CollegeLevel
-  graduationYear: number
-  gender: Gender
-  genderOther?: string
-  ethnicity: Ethnicity
-  ethnicityOther?: string
-  phoneNumber: string
-  major?: string
-  coursework?: string
-  languages?: string
-  hackathonExperience?: HackathonExperience
-  workPermission?: WorkPermission
-  workLocation?: string
-  workStrengths?: string
-  sponsorRanking?: [Schema.Types.ObjectId]
-  resume?: string
-  github: string
-  design?: string
-  website?: string
-  essays?: [string]
-  createdAt: number
-  updatedAt: number
+export interface Profile extends Document {
+  event: Schema.Types.ObjectId;
+  user: Schema.Types.ObjectId;
+  firstName: string;
+  lastName: string;
+  age: number;
+  school: string;
+  college?: CMUCollege;
+  level?: CollegeLevel;
+  graduationYear: number;
+  gender: Gender;
+  genderOther?: string;
+  ethnicity: Ethnicity;
+  ethnicityOther?: string;
+  phoneNumber: string;
+  major?: string;
+  coursework?: string;
+  languages?: string;
+  hackathonExperience?: HackathonExperience;
+  workPermission?: WorkPermission;
+  workLocation?: string;
+  workStrengths?: string;
+  sponsorRanking?: [Schema.Types.ObjectId];
+  resume?: string;
+  github: string;
+  design?: string;
+  website?: string;
+  essays?: [string];
+  createdAt: number;
+  updatedAt: number;
 }

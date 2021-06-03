@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose"
-import { Platform } from "../_types/ScheduleItem"
+import { model, Schema } from "mongoose";
+import { Platform } from "../_types/ScheduleItem";
 
 /**
  * Schedule items for (potential) dynamic scheduling support
@@ -32,6 +32,6 @@ const ScheduleItem: Schema = new Schema(
       updatedAt: "updatedAt",
     },
   }
-)
+);
 
-export default model("ScheduleItem", ScheduleItem)
+export default model("ScheduleItem", ScheduleItem);

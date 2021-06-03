@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose"
-import { ShirtSize, Region } from "../_types/Confirmation"
+import { model, Schema } from "mongoose";
+import { ShirtSize, Region } from "../_types/Confirmation";
 
 /**
  * User confirmation data
@@ -19,7 +19,7 @@ const Confirmation: Schema = new Schema(
     dietaryRestrictions: [String],
     shirtSize: {
       type: String,
-      enum: Object.values(ShirtSize)
+      enum: Object.values(ShirtSize),
     },
     wantsHardware: Boolean,
     address: String,
@@ -40,6 +40,6 @@ const Confirmation: Schema = new Schema(
       updatedAt: "updatedAt",
     },
   }
-)
+);
 
-export default model("Confirmation", Confirmation)
+export default model("Confirmation", Confirmation);

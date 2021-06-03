@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose"
-import { TeamRequestType, TeamRequestStatus } from "../_types/TeamRequest"
+import { model, Schema } from "mongoose";
+import { TeamRequestType, TeamRequestStatus } from "../_types/TeamRequest";
 
 /**
  * Requests from users to join teams and invitations from teams to individual users
@@ -40,6 +40,6 @@ const TeamRequest: Schema = new Schema(
       updatedAt: "updatedAt",
     },
   }
-)
+);
 
-export default model("TeamRequest", TeamRequest)
+export default model("TeamRequest", TeamRequest);

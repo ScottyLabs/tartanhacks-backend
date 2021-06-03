@@ -1,5 +1,5 @@
-import { model, Schema } from "mongoose"
-import { EmailGroup, EmailStatus } from "../_types/Email"
+import { model, Schema } from "mongoose";
+import { EmailGroup, EmailStatus } from "../_types/Email";
 
 /**
  * Email logs for sent emails
@@ -49,6 +49,6 @@ const Email: Schema = new Schema(
       updatedAt: "updatedAt",
     },
   }
-)
+);
 
-export default model("Email", Email)
+export default model("Email", Email);

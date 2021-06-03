@@ -1,20 +1,20 @@
-import { model, Schema } from "mongoose"
+import { Schema } from "mongoose";
 
 /**
  * Type for project model
  */
 interface Project {
-  event: Schema.Types.ObjectId,
-  name: String,
-  description: String,
-  url: String,
-  slides?: String,
-  video?: String,
-  team: Schema.Types.ObjectId,
-  isDeleted: Boolean,
-  prizes: [Schema.Types.ObjectId],
-  createdAt: Number,
-  updatedAt: Number
+  event: Schema.Types.ObjectId;
+  name: string;
+  description: string;
+  url: string;
+  slides?: string;
+  video?: string;
+  team: Schema.Types.ObjectId;
+  isDeleted: boolean;
+  prizes: [Schema.Types.ObjectId];
+  createdAt: number;
+  updatedAt: number;
 }
 
-export default Project
+export default Project;
