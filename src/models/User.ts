@@ -6,8 +6,8 @@ import jwt from "jsonwebtoken";
 /**
  * Time before the generated JWT tokens expire
  */
-const PASSWORD_RESET_EXPIRY = "1 hour";
-const EMAIL_TOKEN_EXPIRY = "1 hour";
+const PASSWORD_RESET_EXPIRY = "1h";
+const EMAIL_TOKEN_EXPIRY = "1h";
 
 /**
  * Identification information for a user
@@ -41,10 +41,10 @@ User.methods.checkPassword = function (password: string): boolean {
 };
 
 /**
- * Generate an authentication token for logging in
+ * Generate an authentication token for logging in without a password
  */
 User.methods.generateAuthToken = function (): string {
-  return jwt.sign(this._id, process.env.JWT_SECRET, {
+  return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.AUTH_TOKEN_EXPIRY,
   });
 };
@@ -53,7 +53,7 @@ User.methods.generateAuthToken = function (): string {
  * Generate a password reset token to change passwords
  */
 User.methods.generatePasswordResetToken = function (): string {
-  return jwt.sign(this._id, process.env.JWT_SECRET, {
+  return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
     expiresIn: PASSWORD_RESET_EXPIRY,
   });
 };
@@ -62,7 +62,7 @@ User.methods.generatePasswordResetToken = function (): string {
  * Generate an email verification token for this account
  */
 User.methods.generateEmailVerificationToken = function (): string {
-  return jwt.sign(this.email, process.env.JWT_SECRET, {
+  return jwt.sign({ email: this.email }, process.env.JWT_SECRET, {
     expiresIn: EMAIL_TOKEN_EXPIRY,
   });
 };
@@ -76,19 +76,33 @@ User.statics.generateHash = (password: string): string => {
 };
 
 /**
- * Check if an email verification token is valid for this user
- * @param token email verification token to check
+ * Decrypt an authentication token
+ * @param token login authentication token
+ * @returns the `_id` associated with the User document
  */
-User.statics.verifyEmailVerificationToken = function (token: string): string {
-  return jwt.verify(token, process.env.JWT_SECRET).toString();
+User.statics.decryptAuthToken = (token: string): string => {
+  const decrypted = jwt.verify(token, process.env.JWT_SECRET) as IUser;
+  return decrypted._id;
+}
+
+/**
+ * Decrypt a password reset token
+ * @param token password reset token to use
+ * @return the `_id` associated with the User document
+ */
+User.statics.decryptPasswordResetToken = (token: string): string => {
+  const decrypted = jwt.verify(token, process.env.JWT_SECRET) as IUser;
+  return decrypted._id;
 };
 
 /**
- * Check if a password reset token is valid for this user
- * @param token password reset token to check
+ * Decrypt an email verification token
+ * @param token email verification token to use
+ * @return the `email` associated with the User document
  */
-User.statics.verifyPasswordResetToken = (token: string): string => {
-  return jwt.verify(token, process.env.JWT_SECRET).toString();
+User.statics.decryptEmailVerificationToken = function (token: string): string {
+  const decrypted = jwt.verify(token, process.env.JWT_SECRET) as IUser;
+  return decrypted.email;
 };
 
 export default model<IUser, IUserModel>("User", User);

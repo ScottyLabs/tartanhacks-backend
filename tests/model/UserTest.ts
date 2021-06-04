@@ -3,7 +3,7 @@ import { IUser } from "../../src/_types/User";
 import { assert } from "chai";
 
 describe("User", () => {
-  let user;
+  let user: IUser;
   /**
    * Create a user for use
    */
@@ -15,9 +15,6 @@ describe("User", () => {
     });
     const savedUser = await user.save();
     assert.notEqual(savedUser, null);
-
-    console.log("Env", process.env.PORT);
-    console.log("token", process.env.JWT_SECRET);
   });
 
   describe("Password hashing", () => {
@@ -43,6 +40,30 @@ describe("User", () => {
     it("bad password should not validate", async () => {
       const result = userTest.checkPassword(badPassword);
       assert.strictEqual(result, false);
+    });
+  });
+
+  describe("Email verification token", () => {
+    it("should encrypt and decrypt properly", () => {
+      const emailToken = user.generateEmailVerificationToken();
+      const email = User.decryptEmailVerificationToken(emailToken);
+      assert.equal(email, "tartanhacks@scottylabs.org");
+    });
+  });
+
+  describe("Auth token", () => {
+    it("Should encrypt and decrypt properly", () => {
+      const authToken = user.generateAuthToken();
+      const id = User.decryptAuthToken(authToken);
+      assert.equal(id, user._id);
+    });
+  });
+
+  describe("Password reset token", () => {
+    it("Should encrypt and decrypt properly", () => {
+      const resetToken = user.generatePasswordResetToken();
+      const id = User.decryptPasswordResetToken(resetToken);
+      assert.equal(id, user._id);
     });
   });
 });
