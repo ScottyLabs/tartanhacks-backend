@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { ICheckin } from "src/_types/Checkin";
+import { ICheckin } from "../_types/Checkin";
 
 /**
  * User checkin instances,

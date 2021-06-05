@@ -1,7 +1,7 @@
-import { Model, model, Schema } from "mongoose";
-import { IUser, IUserModel } from "../_types/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { model, Schema } from "mongoose";
+import { IUser, IUserModel } from "../_types/User";
 
 /**
  * Time before the generated JWT tokens expire
@@ -83,7 +83,7 @@ User.statics.generateHash = (password: string): string => {
 User.statics.decryptAuthToken = (token: string): string => {
   const decrypted = jwt.verify(token, process.env.JWT_SECRET) as IUser;
   return decrypted._id;
-}
+};
 
 /**
  * Decrypt a password reset token
@@ -100,7 +100,7 @@ User.statics.decryptPasswordResetToken = (token: string): string => {
  * @param token email verification token to use
  * @return the `email` associated with the User document
  */
-User.statics.decryptEmailVerificationToken = function (token: string): string {
+User.statics.decryptEmailVerificationToken = (token: string): string => {
   const decrypted = jwt.verify(token, process.env.JWT_SECRET) as IUser;
   return decrypted.email;
 };

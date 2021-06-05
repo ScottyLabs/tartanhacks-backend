@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { ISettings } from "src/_types/Settings";
+import { ISettings } from "../_types/Settings";
 
 /**
  * Global application-wide settings

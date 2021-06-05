@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { IPrize } from "src/_types/Prize";
+import { IPrize } from "../_types/Prize";
 
 /**
  * Prizes in each event e.g. Grand Prize, Best in Design

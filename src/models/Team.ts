@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { ITeam } from "src/_types/Team";
+import { ITeam } from "../_types/Team";
 
 /**
  * A team with a single admin and other members

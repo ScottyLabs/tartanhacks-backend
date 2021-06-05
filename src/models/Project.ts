@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { IProject } from "src/_types/Project";
+import { IProject } from "../_types/Project";
 
 /**
  * Team-submitted projects

@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { IStatus } from "src/_types/Status";
+import { IStatus } from "../_types/Status";
 
 /**
  * Status of a user in the registration process

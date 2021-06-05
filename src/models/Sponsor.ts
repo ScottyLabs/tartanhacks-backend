@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { ISponsor } from "src/_types/Sponsor";
+import { ISponsor } from "../_types/Sponsor";
 
 /**
  * Corporate/other sponsors with special access to public participant information

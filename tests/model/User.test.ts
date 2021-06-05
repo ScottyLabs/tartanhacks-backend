@@ -1,3 +1,6 @@
+/**
+ * Test suite for the User model
+ */
 import User from "../../src/models/User";
 import { IUser } from "../../src/_types/User";
 import { assert } from "chai";

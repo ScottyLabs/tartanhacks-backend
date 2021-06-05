@@ -1,14 +1,9 @@
-import express, { Request, Response, Router } from "express";
-import User from "src/models/User";
-import UserSchema from "src/models/User";
+import express, { Router } from "express";
+import { login, register } from "../controllers/AuthController";
 
 const router: Router = express.Router();
 
-router.post("/register", (req: Request, res: Response) => {
-  const email = req.body.email;
-  const password = req.body.password;
-
-  // hash password
-});
+router.post("/register", register);
+router.post("/login", login);
 
 export default router;

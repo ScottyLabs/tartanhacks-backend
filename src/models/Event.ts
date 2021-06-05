@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import { IEvent } from "src/_types/Event";
+import { IEvent } from "../_types/Event";
 
 /**
  * Schema for entire events e.g. TartanHacks, WDW
