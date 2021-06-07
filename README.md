@@ -21,6 +21,14 @@ For any functions or endpoints you write, please write the appropriate tests
 in the `tests` folder. Before committing, please make sure that all tests
 pass.
 
+We also have CI configured through GitHub actions. These will show you if your
+commit builds and passes all tests.
+
+## Environment
+If you need to create any new environment variables, add an example to `.env.template`
+and make sure to add it as well to `.github/workflows/main.yml` so that CI
+passes
+
 ### Code coverage
 To generate code coverage, we are using [Istanbul](https://istanbul.js.org/).
 To view code coverage, run `npm run coverage`
