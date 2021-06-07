@@ -1,20 +1,20 @@
 /**
- * Test suite for the Auth Controller
+ * Test suite for authentication routes
  */
 
 import chai, { assert } from "chai";
 import { app } from "../mochaHooks";
 
-describe("AuthController", () => {
+describe("auth", () => {
   describe("register", () => {
     it("should create a user", async () => {
       const response = await chai.request(app).post("/auth/register").send({
-        email: "tartanhacks@scottylabs.org",
+        email: "tartanhacks_reg@scottylabs.org",
         password: "abc123",
       });
       assert.ok(response.body);
       const user = response.body;
-      assert.equal(user.email, "tartanhacks@scottylabs.org");
+      assert.equal(user.email, "tartanhacks_reg@scottylabs.org");
     });
   });
 
