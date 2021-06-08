@@ -5,12 +5,19 @@ import { Request, Response } from "express";
 import User from "../models/User";
 import { bad, error } from "../util/error";
 import { getByToken } from "./UserController";
+import { isRegistrationOpen } from "./SettingsController";
 
 /**
  * Register a user
  */
 export const register = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
+
+  const registrationOpen = await isRegistrationOpen();
+  if (!registrationOpen) {
+    return bad(res, "Registration is closed.");
+  }
+
   if (!password || password.length < 6) {
     return bad(res, "Password must be 6 or more characters.");
   }

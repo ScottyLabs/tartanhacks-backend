@@ -8,6 +8,7 @@ import express from "express";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import router from "../src/routes";
+import { init } from "../src/util/startup";
 
 // initialize environment
 dotenv.config();
@@ -30,6 +31,8 @@ app.use(
   })
 );
 app.use("/", router);
+// run startup
+init();
 
 /**
  * Instantiate the mongo memory server before beginning tests

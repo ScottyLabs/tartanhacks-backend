@@ -3,7 +3,7 @@
  */
 
 import { assert } from "chai";
-import { getByToken } from "../../src/controllers/UserController";
+import * as UserController from "../../src/controllers/UserController";
 import User from "../../src/models/User";
 
 describe("UserController", () => {
@@ -16,7 +16,7 @@ describe("UserController", () => {
       });
       await user.save();
       const token = user.generateAuthToken();
-      const lookup = await getByToken(token);
+      const lookup = await UserController.getByToken(token);
       assert.equal(lookup._id.toString(), user._id.toString());
     });
   });

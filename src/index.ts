@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import router from "./routes";
+import { init } from "./util/startup";
 
 dotenv.config();
 
@@ -28,5 +29,7 @@ app.use(
   })
 );
 app.use("/", router);
+// run startup
+init();
 
 app.listen(PORT, () => console.log(`Running on port ${PORT}`));

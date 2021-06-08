@@ -13,6 +13,6 @@ export interface ISettings extends Document {
   acceptanceText?: string;
   confirmationText?: string;
   allowMinors?: boolean;
-  createdAt: number;
-  updatedAt: number;
+  createdAt?: number;
+  updatedAt?: number;
 }
