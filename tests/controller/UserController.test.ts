@@ -2,9 +2,17 @@
  * Test suite for the User Controller
  */
 
-import { assert } from "chai";
 import * as UserController from "../../src/controllers/UserController";
 import User from "../../src/models/User";
+import { setup, shutdown } from "../app";
+
+beforeAll(async () => {
+  await setup();
+});
+
+afterAll(async () => {
+  await shutdown();
+});
 
 describe("UserController", () => {
   describe("getByToken", () => {
@@ -17,7 +25,8 @@ describe("UserController", () => {
       await user.save();
       const token = user.generateAuthToken();
       const lookup = await UserController.getByToken(token);
-      assert.equal(lookup._id.toString(), user._id.toString());
+      expect(lookup).not.toBeNull();
+      expect(lookup._id.toString()).toEqual(user._id.toString());
     });
   });
 });

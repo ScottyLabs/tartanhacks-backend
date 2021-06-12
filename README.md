@@ -15,7 +15,7 @@ you adhere to the project style guidelines. Before commits, please make sure
 that your code is formatted correctly by running `npm run lint`
 
 ## Testing
-We are using Mocha for testing.
+We are using Jest for testing.
 
 For any functions or endpoints you write, please write the appropriate tests
 in the `tests` folder. Before committing, please make sure that all tests
@@ -30,5 +30,4 @@ and make sure to add it as well to `.github/workflows/main.yml` so that CI
 passes
 
 ### Code coverage
-To generate code coverage, we are using [Istanbul](https://istanbul.js.org/).
 To view code coverage, run `npm run coverage`

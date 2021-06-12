@@ -3,7 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import router from "./routes";
-import { init } from "./util/startup";
+import { startup } from "./util/startup";
 
 dotenv.config();
 
@@ -26,10 +26,16 @@ app.use(
 app.use(
   express.urlencoded({
     limit: "5mb",
+    extended: true,
   })
 );
 app.use("/", router);
-// run startup
-init();
 
-app.listen(PORT, () => console.log(`Running on port ${PORT}`));
+const server = app.listen(PORT, async () => {
+  console.log(`Running on port ${PORT}`);
+  const result = await startup();
+  if (!startup) {
+    console.log("Failed to complete startup successfully. Shutting down.");
+    server.close();
+  }
+});

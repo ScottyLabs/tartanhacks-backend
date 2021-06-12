@@ -3,21 +3,28 @@
  */
 import User from "../../src/models/User";
 import { IUser } from "../../src/_types/User";
-import { assert } from "chai";
+import { setup, shutdown } from "../app";
+
+beforeAll(async () => {
+  await setup();
+});
+
+afterAll(async () => {
+  await shutdown();
+});
 
 describe("User", () => {
   let user: IUser;
   /**
-   * Create a user for use
+   * Create a user
    */
-  before("should save", async () => {
+  beforeAll(async () => {
     user = new User({
       email: "tartanhacks@scottylabs.org",
       password: "abc123",
       admin: false,
     });
-    const savedUser = await user.save();
-    assert.notEqual(savedUser, null);
+    await user.save();
   });
 
   describe("Password hashing", () => {
@@ -26,7 +33,8 @@ describe("User", () => {
     const badPassword = "123abc";
     const hash = User.generateHash(password);
 
-    before("setup user", async () => {
+    // Initialize new user
+    beforeAll(async () => {
       userTest = new User({
         email: "tech@scottylabs.org",
         password: hash,
@@ -37,12 +45,12 @@ describe("User", () => {
 
     it("good password should validate", async () => {
       const result = userTest.checkPassword(password);
-      assert.strictEqual(result, true);
+      expect(result).toBeTruthy();
     });
 
     it("bad password should not validate", async () => {
       const result = userTest.checkPassword(badPassword);
-      assert.strictEqual(result, false);
+      expect(result).toBeFalsy();
     });
   });
 
@@ -50,7 +58,7 @@ describe("User", () => {
     it("should encrypt and decrypt properly", () => {
       const emailToken = user.generateEmailVerificationToken();
       const email = User.decryptEmailVerificationToken(emailToken);
-      assert.equal(email, "tartanhacks@scottylabs.org");
+      expect(email).toEqual("tartanhacks@scottylabs.org");
     });
   });
 
@@ -58,7 +66,8 @@ describe("User", () => {
     it("Should encrypt and decrypt properly", () => {
       const authToken = user.generateAuthToken();
       const id = User.decryptAuthToken(authToken);
-      assert.equal(id, user._id);
+      expect(id).not.toBeNull();
+      expect(id).toEqual(user._id.toString());
     });
   });
 
@@ -66,7 +75,8 @@ describe("User", () => {
     it("Should encrypt and decrypt properly", () => {
       const resetToken = user.generatePasswordResetToken();
       const id = User.decryptPasswordResetToken(resetToken);
-      assert.equal(id, user._id);
+      expect(id).not.toBeNull();
+      expect(id).toEqual(user._id.toString());
     });
   });
 });
