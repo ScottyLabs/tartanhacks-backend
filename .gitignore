@@ -24,3 +24,4 @@ npm-debug.log*
 # Istanbul output
 .nyc_output/
 .vscode/
+coverage

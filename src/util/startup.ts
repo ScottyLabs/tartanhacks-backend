@@ -2,7 +2,6 @@
  * Startup script
  */
 import * as SettingsController from "../controllers/SettingsController";
-import { sendEmail } from "../services/email";
 
 export const startup = async (): Promise<boolean> => {
   if (!checkEnvironment()) {
