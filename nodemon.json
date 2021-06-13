@@ -1,5 +1,5 @@
 {
   "restartable": "rs",
   "ignore": [".git", "dist", ".vscode", "node_modules"],
-  "ext": "ts"
+  "ext": "ts mjml"
 }

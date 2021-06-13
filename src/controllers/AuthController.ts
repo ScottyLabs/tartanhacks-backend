@@ -6,6 +6,7 @@ import User from "../models/User";
 import { bad, error } from "../util/error";
 import { getByToken } from "./UserController";
 import { isRegistrationOpen } from "./SettingsController";
+import { sendVerificationEmail } from "./EmailController";
 
 /**
  * Register a user
@@ -38,6 +39,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     ...json,
     token,
   });
+  await sendVerificationEmail(email, token);
 };
 
 /**

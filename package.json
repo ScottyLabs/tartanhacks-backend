@@ -10,7 +10,7 @@
     "lint": "npm run lint:only && npm run lint:pretty",
     "lint:only": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:pretty": "prettier --write .",
-    "test": "npx jest tests",
+    "test": "npx jest tests --detectOpenHandles",
     "coverage": "npx jest tests --coverage"
   },
   "author": "gramliu",
@@ -18,10 +18,13 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
+    "email-templates": "^8.0.7",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "mjml": "^4.9.3",
     "mongoose": "^5.12.3",
     "morgan": "^1.10.0",
+    "mustache": "^4.2.0",
     "nodemailer": "^6.6.1"
   },
   "devDependencies": {
@@ -30,7 +33,9 @@
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.23",
     "@types/jsonwebtoken": "^8.5.1",
+    "@types/mjml": "^4.7.0",
     "@types/morgan": "^1.9.2",
+    "@types/mustache": "^4.1.1",
     "@types/node": "^14.14.37",
     "@types/nodemailer": "^6.4.2",
     "@types/supertest": "^2.0.11",

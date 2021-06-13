@@ -4,12 +4,15 @@
 import { Express } from "express";
 import request from "supertest";
 import { setup, getApp, shutdown } from "../app";
+import { Transporter } from "nodemailer";
+import { mockNodeMailer } from "../util/mock";
 
 let app: Express = null;
 
 beforeAll(async () => {
   await setup();
   app = getApp();
+  mockNodeMailer();
 });
 
 afterAll(async () => {

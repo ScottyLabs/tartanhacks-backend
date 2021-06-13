@@ -18,6 +18,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       PORT: string;
+      ROOT_URL: string;
       JWT_SECRET: string;
       AUTH_TOKEN_EXPIRY: string;
       MONGODB_URI: string;

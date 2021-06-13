@@ -1,0 +1,21 @@
+<mjml>
+  <mj-body>
+    <mj-section border="solid black 1px" background-color="#fff">
+      <mj-column width="80%">
+        <mj-text align="center" color="#000" font-size="40px" font-family="Roboto">
+          Verify your email
+        </mj-text>
+        <mj-text align="center" color="#000" font-size="16px" font-family="Roboto">
+          Thanks for signing up for
+          TartanHacks!
+        </mj-text>
+        <mj-text align="center" color="#000" font-size="12px" font-family="Roboto">
+          To verify your email, click the button bellow.
+        </mj-text>
+        <mj-button background-color="#F63A4D" href="{{url}}">
+          Verify Me
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

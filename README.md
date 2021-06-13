@@ -29,5 +29,14 @@ If you need to create any new environment variables, add an example to `.env.tem
 and make sure to add it as well to `.github/workflows/main.yml` so that CI
 passes
 
-### Code coverage
+## Code coverage
 To view code coverage, run `npm run coverage`
+
+## Emails
+In order to configure a new email template, create a folder under `email-templates`.
+In that folder, create your [mjml](https://documentation.mjml.io/) templates. Also,
+create a file called `index.ts` which exports the rendered html by calling
+[mjml2html](https://documentation.mjml.io/#inside-node-js) on your template file
+and indexing on the `html` field. See `email-templates/verification` for an example.
+In `email-templates/index.ts`, make sure to include your folder in the default
+export so that the email service can detect your newly added template.
