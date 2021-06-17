@@ -4,7 +4,8 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import router from "./routes";
 import { startup } from "./util/startup";
-
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -30,6 +31,20 @@ app.use(
   })
 );
 app.use("/", router);
+
+const options = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "TartanHacks Backend",
+      version: "0.0.1",
+    },
+  },
+  apis: ["**/*.ts"],
+};
+const swaggerSpecification = swaggerJsDoc(options);
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
 
 const server = app.listen(PORT, async () => {
   console.log(`Running on port ${PORT}`);
