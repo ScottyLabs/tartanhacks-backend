@@ -2,7 +2,7 @@
   "name": "tartanhacks-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc --build && copyfiles -u 1 **/*.mjml dist",
     "start": "node . || echo \"Did you run 'npm run build'?\"",
