@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { model, Schema } from "mongoose";
 import { IUser, IUserModel } from "../_types/User";
+import isProduction from "../util/isProduction";
 
 /**
  * Time before the generated JWT tokens expire
@@ -105,4 +106,4 @@ User.statics.decryptEmailVerificationToken = (token: string): string => {
   return decrypted.email;
 };
 
-export default model<IUser, IUserModel>("User", User);
+export default model<IUser, IUserModel>("User", User, "users", !isProduction);

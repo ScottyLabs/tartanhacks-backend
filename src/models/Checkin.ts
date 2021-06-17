@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { ICheckin } from "../_types/Checkin";
+import isProduction from "../util/isProduction";
 
 /**
  * User checkin instances,
@@ -32,4 +33,4 @@ const Checkin: Schema<ICheckin> = new Schema(
   }
 );
 
-export default model("Checkin", Checkin);
+export default model("Checkin", Checkin, "checkins", !isProduction);

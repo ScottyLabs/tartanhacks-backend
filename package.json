@@ -10,8 +10,8 @@
     "lint": "npm run lint:only && npm run lint:pretty",
     "lint:only": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:pretty": "prettier --write .",
-    "test": "npx jest tests --detectOpenHandles",
-    "coverage": "npx jest tests --coverage"
+    "test": "NODE_OPTIONS=--trace-warnings jest tests --detectOpenHandles",
+    "coverage": "jest tests --coverage"
   },
   "author": "gramliu",
   "license": "ISC",
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@jest/types": "^27.0.2",
+    "@shelf/jest-mongodb": "^1.2.5",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.23",

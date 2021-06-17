@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { CheckinAccessLevel, ICheckinItem } from "../_types/CheckinItem";
+import isProduction from "../util/isProduction";
 
 /**
  * Checkin items, e.g. arrival, attending a workshop
@@ -33,4 +34,4 @@ const CheckinItem: Schema<ICheckinItem> = new Schema(
   }
 );
 
-export default model("CheckinItem", CheckinItem);
+export default model("CheckinItem", CheckinItem, "checkin-items", !isProduction);

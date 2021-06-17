@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 import express, { Express } from "express";
 import MongoMemoryServer from "mongodb-memory-server-core";
 import mongoose from "mongoose";
-import router from "../src/routes";
-import { startup } from "../src/util/startup";
+import router from "src/routes";
+import { startup } from "src/util/startup";
 
 /**
  * Initialize Express app
@@ -42,7 +42,10 @@ export const setup = async (): Promise<void> => {
 
   (global as any).__DB__ = mongod;
   // run startup
-  await startup();
+  const result = await startup();
+  if (!result) {
+    throw new Error("Could not complete startup check successfully.");
+  }
 };
 
 /**

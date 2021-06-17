@@ -4,7 +4,7 @@
   "parameters": {
     "timeOpen": {
       "value":  0,
-      "description": "Set to 0 to disable enforcing open time"
+      "description": "Unix timestamp for when registration opens. Set to 0 to disable enforcing open time"
     },
     "timeClose": {
       "value": 0,
@@ -12,7 +12,7 @@
     },
     "timeConfirm": {
       "value": 0,
-      "description": "Set to 0 to disable enforcing close of confirmation"
+      "description": "Unix timestamp for when confirmation closes. Set to 0 to disable enforcing close of confirmation"
     },
     "enableWhitelist": {
       "value": false,

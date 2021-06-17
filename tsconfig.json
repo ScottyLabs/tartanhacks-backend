@@ -10,7 +10,8 @@
     "rootDir": "src",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*"]
+      "src/*": ["./src/*"],
+      "*": ["node_modules/*"],
     },
     "resolveJsonModule": true
   },

@@ -17,6 +17,7 @@ declare global {
   // extend env type for better intellisense support
   namespace NodeJS {
     interface ProcessEnv {
+      NODE_ENV: "dev" | "prod";
       PORT: string;
       ROOT_URL: string;
       JWT_SECRET: string;

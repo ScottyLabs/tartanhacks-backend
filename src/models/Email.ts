@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import isProduction from "src/util/isProduction";
 import { EmailGroup, EmailStatus, IEmail } from "../_types/Email";
 
 /**
@@ -51,4 +52,4 @@ const Email: Schema<IEmail> = new Schema(
   }
 );
 
-export default model("Email", Email);
+export default model("Email", Email, "emails", !isProduction);

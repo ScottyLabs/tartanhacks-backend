@@ -1,9 +1,9 @@
 /**
  * Test suite for the User model
  */
-import User from "../../src/models/User";
-import { IUser } from "../../src/_types/User";
-import { setup, shutdown } from "../app";
+import User from "src/models/User";
+import { IUser } from "src/_types/User";
+import { setup, shutdown } from "../index";
 import { mockNodeMailer } from "../util/mock";
 
 beforeAll(async () => {
@@ -45,12 +45,12 @@ describe("User", () => {
       await userTest.save();
     });
 
-    it("good password should validate", async () => {
+    it("should validate good password", () => {
       const result = userTest.checkPassword(password);
       expect(result).toBeTruthy();
     });
 
-    it("bad password should not validate", async () => {
+    it("should not validate bad password", () => {
       const result = userTest.checkPassword(badPassword);
       expect(result).toBeFalsy();
     });

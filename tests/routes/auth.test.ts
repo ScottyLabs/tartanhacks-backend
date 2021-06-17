@@ -3,7 +3,7 @@
  */
 import { Express } from "express";
 import request from "supertest";
-import { setup, getApp, shutdown } from "../app";
+import { setup, getApp, shutdown } from "../index";
 import { mockNodeMailer } from "../util/mock";
 
 let app: Express = null;
@@ -25,6 +25,7 @@ describe("auth", () => {
         email: "tech@scottylabs.org",
         password: "abc123",
       });
+      expect(response.status).toEqual(200);
       expect(response.body).not.toBeNull();
       const user = response.body;
       expect(user.email).toEqual("tech@scottylabs.org");

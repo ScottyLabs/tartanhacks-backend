@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import isProduction from "src/util/isProduction";
 import {
   CMUCollege,
   CollegeLevel,
@@ -105,4 +106,4 @@ const Profile: Schema<IProfile> = new Schema(
   }
 );
 
-export default model("Profile", Profile);
+export default model("Profile", Profile, "profiles", !isProduction);

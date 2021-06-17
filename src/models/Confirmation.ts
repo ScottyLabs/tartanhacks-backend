@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import isProduction from "src/util/isProduction";
 import { ShirtSize, Region, IConfirmation } from "../_types/Confirmation";
 
 /**
@@ -42,4 +43,4 @@ const Confirmation: Schema<IConfirmation> = new Schema(
   }
 );
 
-export default model("Confirmation", Confirmation);
+export default model("Confirmation", Confirmation, "confirmations", !isProduction);

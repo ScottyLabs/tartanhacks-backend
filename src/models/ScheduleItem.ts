@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import isProduction from "src/util/isProduction";
 import { IScheduleItem, Platform } from "../_types/ScheduleItem";
 
 /**
@@ -34,4 +35,9 @@ const ScheduleItem: Schema<IScheduleItem> = new Schema(
   }
 );
 
-export default model("ScheduleItem", ScheduleItem);
+export default model(
+  "ScheduleItem",
+  ScheduleItem,
+  "schedule-items",
+  !isProduction
+);

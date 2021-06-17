@@ -8,6 +8,7 @@ export const startup = async (): Promise<boolean> => {
     return false;
   }
   await SettingsController.createSingleton();
+  return true;
 };
 
 /**
@@ -15,8 +16,9 @@ export const startup = async (): Promise<boolean> => {
  * and parse them accordingly
  */
 export const checkEnvironment = (): boolean => {
-  const port = parseInt(process.env.EMAIL_PORT);
-  if (isNaN(port) || port == null) {
+  const emailPort = parseInt(process.env.EMAIL_PORT);
+  if (isNaN(emailPort) || emailPort == null) {
+    console.error("Invalid email port:", emailPort)
     return false;
   }
   return true;

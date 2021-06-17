@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import isProduction from "src/util/isProduction";
 import {
   TeamRequestType,
   TeamRequestStatus,
@@ -46,4 +47,4 @@ const TeamRequest: Schema<ITeamRequest> = new Schema(
   }
 );
 
-export default model("TeamRequest", TeamRequest);
+export default model("TeamRequest", TeamRequest, "team-requests", !isProduction);

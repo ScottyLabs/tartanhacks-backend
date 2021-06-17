@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import isProduction from "src/util/isProduction";
 import { IEvent } from "../_types/Event";
 
 /**
@@ -26,4 +27,4 @@ const Event: Schema<IEvent> = new Schema(
   }
 );
 
-export default model("Event", Event);
+export default model("Event", Event, "events", !isProduction);

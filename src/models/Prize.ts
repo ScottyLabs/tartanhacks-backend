@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import isProduction from "src/util/isProduction";
 import { IPrize } from "../_types/Prize";
 
 /**
@@ -32,4 +33,4 @@ const Prize: Schema<IPrize> = new Schema(
   }
 );
 
-export default model("Prize", Prize);
+export default model("Prize", Prize, "prizes", !isProduction);

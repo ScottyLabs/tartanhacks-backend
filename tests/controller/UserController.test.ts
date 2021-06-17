@@ -2,9 +2,9 @@
  * Test suite for the User Controller
  */
 
-import * as UserController from "../../src/controllers/UserController";
-import User from "../../src/models/User";
-import { setup, shutdown } from "../app";
+import * as UserController from "src/controllers/UserController";
+import User from "src/models/User";
+import { setup, shutdown } from "../index";
 import { mockNodeMailer } from "../util/mock";
 
 beforeAll(async () => {

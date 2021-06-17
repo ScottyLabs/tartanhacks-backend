@@ -32,10 +32,11 @@ app.use(
 app.use("/", router);
 
 const server = app.listen(PORT, async () => {
-  console.log(`Running on port ${PORT}`);
   const result = await startup();
-  if (!startup) {
-    console.log("Failed to complete startup successfully. Shutting down.");
+  if (!result) {
+    console.error("Failed to complete startup successfully. Shutting down.");
     server.close();
+    return;
   }
+  console.log(`Running on port ${PORT}`);
 });

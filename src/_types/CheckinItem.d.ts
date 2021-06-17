@@ -1,5 +1,6 @@
 import { Schema, Document } from "mongoose";
 
+
 export enum CheckinAccessLevel {
   ALL,
   SPONSORS_ONLY,

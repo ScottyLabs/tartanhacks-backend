@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import isProduction from "src/util/isProduction";
 import { ISponsor } from "../_types/Sponsor";
 
 /**
@@ -27,4 +28,4 @@ const Sponsor: Schema<ISponsor> = new Schema(
   }
 );
 
-export default model("Sponsor", Sponsor);
+export default model("Sponsor", Sponsor, "sponsors", !isProduction);
