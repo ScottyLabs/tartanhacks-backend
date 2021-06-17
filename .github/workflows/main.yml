@@ -22,6 +22,7 @@ jobs:
 
     # Environment variables
     env:
+      EMAIL_PORT: 465
       JWT_SECRET: "Hello World"
       AUTH_TOKEN_EXPIRY: "20d"
 
