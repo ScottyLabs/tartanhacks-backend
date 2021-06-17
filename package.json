@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/src/index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "tsc & node .",
+    "build": "rm -rf dist && tsc --build && copyfiles -u 1 **/*.mjml dist",
+    "start": "node . || echo \"Did you run 'npm run build'?\"",
     "dev": "nodemon --exec ts-node src/index.ts",
     "lint": "npm run lint:only && npm run lint:pretty",
     "lint:only": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
@@ -45,6 +45,7 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^7.24.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-config-standard": "^16.0.2",

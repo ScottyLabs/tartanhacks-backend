@@ -3,7 +3,7 @@
  */
 import { ISettings } from "../_types/Settings";
 import Settings from "../models/Settings";
-import { parameters } from "../../settings.json";
+import { parameters } from "../settings.json";
 
 /**
  * Update the settings document
