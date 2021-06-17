@@ -4,9 +4,11 @@
 import User from "../../src/models/User";
 import { IUser } from "../../src/_types/User";
 import { setup, shutdown } from "../app";
+import { mockNodeMailer } from "../util/mock";
 
 beforeAll(async () => {
   await setup();
+  mockNodeMailer();
 });
 
 afterAll(async () => {
@@ -20,7 +22,7 @@ describe("User", () => {
    */
   beforeAll(async () => {
     user = new User({
-      email: "tartanhacks@scottylabs.org",
+      email: "tech@scottylabs.org",
       password: "abc123",
       admin: false,
     });
@@ -36,7 +38,7 @@ describe("User", () => {
     // Initialize new user
     beforeAll(async () => {
       userTest = new User({
-        email: "tech@scottylabs.org",
+        email: "tech1@scottylabs.org",
         password: hash,
         admin: false,
       });
@@ -58,7 +60,7 @@ describe("User", () => {
     it("should encrypt and decrypt properly", () => {
       const emailToken = user.generateEmailVerificationToken();
       const email = User.decryptEmailVerificationToken(emailToken);
-      expect(email).toEqual("tartanhacks@scottylabs.org");
+      expect(email).toEqual("tech@scottylabs.org");
     });
   });
 

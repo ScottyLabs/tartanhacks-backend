@@ -4,7 +4,6 @@
 import { Express } from "express";
 import request from "supertest";
 import { setup, getApp, shutdown } from "../app";
-import { Transporter } from "nodemailer";
 import { mockNodeMailer } from "../util/mock";
 
 let app: Express = null;
@@ -23,12 +22,12 @@ describe("auth", () => {
   describe("register", () => {
     it("should create a user", async () => {
       const response = await request(app).post("/auth/register").send({
-        email: "tartanhacks_reg@scottylabs.org",
+        email: "tech@scottylabs.org",
         password: "abc123",
       });
       expect(response.body).not.toBeNull();
       const user = response.body;
-      expect(user.email).toEqual("tartanhacks_reg@scottylabs.org");
+      expect(user.email).toEqual("tech@scottylabs.org");
     });
   });
 
@@ -36,11 +35,11 @@ describe("auth", () => {
   describe("register duplicate", () => {
     it("should fail", async () => {
       await request(app).post("/auth/register").send({
-        email: "tartanhacks@scottylabs.org",
+        email: "tech1@scottylabs.org",
         password: "abc123",
       });
       const response = await request(app).post("/auth/register").send({
-        email: "tartanhacks@scottylabs.org",
+        email: "tech1@scottylabs.org",
         password: "def456",
       });
       expect(response.status).toEqual(400);
@@ -50,11 +49,11 @@ describe("auth", () => {
   describe("login", () => {
     it("should work via email password", async () => {
       const register = await request(app).post("/auth/register").send({
-        email: "tartanhacks1@scottylabs.org",
+        email: "tech2@scottylabs.org",
         password: "abc123",
       });
       const login = await request(app).post("/auth/login").send({
-        email: "tartanhacks1@scottylabs.org",
+        email: "tech2@scottylabs.org",
         password: "abc123",
       });
       expect(register.body._id).not.toBeNull();
@@ -63,7 +62,7 @@ describe("auth", () => {
 
     it("should work via token", async () => {
       const register = await request(app).post("/auth/register").send({
-        email: "tartanhacks2@scottylabs.org",
+        email: "tech3@scottylabs.org",
         password: "abc123",
       });
       const token = register.body.token;
