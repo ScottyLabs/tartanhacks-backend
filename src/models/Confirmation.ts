@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose";
-import isProduction from "src/util/isProduction";
-import { ShirtSize, Region, IConfirmation } from "../_types/Confirmation";
+import isProduction from "../util/isProduction";
+import { IConfirmation } from "../_types/Confirmation";
 
 /**
  * User confirmation data
@@ -17,17 +17,6 @@ const Confirmation: Schema<IConfirmation> = new Schema(
       ref: "User",
       required: true,
     },
-    dietaryRestrictions: [String],
-    shirtSize: {
-      type: String,
-      enum: Object.values(ShirtSize),
-    },
-    wantsHardware: Boolean,
-    address: String,
-    region: {
-      type: String,
-      enum: Object.values(Region),
-    },
     signatureLiability: { type: Boolean, required: true },
     signaturePhotoRelease: { type: Boolean, required: true },
     signatureCodeOfConduct: { type: Boolean, required: true },
@@ -43,4 +32,9 @@ const Confirmation: Schema<IConfirmation> = new Schema(
   }
 );
 
-export default model("Confirmation", Confirmation, "confirmations", !isProduction);
+export default model<IConfirmation>(
+  "Confirmation",
+  Confirmation,
+  "confirmations",
+  !isProduction
+);

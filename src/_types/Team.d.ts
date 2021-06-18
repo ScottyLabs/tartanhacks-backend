@@ -9,6 +9,6 @@ interface ITeam extends Document {
   admin: string;
   members: [Schema.Types.ObjectId];
   open: boolean;
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -7,6 +7,6 @@ export interface ISponsor extends Document {
   name: string;
   event: Schema.Types.ObjectId;
   representatives: [Schema.Types.ObjectId];
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt?: Date;
 }

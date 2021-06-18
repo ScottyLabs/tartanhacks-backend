@@ -7,6 +7,7 @@ import { bad, error } from "../util/error";
 import { getByToken } from "./UserController";
 import { isRegistrationOpen } from "./SettingsController";
 import { sendVerificationEmail } from "./EmailController";
+import * as StatusController from "./StatusController";
 
 /**
  * Register a user
@@ -89,5 +90,34 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         error(res, err);
       }
     }
+  }
+};
+
+/**
+ * Verify a user via email
+ */
+export const verify = async (req: Request, res: Response): Promise<void> => {
+  const { token } = req.params;
+  if (token == null) {
+    bad(res, "Missing verification token");
+  }
+
+  try {
+    const email = User.decryptEmailVerificationToken(token);
+    if (email == null) {
+      bad(res, "Bad token");
+    }
+
+    const user = await User.findOne({ email });
+    if (user == null) {
+      bad(res, "Bad token");
+    }
+
+    await StatusController.verifyUser(user._id);
+    const json = user.toJSON();
+    delete json.password;
+    res.json({ ...json, token });
+  } catch (err) {
+    bad(res, "An error occured");
   }
 };

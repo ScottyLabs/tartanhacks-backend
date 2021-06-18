@@ -4,6 +4,7 @@
 import { ISettings } from "../_types/Settings";
 import Settings from "../models/Settings";
 import { parameters } from "../settings.json";
+import { DateTime } from "luxon";
 
 /**
  * Update the settings document
@@ -32,9 +33,13 @@ export const getInstance = async (): Promise<ISettings> => {
 export const isRegistrationOpen = async (): Promise<boolean> => {
   const settings = await getInstance();
   const { timeOpen, timeClose } = settings;
-  const timestamp = new Date().getTime();
-  const open = timeOpen <= timestamp || timeOpen == 0;
-  const closed = timestamp > timeClose && timeClose != 0;
+  const timestamp = DateTime.now();
+
+  const dateOpen = DateTime.fromJSDate(timeOpen);
+  const dateClose = DateTime.fromJSDate(timeClose);
+
+  const open = timeOpen == null || dateOpen.diff(timestamp).toMillis() <= 0;
+  const closed = timeClose == null || timestamp.diff(dateClose).toMillis() > 0;
   return open && !closed;
 };
 
@@ -44,9 +49,14 @@ export const isRegistrationOpen = async (): Promise<boolean> => {
 export const isConfirmationOpen = async (): Promise<boolean> => {
   const settings = await getInstance();
   const { timeOpen, timeConfirm } = settings;
-  const timestamp = new Date().getTime();
-  const open = timeOpen <= timestamp || timeOpen == 0;
-  const closed = timestamp > timeConfirm && timeConfirm != 0;
+  const timestamp = DateTime.now();
+
+  const dateOpen = DateTime.fromJSDate(timeOpen);
+  const dateConfirm = DateTime.fromJSDate(timeConfirm);
+
+  const open = timeOpen == null || dateOpen.diff(timestamp).toMillis() <= 0;
+  const closed =
+    timeConfirm == null || timestamp.diff(dateConfirm).toMillis() > 0;
   return open && !closed;
 };
 

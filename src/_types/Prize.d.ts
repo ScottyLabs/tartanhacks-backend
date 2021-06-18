@@ -10,4 +10,6 @@ export interface IPrize extends Document {
   eligibility?: string;
   provider: Schema.Types.ObjectId;
   winner?: Schema.Types.ObjectId;
+  createdAt: Date;
+  updatedAt?: Date;
 }

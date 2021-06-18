@@ -13,6 +13,6 @@ export interface IProject extends Document {
   team: Schema.Types.ObjectId;
   isDeleted: boolean;
   prizes: Schema.Types.ObjectId;
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt?: Date;
 }

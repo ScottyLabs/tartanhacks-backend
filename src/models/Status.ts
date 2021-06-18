@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import isProduction from "src/util/isProduction";
+import isProduction from "../util/isProduction";
 import { IStatus } from "../_types/Status";
 
 /**
@@ -35,4 +35,4 @@ const Status: Schema<IStatus> = new Schema(
   }
 );
 
-export default model("Status", Status, "statuses", !isProduction);
+export default model<IStatus>("Status", Status, "statuses", !isProduction);

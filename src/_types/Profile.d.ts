@@ -1,4 +1,6 @@
 import { Document, Schema } from "mongoose";
+import Confirmation, { IConfirmation } from "./Confirmation";
+import { IStatus } from "./Status";
 
 export enum CMUCollege {
   SCS = "SCS",
@@ -46,6 +48,27 @@ export enum WorkPermission {
   NO_SPONSORSHIP = "No sponsorship",
 }
 
+export enum ShirtSize {
+  XS,
+  S,
+  M,
+  L,
+  XL,
+  XXL,
+  WXS,
+  WS,
+  WM,
+  WL,
+  WXL,
+  WXXL,
+}
+
+export enum Region {
+  RURAL,
+  SUBURBAN,
+  URBAN,
+}
+
 /**
  * Type for the profile model
  */
@@ -77,6 +100,12 @@ export interface IProfile extends Document {
   design?: string;
   website?: string;
   essays?: [string];
-  createdAt: number;
-  updatedAt: number;
+  dietaryRestrictions?: [string];
+  shirtSize?: ShirtSize;
+  wantsHardware?: boolean;
+  address?: string;
+  region?: Region;
+  confirmation?: IConfirmation;
+  createdAt: Date;
+  updatedAt?: Date;
 }

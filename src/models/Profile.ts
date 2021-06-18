@@ -1,14 +1,29 @@
 import { model, Schema } from "mongoose";
-import isProduction from "src/util/isProduction";
+import isProduction from "../util/isProduction";
+import { IConfirmation } from "../_types/Confirmation";
 import {
   CMUCollege,
   CollegeLevel,
-  Gender,
   Ethnicity,
+  Gender,
   HackathonExperience,
-  WorkPermission,
   IProfile,
+  Region,
+  ShirtSize,
+  WorkPermission,
 } from "../_types/Profile";
+
+/**
+ * Confirmation signatures after a user is accepted into the event
+ */
+const Confirmation: Schema<IConfirmation> = new Schema({
+  signatureLiability: Boolean,
+  signaturePhotoRelease: Boolean,
+  signatureCodeOfConduct: Boolean,
+  mlhCodeOfConduct: Boolean,
+  mlhEventLogistics: Boolean,
+  mlhPromotional: Boolean,
+});
 
 /**
  * Public user profile data
@@ -97,6 +112,18 @@ const Profile: Schema<IProfile> = new Schema(
     design: String,
     website: String,
     essays: [String],
+    dietaryRestrictions: [String],
+    shirtSize: {
+      type: String,
+      enum: Object.values(ShirtSize),
+    },
+    wantsHardware: Boolean,
+    address: String,
+    region: {
+      type: String,
+      enum: Object.values(Region),
+    },
+    confirmation: Confirmation,
   },
   {
     timestamps: {
@@ -106,4 +133,4 @@ const Profile: Schema<IProfile> = new Schema(
   }
 );
 
-export default model("Profile", Profile, "profiles", !isProduction);
+export default model<IProfile>("Profile", Profile, "profiles", !isProduction);

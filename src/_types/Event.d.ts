@@ -6,14 +6,14 @@ import { Document } from "mongoose";
 export interface IEvent extends Document {
   name: string;
   website: string;
-  startTime?: number;
-  endTime?: number;
+  startTime?: Date;
+  endTime?: Date;
   enableCheckin: boolean;
   enableProjects: boolean;
   enableTeams: boolean;
   enableSponsors: boolean;
   logoUrl?: string;
   essayQuestions?: [string];
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt?: Date;
 }

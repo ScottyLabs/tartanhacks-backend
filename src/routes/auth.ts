@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { login, register } from "../controllers/AuthController";
+import { login, register, verify } from "../controllers/AuthController";
 
 const router: Router = express.Router();
 
@@ -69,5 +69,7 @@ router.post("/register", register);
  *          description: Internal Server Error.
  */
 router.post("/login", login);
+
+router.get("/auth/verify/:token", verify);
 
 export default router;

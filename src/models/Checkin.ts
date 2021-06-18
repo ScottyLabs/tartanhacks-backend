@@ -33,4 +33,4 @@ const Checkin: Schema<ICheckin> = new Schema(
   }
 );
 
-export default model("Checkin", Checkin, "checkins", !isProduction);
+export default model<ICheckin>("Checkin", Checkin, "checkins", !isProduction);

@@ -1,8 +1,8 @@
 /**
  * Test suite for the User model
  */
-import User from "src/models/User";
-import { IUser } from "src/_types/User";
+import User from "../models/User";
+import { IUser } from "../_types/User";
 import { setup, shutdown } from "../index";
 import { mockNodeMailer } from "../util/mock";
 
