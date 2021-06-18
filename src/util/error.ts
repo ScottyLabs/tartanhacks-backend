@@ -27,6 +27,19 @@ export const unauthorized = (res: Response, message?: string): void => {
 };
 
 /**
+ * Respond to the client for not found request (404)
+ * @param res response for interacting with the client
+ * @param message message to send to the user
+ */
+export const notFound = (res: Response, message?: string): void => {
+  if (!message) {
+    res.status(404).send("Not found");
+  } else {
+    res.status(404).json({ message });
+  }
+};
+
+/**
  * Respond to the client for internal server error (500)
  * @param res response for interacting with the client
  * @param message message to send to the user

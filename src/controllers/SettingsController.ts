@@ -39,7 +39,7 @@ export const isRegistrationOpen = async (): Promise<boolean> => {
   const dateClose = DateTime.fromJSDate(timeClose);
 
   const open = timeOpen == null || dateOpen.diff(timestamp).toMillis() <= 0;
-  const closed = timeClose == null || timestamp.diff(dateClose).toMillis() > 0;
+  const closed = timeClose != null || timestamp.diff(dateClose).toMillis() > 0;
   return open && !closed;
 };
 
@@ -56,7 +56,7 @@ export const isConfirmationOpen = async (): Promise<boolean> => {
 
   const open = timeOpen == null || dateOpen.diff(timestamp).toMillis() <= 0;
   const closed =
-    timeConfirm == null || timestamp.diff(dateConfirm).toMillis() > 0;
+    timeConfirm != null || timestamp.diff(dateConfirm).toMillis() > 0;
   return open && !closed;
 };
 
@@ -77,7 +77,9 @@ export const createSingleton = async (): Promise<ISettings> => {
   for (const entry of Object.entries(parameters)) {
     const key = entry[0] as string;
     const definition = entry[1];
-    settingParams[key] = definition.value;
+    if (definition.value !== 0) {
+      settingParams[key] = definition.value;
+    }
   }
 
   // Create the settings document

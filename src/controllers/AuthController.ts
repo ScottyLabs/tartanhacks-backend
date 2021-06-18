@@ -3,7 +3,7 @@
  */
 import { Request, Response } from "express";
 import User from "../models/User";
-import { bad, error } from "../util/error";
+import { bad, error, notFound } from "../util/error";
 import { getByToken } from "./UserController";
 import { isRegistrationOpen } from "./SettingsController";
 import { sendVerificationEmail } from "./EmailController";
@@ -74,7 +74,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       try {
         const user = await User.findOne({ email });
         if (!user) {
-          return bad(res, "Unknown account");
+          return notFound(res, "Unknown account");
         } else {
           if (!user.checkPassword(password)) {
             return bad(res, "Incorrect password");
@@ -110,7 +110,7 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
 
     const user = await User.findOne({ email });
     if (user == null) {
-      bad(res, "Bad token");
+      notFound(res, "User not found");
     }
 
     await StatusController.verifyUser(user._id);

@@ -31,8 +31,6 @@ const router: Router = express.Router();
  *     responses:
  *       200:
  *          description: Success.
- *       404:
- *          description: User does not exist.
  *       401:
  *          description: Unauthorized.
  *       500:
@@ -70,6 +68,30 @@ router.post("/register", register);
  */
 router.post("/login", login);
 
+/**
+ * @swagger
+ * /auth/verify/{token}:
+ *   get:
+ *     summary: Verify a user by their token
+ *     tags: [Authentication Module]
+ *     description: Verifies a user. Access - Open
+ *     parameters:
+ *       - in: path
+ *         name: token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Email verification token of a user
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       404:
+ *          description: User does not exist.
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
 router.get("/auth/verify/:token", verify);
 
 export default router;
