@@ -7,11 +7,11 @@ import { setup, getApp, shutdown } from "../index";
 import { mockNodeMailer } from "../util/mock";
 
 let app: Express = null;
+mockNodeMailer();
 
 beforeAll(async () => {
   await setup();
   app = getApp();
-  mockNodeMailer();
 });
 
 afterAll(async () => {

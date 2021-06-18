@@ -6,9 +6,10 @@ import { IUser } from "src/_types/User";
 import { setup, shutdown } from "../index";
 import { mockNodeMailer } from "../util/mock";
 
+mockNodeMailer();
+
 beforeAll(async () => {
   await setup();
-  mockNodeMailer();
 });
 
 afterAll(async () => {
