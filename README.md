@@ -2,6 +2,14 @@
 
 This is the backend system for the TartanHacks software suite. 
 
+## Getting Started
+
+1. Use the `.env.template` file to create a `.env` file
+2. Reach out to Gram or Anuda to get access to the MongoDB and E-Mail config for the `.env` file
+3. Run `npm install` to install packages
+4. Run `npm run build`
+5. Run `npm start` if you want to run in production mode. Run `npm run dev` if you want to run in dev mode.
+
 ## Documentation
 |||
 |--|--|
