@@ -11,6 +11,7 @@
     "lint:only": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:pretty": "prettier --write .",
     "test": "NODE_OPTIONS=--trace-warnings doppler setup -p tartanhacks-backend -c dev && doppler run -- jest tests --detectOpenHandles",
+    "test:nodoppler": "NODE_OPTIONS=--trace-warnings && jest tests --detectOpenHandles",
     "coverage": "doppler setup -p tartanhacks-backend -c dev && doppler run -- jest tests --coverage"
   },
   "author": "gramliu",
