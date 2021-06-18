@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import isProduction from "src/util/isProduction";
+import isProduction from "../util/isProduction";
 import { IScheduleItem, Platform } from "../_types/ScheduleItem";
 
 /**
@@ -35,7 +35,7 @@ const ScheduleItem: Schema<IScheduleItem> = new Schema(
   }
 );
 
-export default model(
+export default model<IScheduleItem>(
   "ScheduleItem",
   ScheduleItem,
   "schedule-items",

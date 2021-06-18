@@ -10,8 +10,8 @@ interface IStatus extends Document {
   completedProfile?: boolean;
   admitted?: boolean;
   admittedBy?: Schema.Types.ObjectId;
-  confirmed: boolean;
-  declined: boolean;
-  createdAt: number;
-  updatedAt: number;
+  confirmed?: boolean;
+  declined?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

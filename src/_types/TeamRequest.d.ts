@@ -22,6 +22,6 @@ export interface ITeamRequest extends Document {
   team: Schema.Types.ObjectId;
   status: TeamRequestStatus;
   message?: string;
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt?: Date;
 }

@@ -21,6 +21,7 @@ export interface ICheckinItem extends Document {
   accessLevel: CheckinAccessLevel;
   active: boolean;
   enableSelfCheckin: boolean;
-  createdAt: number;
-  updatedAt: number;
+  checkinLimit?: number;
+  createdAt: Date;
+  updatedAt?: Date;
 }

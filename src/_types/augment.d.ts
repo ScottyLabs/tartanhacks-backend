@@ -1,6 +1,7 @@
 /**
  * This file augments existing types
  */
+import { ObjectId } from "mongoose";
 import { IUser } from "./User";
 
 /**

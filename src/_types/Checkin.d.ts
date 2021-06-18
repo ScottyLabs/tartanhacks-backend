@@ -7,6 +7,6 @@ export interface ICheckin extends Document {
   event: Schema.Types.ObjectId;
   user: Schema.Types.ObjectId;
   item: Schema.Types.ObjectId;
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt?: Date;
 }

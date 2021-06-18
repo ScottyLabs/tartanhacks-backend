@@ -24,8 +24,8 @@ export interface IEmail extends Document {
   groups: [EmailGroup];
   subject: string;
   body: string;
-  sendTime?: number;
+  sendTime?: Date;
   status: EmailStatus;
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt?: Date;
 }

@@ -34,4 +34,9 @@ const CheckinItem: Schema<ICheckinItem> = new Schema(
   }
 );
 
-export default model("CheckinItem", CheckinItem, "checkin-items", !isProduction);
+export default model<ICheckinItem>(
+  "CheckinItem",
+  CheckinItem,
+  "checkin-items",
+  !isProduction
+);

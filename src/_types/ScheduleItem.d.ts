@@ -15,14 +15,14 @@ export enum Platform {
 export interface IScheduleItem extends Document {
   event: Schema.Types.ObjectId;
   name: string;
-  startTime: number;
-  endTime: number;
+  startTime: Date;
+  endTime: Date;
   location: string;
   lat?: number;
   lng?: number;
   platform: Platform;
   platformUrl?: string;
   active: boolean;
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt?: Date;
 }

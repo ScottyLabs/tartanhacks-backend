@@ -9,9 +9,9 @@ export interface IUser extends Document {
   admin: boolean;
   name?: string;
   company?: Schema.Types.ObjectId;
-  lastLogin?: number;
-  createdAt: number;
-  updatedAt: number;
+  lastLogin?: Date;
+  createdAt: Date;
+  updatedAt: Date;
   /**
    * Check if a password matches the stored hash
    * @param password password to verify
