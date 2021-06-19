@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { getByToken } from "../controllers/UserController";
-import { error, unauthorized } from "../util/error";
+import { bad, error, unauthorized } from "../util/error";
 
 /**
  * Middleware to check if a user is logged in and authenticated.
@@ -12,6 +12,9 @@ export const isAuthenticated = async (
   next: NextFunction
 ): Promise<void> => {
   const token = req.headers["x-access-token"] as string;
+  if (!token) {
+    return unauthorized(res);
+  }
   try {
     const user = await getByToken(token);
     if (!user) {
@@ -35,6 +38,9 @@ export const isAdmin = async (
   next: NextFunction
 ): Promise<void> => {
   const token = req.headers["x-access-token"] as string;
+  if (!token) {
+    return unauthorized(res);
+  }
   try {
     const user = await getByToken(token);
     if (user?.admin) {
@@ -58,7 +64,13 @@ export const isOwnerOrAdmin = async (
   next: NextFunction
 ): Promise<void> => {
   const token = req.headers["x-access-token"] as string;
+  if (!token) {
+    return unauthorized(res);
+  }
   const { id } = req.params;
+  if (!id) {
+    return bad(res);
+  }
 
   try {
     const user = await getByToken(token);
