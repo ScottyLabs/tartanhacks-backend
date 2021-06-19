@@ -17,7 +17,26 @@ export const sendVerificationEmail = async (
     "[TartanHacks] Verify your email",
     "verification",
     {
-      url: `${process.env.ROOT_URL}/auth/verify/${verificationToken}`,
+      url: `${process.env.BACKEND_URL}/auth/verify/${verificationToken}`,
+    }
+  );
+};
+
+/**
+ * Send a password reset email to a specific address
+ * @param email recipient email
+ * @param passwordResetToken token to reset the password
+ */
+export const sendPasswordResetEmail = async (
+  email: string,
+  passwordResetToken: string
+): Promise<void> => {
+  await sendTemplateEmail(
+    [email],
+    "[TartanHacks] Reset your password",
+    "password-reset",
+    {
+      url: `${process.env.FRONTEND_URL}/auth/reset/${passwordResetToken}`,
     }
   );
 };
