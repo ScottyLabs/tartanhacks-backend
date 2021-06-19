@@ -16,7 +16,7 @@ export const getByToken = async (token: string): Promise<IUser> => {
   return user;
 };
 
-export const getOrCreateStatus = async (userId: ObjectId): Promise<IStatus> => {
+export const getOrCreateStatus = async (userId: ObjectId, update?: any): Promise<IStatus> => {
   const tartanhacks = await EventController.getTartanHacks();
   const status = await Status.findOneAndUpdate(
     {
@@ -26,6 +26,7 @@ export const getOrCreateStatus = async (userId: ObjectId): Promise<IStatus> => {
     {},
     {
       upsert: true,
+      returnOriginal: false
     }
   );
   return status;

@@ -40,7 +40,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     ...json,
     token,
   });
-  await sendVerificationEmail(email, token);
+
+  const emailToken = await user.generateEmailVerificationToken();
+  await sendVerificationEmail(email, emailToken);
 };
 
 /**
@@ -69,7 +71,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   } else {
     // Login with email & password
     if (!email || !password) {
-      bad(res, "Missing email or password");
+      return bad(res, "Missing email or password");
     } else {
       try {
         const user = await User.findOne({ email });
@@ -99,18 +101,18 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 export const verify = async (req: Request, res: Response): Promise<void> => {
   const { token } = req.params;
   if (token == null) {
-    bad(res, "Missing verification token");
+    return bad(res, "Missing verification token");
   }
 
   try {
     const email = User.decryptEmailVerificationToken(token);
     if (email == null) {
-      bad(res, "Bad token");
+      return bad(res, "Bad token");
     }
 
     const user = await User.findOne({ email });
     if (user == null) {
-      notFound(res, "User not found");
+      return notFound(res, "User not found");
     }
 
     await StatusController.verifyUser(user._id);
@@ -118,6 +120,7 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
     delete json.password;
     res.json({ ...json, token });
   } catch (err) {
-    bad(res, "An error occured");
+    console.error(err);
+    error(res, "An error occured");
   }
 };

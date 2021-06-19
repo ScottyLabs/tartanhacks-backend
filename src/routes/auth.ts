@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import { login, register, verify } from "../controllers/AuthController";
+import { isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -92,6 +93,6 @@ router.post("/login", login);
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/auth/verify/:token", verify);
+router.get("/verify/:token", verify);
 
 export default router;

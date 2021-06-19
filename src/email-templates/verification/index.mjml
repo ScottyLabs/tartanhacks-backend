@@ -10,7 +10,7 @@
           TartanHacks!
         </mj-text>
         <mj-text align="center" color="#000" font-size="12px" font-family="Roboto">
-          To verify your email, click the button bellow.
+          To verify your email, click the button below.
         </mj-text>
         <mj-button background-color="#F63A4D" href="{{url}}">
           Verify Me
