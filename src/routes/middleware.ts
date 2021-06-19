@@ -17,7 +17,7 @@ export const isAuthenticated = async (
     if (!user) {
       unauthorized(res);
     } else {
-      req.user = user;
+      res.locals.user = user;
       return next();
     }
   } catch (err) {
@@ -38,7 +38,7 @@ export const isAdmin = async (
   try {
     const user = await getByToken(token);
     if (user?.admin) {
-      req.user = user;
+      res.locals.user = user;
       return next();
     } else {
       unauthorized(res);
@@ -62,8 +62,8 @@ export const isOwnerOrAdmin = async (
 
   try {
     const user = await getByToken(token);
-    if (user?.admin || user._id === id) {
-      req.user = user;
+    if (user?.admin || user._id.toString() === id) {
+      res.locals.user = user;
       return next();
     } else {
       unauthorized(res);
