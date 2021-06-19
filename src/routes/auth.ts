@@ -5,9 +5,8 @@ import {
   resendVerificationEmail,
   resetPassword,
   sendPasswordResetEmail,
-  verify,
+  verify
 } from "../controllers/AuthController";
-import { isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -39,6 +38,8 @@ const router: Router = express.Router();
  *     responses:
  *       200:
  *          description: Success.
+ *       400:
+ *          description: Bad request
  *       401:
  *          description: Unauthorized.
  *       500:

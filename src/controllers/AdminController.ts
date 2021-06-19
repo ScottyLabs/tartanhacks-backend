@@ -16,15 +16,12 @@ export const createAdmin = async (
   const { id } = req.params;
 
   try {
-    console.log("Looking for user:", id);
     const user = await User.findById(id);
     if (user == null) {
       return notFound(res, "User not found");
     }
 
-    console.log("Found user", user._id);
-
-    const updatedUser = await user.updateOne(
+    await user.updateOne(
       {
         $set: {
           admin: true,
@@ -34,8 +31,47 @@ export const createAdmin = async (
         returnOriginal: false,
       }
     );
-    const json = updatedUser.toJSON();
-    res.json({ ...json });
+    res.json(user.toJSON());
+  } catch (err) {
+    console.error(err);
+    return error(res);
+  }
+};
+
+/**
+ * Demote an admin
+ */
+export const removeAdmin = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  if (id == null) {
+    return bad(res, "Missing user id");
+  }
+
+  try {
+    const user = await User.findById(id);
+    if (user == null) {
+      return notFound(res, "User not found");
+    }
+
+    if (!user.admin) {
+      return bad(res, "User is not an admin");
+    }
+
+    await user.updateOne(
+      {
+        $set: {
+          admin: false,
+        },
+      },
+      {
+        returnOriginal: false,
+      }
+    );
+    res.json(user.toJSON());
   } catch (err) {
     console.error(err);
     return error(res);
