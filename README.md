@@ -2,6 +2,17 @@
 
 This is the backend system for the TartanHacks software suite. 
 
+## Getting Started
+
+1. Create a Doppler Account [here.](https://www.doppler.com/)
+2. Get an invite to the ScottyLabs Doppler workspace by reaching out to David Hwang
+3. Install the Doppler CLI by following the installation instructions [here.](https://docs.doppler.com/docs/enclave-installation)
+4. Login to doppler with the CLI by running `doppler login --scope ~/project-dir`
+5. Run `npm install` to install packages
+6. Run `npm run build`
+7. Run `npm run dev` to run the project in dev mode.
+8. See the swagger endpoint documentation by visiting `localhost:3000/docs`
+
 ## Documentation
 |||
 |--|--|
