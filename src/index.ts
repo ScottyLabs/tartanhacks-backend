@@ -35,21 +35,21 @@ app.use("/", router);
 
 const options = {
   swaggerDefinition: {
-    openapi: "3.0.0",
+    openapi: "3.0.1",
     info: {
       title: "TartanHacks Backend",
       version: "0.0.1",
     },
-    basePath: '/',
+    basePath: "/",
     components: {
       securitySchemes: {
         apiKeyAuth: {
-          type: 'apiKey',
-          in: 'header',
-          name: 'x-access-token'
-        }
-      }
-    }
+          type: "apiKey",
+          in: "header",
+          name: "x-access-token",
+        },
+      },
+    },
   },
   apis: ["**/*.ts"],
 };
