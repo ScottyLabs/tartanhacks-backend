@@ -39,6 +39,16 @@ const options = {
       title: "TartanHacks Backend",
       version: "0.0.1",
     },
+    basePath: '/',
+    components: {
+      securitySchemes: {
+        apiKeyAuth: {
+          type: 'apiKey',
+          in: 'header',
+          name: 'x-access-token'
+        }
+      }
+    }
   },
   apis: ["**/*.ts"],
 };
