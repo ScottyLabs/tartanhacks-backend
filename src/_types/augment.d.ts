@@ -20,7 +20,8 @@ declare global {
     interface ProcessEnv {
       NODE_ENV: "dev" | "prod";
       PORT: string;
-      ROOT_URL: string;
+      BACKEND_URL: string;
+      FRONTEND_URL: string;
       JWT_SECRET: string;
       AUTH_TOKEN_EXPIRY: string;
       MONGODB_URI: string;
