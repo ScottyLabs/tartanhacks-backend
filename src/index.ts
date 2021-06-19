@@ -16,6 +16,7 @@ mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+mongoose.set("useFindAndModify", false);
 
 const app = express();
 app.use(morgan("dev"));
@@ -39,12 +40,13 @@ const options = {
       title: "TartanHacks Backend",
       version: "0.0.1",
     },
+    basePath: "/",
     components: {
       securitySchemes: {
-        UserTokenAuth: {
+        apiKeyAuth: {
           type: "apiKey",
-          name: "x-access-token",
           in: "header",
+          name: "x-access-token",
         },
       },
     },

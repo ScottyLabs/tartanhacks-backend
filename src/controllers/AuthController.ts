@@ -6,8 +6,9 @@ import User from "../models/User";
 import { bad, error, notFound } from "../util/error";
 import { getByToken } from "./UserController";
 import { isRegistrationOpen } from "./SettingsController";
-import { sendVerificationEmail } from "./EmailController";
+import * as EmailController from "./EmailController";
 import * as StatusController from "./StatusController";
+import Status from "src/models/Status";
 
 /**
  * Register a user
@@ -35,12 +36,13 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
   const token = await user.generateAuthToken();
   const json = user.toJSON();
-  delete json.password;
   res.json({
     ...json,
     token,
   });
-  await sendVerificationEmail(email, token);
+
+  const emailToken = await user.generateEmailVerificationToken();
+  await EmailController.sendVerificationEmail(email, emailToken);
 };
 
 /**
@@ -58,7 +60,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         return bad(res, "Unknown account");
       }
       const json = user.toJSON();
-      delete json.password;
       res.json({
         token,
         ...json,
@@ -69,7 +70,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   } else {
     // Login with email & password
     if (!email || !password) {
-      bad(res, "Missing email or password");
+      return bad(res, "Missing email or password");
     } else {
       try {
         const user = await User.findOne({ email });
@@ -99,25 +100,126 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 export const verify = async (req: Request, res: Response): Promise<void> => {
   const { token } = req.params;
   if (token == null) {
-    bad(res, "Missing verification token");
+    return bad(res, "Missing verification token");
   }
 
   try {
     const email = User.decryptEmailVerificationToken(token);
     if (email == null) {
-      bad(res, "Bad token");
+      return bad(res, "Bad token");
     }
 
     const user = await User.findOne({ email });
     if (user == null) {
-      notFound(res, "User not found");
+      return notFound(res, "User not found");
     }
 
     await StatusController.verifyUser(user._id);
     const json = user.toJSON();
-    delete json.password;
     res.json({ ...json, token });
   } catch (err) {
-    bad(res, "An error occured");
+    console.error(err);
+    error(res, "An error occured");
+  }
+};
+
+/**
+ * Resend a user verification email
+ */
+export const resendVerificationEmail = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { email } = req.body;
+  if (email == null) {
+    return bad(res, "Missing email");
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (user == null) {
+      return notFound(res, "User not found");
+    }
+
+    const status = await StatusController.getStatus(user._id);
+    if (status.verified) {
+      return bad(res, "User is already verified!");
+    }
+
+    const emailToken = await user.generateEmailVerificationToken();
+    await EmailController.sendVerificationEmail(email, emailToken);
+    res.status(200).send();
+  } catch (err) {
+    console.error(err);
+    error(res, "An error occured");
+  }
+};
+
+/**
+ * Reset a user's password with a password reset token
+ */
+export const resetPassword = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { token, password } = req.body;
+  if (token == null || password == null) {
+    return bad(res, "Missing token or password");
+  }
+
+  try {
+    const email = User.decryptPasswordResetToken(token);
+    if (email == null) {
+      return bad(res, "Bad token");
+    }
+
+    const hash = User.generateHash(password);
+    const user = await User.findOneAndUpdate(
+      { email },
+      {
+        $set: {
+          password: hash,
+        },
+      },
+      {
+        returnOriginal: false,
+      }
+    );
+    if (user == null) {
+      return notFound(res, "User not found");
+    }
+
+    const json = user.toJSON();
+    res.json({ ...json, token });
+  } catch (err) {
+    console.error(err);
+    error(res, "An error occured");
+  }
+};
+
+/**
+ * Send a password reset email
+ */
+export const sendPasswordResetEmail = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { email } = req.body;
+  if (email == null) {
+    return bad(res, "Missing email");
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (user == null) {
+      return notFound(res, "Unknown user");
+    }
+
+    const passwordResetToken = user.generatePasswordResetToken();
+    await EmailController.sendPasswordResetEmail(email, passwordResetToken);
+    res.status(200).send();
+  } catch (err) {
+    console.error(err);
+    return error(res);
   }
 };

@@ -19,7 +19,7 @@ const router: Router = express.Router();
  *     tags: [Admin Module]
  *     description: Make a user into an admin. Access - Admin only
  *     security:
- *       - UserTokenAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
  *       - in: path
  *         name: id
