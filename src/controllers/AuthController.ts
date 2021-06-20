@@ -4,11 +4,10 @@
 import { Request, Response } from "express";
 import User from "../models/User";
 import { bad, error, notFound } from "../util/error";
-import { getByToken } from "./UserController";
-import { isRegistrationOpen } from "./SettingsController";
 import * as EmailController from "./EmailController";
+import { isRegistrationOpen } from "./SettingsController";
 import * as StatusController from "./StatusController";
-import Status from "src/models/Status";
+import { getByToken } from "./UserController";
 
 /**
  * Register a user

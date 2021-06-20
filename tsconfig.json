@@ -12,7 +12,9 @@
     "paths": {
       "src/*": ["./src/*"],
     },
+    "allowJs": true,
     "resolveJsonModule": true,
+    "typeRoots": ["./node_modules/@types", "./src/_types"]
   },
   "include": ["src/**/*"]
 }

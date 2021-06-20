@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import router from "./routes";
 import { startup } from "./util/startup";
-import swaggerJsDoc from "swagger-jsdoc";
+import swaggerSpecification from "./swagger";
 import swaggerUi from "swagger-ui-express";
 dotenv.config();
 
@@ -32,28 +32,6 @@ app.use(
   })
 );
 app.use("/", router);
-
-const options = {
-  swaggerDefinition: {
-    openapi: "3.0.1",
-    info: {
-      title: "TartanHacks Backend",
-      version: "0.0.1",
-    },
-    basePath: "/",
-    components: {
-      securitySchemes: {
-        apiKeyAuth: {
-          type: "apiKey",
-          in: "header",
-          name: "x-access-token",
-        },
-      },
-    },
-  },
-  apis: ["**/*.ts"],
-};
-const swaggerSpecification = swaggerJsDoc(options);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
 

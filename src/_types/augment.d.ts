@@ -1,20 +1,11 @@
 /**
  * This file augments existing types
  */
-import { ObjectId } from "mongoose";
-import { IUser } from "./User";
 
 /**
  * Extension of the Express Request type interface
  */
 declare global {
-  // extend Express Request type for user middleware injection
-  namespace Express {
-    export interface Request {
-      user?: IUser;
-    }
-  }
-
   // extend env type for better intellisense support
   namespace NodeJS {
     interface ProcessEnv {

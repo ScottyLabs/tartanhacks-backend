@@ -1,6 +1,5 @@
 import { Document, Schema } from "mongoose";
-import Confirmation, { IConfirmation } from "./Confirmation";
-import { IStatus } from "./Status";
+import { IConfirmation } from "./Confirmation";
 
 export enum CMUCollege {
   SCS = "SCS",
@@ -64,9 +63,9 @@ export enum ShirtSize {
 }
 
 export enum Region {
-  RURAL,
-  SUBURBAN,
-  URBAN,
+  RURAL = "Rural",
+  SUBURBAN = "Suburban",
+  URBAN = "Urban",
 }
 
 /**
