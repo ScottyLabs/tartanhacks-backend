@@ -125,6 +125,9 @@ export const submitConfirmation = async (
     if (!status.admitted) {
       return unauthorized(res, "You have not been admitted to the event!");
     }
+    if (status.declined) {
+      return bad(res, "You already declined your attendance for the event");
+    }
 
     const updatedProfile = await Profile.findOneAndUpdate(
       { _id: profile._id },
@@ -139,10 +142,44 @@ export const submitConfirmation = async (
         runValidators: true,
       }
     );
+
     await updateStatus(user._id, StatusField.CONFIRMED, true);
     res.json(updatedProfile.toJSON());
   } catch (err) {
-    console.log("Error name", err.name);
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      bad(res);
+    } else {
+      console.error(err);
+      error(res);
+    }
+  }
+};
+
+/**
+ * Decline acceptance
+ */
+export const declineAcceptance = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const user = res.locals.user;
+    const profile = await getProfile(user._id);
+    if (profile == null) {
+      return bad(res, "User does not have a profile yet. Create one first");
+    }
+
+    const status = await getStatus(user._id);
+    if (!status.admitted) {
+      return unauthorized(res, "You have not been admitted to the event!");
+    }
+    if (status.confirmed) {
+      return bad(res, "You already confirmed your attendance for the event!");
+    }
+
+    await updateStatus(user._id, StatusField.DECLINED, true);
+    res.json(profile.toJSON());
+  } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       bad(res);
     } else {

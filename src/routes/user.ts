@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import {
+  declineAcceptance,
   fileMiddleware,
   submitConfirmation,
   submitProfile,
@@ -191,5 +192,26 @@ router.post("/resume", isAuthenticated, fileMiddleware, submitResume);
  *        description: Internal Server Error.
  */
 router.put("/confirmation", isAuthenticated, submitConfirmation);
+
+/**
+ * @swagger
+ * /user/decline:
+ *  put:
+ *    summary: Decline a user's acceptance
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Users Module]
+ *    description: Decline a user's acceptance. Must have been accepted. Access - User
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      400:
+ *        description: Bad request
+ *      401:
+ *        description: Unauthorized.
+ *      500:
+ *        description: Internal Server Error.
+ */
+ router.put("/decline", isAuthenticated, declineAcceptance);
 
 export default router;

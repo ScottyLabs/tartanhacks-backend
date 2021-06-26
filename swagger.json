@@ -633,6 +633,34 @@
         }
       }
     },
+    "/user/decline": {
+      "put": {
+        "summary": "Decline a user's acceptance",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Users Module"
+        ],
+        "description": "Decline a user's acceptance. Must have been accepted. Access - User",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "summary": "Query list of users",
