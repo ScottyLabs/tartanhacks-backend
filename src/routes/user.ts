@@ -1,5 +1,10 @@
 import express, { Router } from "express";
-import { submitProfile } from "../controllers/ProfileController";
+import {
+  fileMiddleware,
+  submitConfirmation,
+  submitProfile,
+  submitResume,
+} from "../controllers/ProfileController";
 import { isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
@@ -17,7 +22,7 @@ const router: Router = express.Router();
  *   put:
  *     summary: Submit a user application
  *     tags: [User Module]
- *     description: Submit a user application. Access - Admin only
+ *     description: Submit a user application. Access - User only
  *     security:
  *       - apiKeyAuth: []
  *     requestBody:
@@ -78,8 +83,6 @@ const router: Router = express.Router();
  *                 type: array
  *                 items:
  *                   type: string
- *               resume:
- *                 type: string
  *               github:
  *                 type: string
  *               design:
@@ -115,9 +118,78 @@ const router: Router = express.Router();
  *           description: User does not exist.
  *       500:
  *           description: Internal Server Error.
- * 
- *
  */
 router.put("/profile", isAuthenticated, submitProfile);
+
+/**
+ * @swagger
+ * /user/resume:
+ *  post:
+ *    summary: Submit a user's resume
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Users Module]
+ *    description: Submit a user's resume. Must have an associated profile. Access - User
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              file:
+ *                type: string
+ *                format: binary
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      400:
+ *        description: Bad request
+ *      401:
+ *        description: Unauthorized.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.post("/resume", isAuthenticated, fileMiddleware, submitResume);
+
+/**
+ * @swagger
+ * /user/confirmation:
+ *  put:
+ *    summary: Submit a user's confirmation
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Users Module]
+ *    description: Submit a user's confirmation. Must have been accepted. Access - User
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              signatureLiability:
+ *                type: boolean
+ *              signaturePhotoRelease:
+ *                type: boolean
+ *              signatureCodeOfConduct:
+ *                type: boolean
+ *              mlhCodeOfConduct:
+ *                type: boolean
+ *              mlhEventLogistics:
+ *                type: boolean
+ *              mlhPromotional:
+ *                type: boolean
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      400:
+ *        description: Bad request
+ *      401:
+ *        description: Unauthorized.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.put("/confirmation", isAuthenticated, submitConfirmation);
 
 export default router;

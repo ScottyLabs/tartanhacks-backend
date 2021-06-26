@@ -1,14 +1,15 @@
-import { Document, Model, Schema } from "mongoose";
+import { Document, Model, ObjectId } from "mongoose";
 
 /**
  * Type of User model
  */
 export interface IUser extends Document {
+  _id: ObjectId;
   email: string;
   password: string;
   admin: boolean;
   name?: string;
-  company?: Schema.Types.ObjectId;
+  company?: ObjectId;
   lastLogin?: Date;
   createdAt: Date;
   updatedAt: Date;

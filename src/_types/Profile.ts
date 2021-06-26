@@ -1,4 +1,4 @@
-import { Document, Schema } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 import { IConfirmation } from "./Confirmation";
 
 export enum CMUCollege {
@@ -72,8 +72,9 @@ export enum Region {
  * Type for the profile model
  */
 export interface IProfile extends Document {
-  event: Schema.Types.ObjectId;
-  user: Schema.Types.ObjectId;
+  _id: ObjectId;
+  event: ObjectId;
+  user: ObjectId;
   firstName: string;
   lastName: string;
   age: number;
@@ -93,7 +94,7 @@ export interface IProfile extends Document {
   workPermission?: WorkPermission;
   workLocation?: string;
   workStrengths?: string;
-  sponsorRanking?: [Schema.Types.ObjectId];
+  sponsorRanking?: [ObjectId];
   resume?: string;
   github: string;
   design?: string;

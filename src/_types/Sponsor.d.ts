@@ -1,12 +1,13 @@
-import { Document, Schema } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 /**
  * Type for the Sponsor model
  */
 export interface ISponsor extends Document {
+  _id: ObjectId;
   name: string;
-  event: Schema.Types.ObjectId;
-  representatives: [Schema.Types.ObjectId];
+  event: ObjectId;
+  representatives: [ObjectId];
   createdAt: Date;
   updatedAt?: Date;
 }

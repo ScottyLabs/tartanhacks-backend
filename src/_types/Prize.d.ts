@@ -1,15 +1,16 @@
-import { Document, Schema } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 /**
  * Type for Prize model
  */
 export interface IPrize extends Document {
-  event: Schema.Types.ObjectId;
+  _id: ObjectId;
+  event: ObjectId;
   name: string;
   description: string;
   eligibility?: string;
-  provider: Schema.Types.ObjectId;
-  winner?: Schema.Types.ObjectId;
+  provider: ObjectId;
+  winner?: ObjectId;
   createdAt: Date;
   updatedAt?: Date;
 }

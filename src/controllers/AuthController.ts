@@ -2,6 +2,7 @@
  * Controller for auth routes
  */
 import { Request, Response } from "express";
+import { StatusField } from "src/_types/Status";
 import User from "../models/User";
 import { bad, error, notFound } from "../util/error";
 import * as EmailController from "./EmailController";
@@ -113,7 +114,7 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
       return notFound(res, "User not found");
     }
 
-    await StatusController.verifyUser(user._id);
+    await StatusController.updateStatus(user._id, StatusField.VERIFIED, true);
     const json = user.toJSON();
     res.json({ ...json, token });
   } catch (err) {

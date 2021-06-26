@@ -1,18 +1,19 @@
-import { Document, Schema } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 /**
  * Type for project
  */
 export interface IProject extends Document {
-  event: Schema.Types.ObjectId;
+  _id: ObjectId;
+  event: ObjectId;
   name: string;
   description: string;
   url: string;
   slides?: string;
   video?: string;
-  team: Schema.Types.ObjectId;
+  team: ObjectId;
   isDeleted: boolean;
-  prizes: Schema.Types.ObjectId;
+  prizes: ObjectId;
   createdAt: Date;
   updatedAt?: Date;
 }

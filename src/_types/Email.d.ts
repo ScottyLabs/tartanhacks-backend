@@ -1,4 +1,4 @@
-import { Document, Schema } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 export enum EmailGroup {
   PARTICIPANTS_VERIFIED,
@@ -19,8 +19,9 @@ export enum EmailStatus {
  * Type for Email model
  */
 export interface IEmail extends Document {
-  event: Schema.Types.ObjectId;
-  sender: Schema.Types.ObjectId;
+  _id: ObjectId;
+  event: ObjectId;
+  sender: ObjectId;
   groups: [EmailGroup];
   subject: string;
   body: string;

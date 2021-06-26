@@ -16,7 +16,7 @@ declare global {
       JWT_SECRET: string;
       AUTH_TOKEN_EXPIRY: string;
       MONGODB_URI: string;
-      // email config
+      // Email config
       EMAIL_HOST?: string;
       EMAIL_USER?: string;
       EMAIL_PASS?: string;
@@ -24,6 +24,13 @@ declare global {
       EMAIL_TLS?: string;
       EMAIL_CONTACT?: string;
       EMAIL_HEADER_IMAGE?: string;
+      // Google drive credentials
+      DRIVE_FOLDER_ID?: string;
+      DRIVE_CLIENT_ID?: string;
+      DRIVE_CLIENT_SECRET?: string;
+      DRIVE_ACCESS_TOKEN?: string;
+      DRIVE_REFRESH_TOKEN?: string;
+      DRIVE_TOKEN_EXPIRY_DATE?: string;
     }
   }
 }

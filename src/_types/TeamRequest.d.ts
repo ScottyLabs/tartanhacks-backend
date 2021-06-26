@@ -1,4 +1,4 @@
-import { Document, Schema } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 export enum TeamRequestType {
   INVITE,
@@ -16,10 +16,11 @@ export enum TeamRequestStatus {
  * Type for the TeamRequest model
  */
 export interface ITeamRequest extends Document {
-  event: Schema.Types.ObjectId;
+  _id: ObjectId;
+  event: ObjectId;
   type: TeamRequestType;
-  user: Schema.Types.ObjectId;
-  team: Schema.Types.ObjectId;
+  user: ObjectId;
+  team: ObjectId;
   status: TeamRequestStatus;
   message?: string;
   createdAt: Date;

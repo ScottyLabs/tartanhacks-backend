@@ -3,53 +3,163 @@
  */
 import { Credentials, OAuth2Client } from "google-auth-library";
 import { google } from "googleapis";
-import { promisify } from "util";
 import readline from "readline";
 import fs from "fs";
+import { Readable } from "stream";
+import { IUser } from "src/_types/User";
+import { IProfile } from "src/_types/Profile";
 
-const SCOPES = ["https://www.googleapis.com/auth/drive"];
+const SCOPE = "https://www.googleapis.com/auth/drive.file";
 const TOKEN_PATH = "token.json";
 const redirectUri = "urn:ietf:wg:oauth:2.0:oob";
 
 /**
+ * Upload a user's resume to drive
+ * @param user owner of the resume
+ * @param profile profile of the user
+ * @param fileBuffer file contents
+ * @returns the fileId of the uploaded file
+ */
+export const uploadResume = async (
+  user: IUser,
+  profile: IProfile,
+  fileBuffer: Buffer
+): Promise<string> => {
+  const fileName = `${user._id}.pdf`;
+  const name = `${profile.firstName} ${profile.lastName}`;
+  if (profile.resume) {
+    return await updateInDrive(
+      profile.resume,
+      fileName,
+      "application/pdf",
+      fileBuffer,
+      name
+    );
+  } else {
+    return await uploadToDrive(fileName, "application/pdf", fileBuffer, name);
+  }
+};
+
+/**
+ * Update an existing file in drive
+ * @param fileId Google Drive ID of the file
+ * @param fileName Name of the file to upload
+ * @param mimeType the mime type of the file being uploaded e.g. application/pdf
+ * @param fileBuffer content of the file to upload
+ * @param fileDescription an optional semantic description of the file
+ * @return the file id of the uploaded file
+ */
+export const updateInDrive = async (
+  fileId: string,
+  fileName: string,
+  mimeType: string,
+  fileBuffer: Buffer,
+  fileDescription?: string
+): Promise<string> => {
+  const auth = await authorize();
+
+  // Convert buffer into stream for upload
+  const stream = new Readable();
+  stream.push(fileBuffer);
+  stream.push(null); // EOF
+
+  const drive = google.drive({ version: "v3", auth });
+
+  const fileMetadata = {
+    name: fileName,
+    mimeType,
+    description: fileDescription,
+  };
+  const media = {
+    mimeType,
+    body: stream,
+  };
+
+  const file = await drive.files.update({
+    fileId,
+    requestBody: fileMetadata,
+    media,
+    fields: "id",
+  });
+  return file.data.id;
+};
+
+/**
  * Upload a file to Google Drive
  * @param fileName Name of the file to upload
- * @param dataUrl data URL of the file to upload
- * @param profile profile of the user associated with this file
+ * @param mimeType the mime type of the file being uploaded e.g. application/pdf
+ * @param fileBuffer content of the file to upload
+ * @param fileDescription an optional semantic description of the file
+ * @return the file id of the uploaded file
  */
-export const uploadToDrive = async (fileName, dataUrl, profile) => {
-  const clientId = process.env.DRIVE_CLIENT_ID;
-  const clientSecret = process.env.DRIVE_CLIENT_SECRET;
+export const uploadToDrive = async (
+  fileName: string,
+  mimeType: string,
+  fileBuffer: Buffer,
+  fileDescription?: string
+): Promise<string> => {
+  const auth = await authorize();
 
-  const authClient = await authorize(clientId, clientSecret, redirectUri);
+  // Convert buffer into stream for upload
+  const stream = new Readable();
+  stream.push(fileBuffer);
+  stream.push(null); // EOF
+
+  const drive = google.drive({ version: "v3", auth });
+
+  const fileMetadata = {
+    name: fileName,
+    mimeType,
+    parents: [process.env.DRIVE_FOLDER_ID],
+    description: fileDescription,
+  };
+  const media = {
+    mimeType,
+    body: stream,
+  };
+
+  const file = await drive.files.create({
+    requestBody: fileMetadata,
+    media,
+    fields: "id",
+  });
+  const fileId = file.data.id;
+  return fileId;
 };
 
 /**
  * Authenticate connection with the Google Drive API
- * @param clientId
- * @param clientSecret
- * @param redirectUri
- * @returns
+ * @return OAuth2Client for interacting with the Google Drive API
  */
-const authorize = async (
-  clientId: string,
-  clientSecret: string,
-  redirectUri: string
-): Promise<OAuth2Client> => {
+const authorize = async (): Promise<OAuth2Client> => {
   const authClient = new google.auth.OAuth2(
-    clientId,
-    clientSecret,
+    process.env.DRIVE_CLIENT_ID,
+    process.env.DRIVE_CLIENT_SECRET,
     redirectUri
   );
 
-  const token: Credentials = {
+  const credentials: Credentials = {
     access_token: process.env.DRIVE_ACCESS_TOKEN,
     refresh_token: process.env.DRIVE_REFRESH_TOKEN,
-    scope: "https://www.googleapis.com/auth/drive.file",
+    scope: SCOPE,
     token_type: "Bearer",
-    expiry_date: parseInt(process.env.DRIVE_TOKEN_EXPIRY_DATE),
+    expiry_date: parseInt(process.env.DRIVE_TOKEN_EXPIRY_DATE) || null,
   };
-  authClient.setCredentials(token);
+
+  const validCredentials = [
+    credentials.access_token,
+    credentials.refresh_token,
+    credentials.expiry_date,
+  ].every((el) => el != null);
+
+  if (validCredentials) {
+    // Check that credentials are loaded in environment
+    authClient.setCredentials(credentials);
+  } else {
+    // Otherwise, attempt to get new credentials
+    console.log("Could not load Google Drive credentials. Retrieving new ones");
+    await getAccessToken(authClient);
+  }
 
   return authClient;
 };
@@ -61,7 +171,7 @@ const authorize = async (
 const getAccessToken = async (authClient: OAuth2Client): Promise<void> => {
   const authUrl = authClient.generateAuthUrl({
     access_type: "offline",
-    scope: SCOPES,
+    scope: [SCOPE],
   });
 
   console.log("Authorize this app by visiting this url:", authUrl);
