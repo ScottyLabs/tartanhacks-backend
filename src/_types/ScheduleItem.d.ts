@@ -15,6 +15,7 @@ export enum Platform {
 export interface IScheduleItem extends Document {
   event: Schema.Types.ObjectId;
   name: string;
+  description?: string;
   startTime: Date;
   endTime: Date;
   location: string;
