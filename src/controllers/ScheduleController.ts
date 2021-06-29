@@ -1,4 +1,4 @@
-import ScheduleItem from "src/models/ScheduleItem";
+import ScheduleItem from "../models/ScheduleItem";
 import { bad, error } from "../util/error";
 import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";

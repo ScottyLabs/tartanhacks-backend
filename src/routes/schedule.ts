@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { addNewScheduleItem } from "src/controllers/ScheduleController";
+import { addNewScheduleItem } from "../controllers/ScheduleController";
 import { isAdmin } from "./middleware";
 
 const router: Router = express.Router();
