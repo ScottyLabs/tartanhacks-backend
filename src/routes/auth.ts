@@ -5,7 +5,7 @@ import {
   resendVerificationEmail,
   resetPassword,
   sendPasswordResetEmail,
-  verify
+  verify,
 } from "../controllers/AuthController";
 
 const router: Router = express.Router();
@@ -33,6 +33,7 @@ const router: Router = express.Router();
  *             properties:
  *               email:
  *                 type: string
+ *                 format: email
  *               password:
  *                 type: string
  *     responses:
@@ -63,6 +64,7 @@ router.post("/register", register);
  *             properties:
  *               email:
  *                 type: string
+ *                 format: email
  *               password:
  *                 type: string
  *     responses:
@@ -117,6 +119,7 @@ router.get("/verify/:token", verify);
  *             properties:
  *               email:
  *                 type: string
+ *                 format: email
  *     responses:
  *       200:
  *          description: Success.
@@ -143,6 +146,7 @@ router.post("/verify/resend", resendVerificationEmail);
  *             properties:
  *               email:
  *                 type: string
+ *                 format: email
  *     responses:
  *       200:
  *          description: Success.

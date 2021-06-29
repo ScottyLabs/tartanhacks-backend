@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import isProduction from "../util/isProduction";
-import { IScheduleItem, Platform } from "../_types/ScheduleItem";
+import { IScheduleItem } from "../_types/ScheduleItem";
+import { ScheduleItemPlatform } from "../_enums/ScheduleItem";
 
 /**
  * Schedule items for (potential) dynamic scheduling support
@@ -20,8 +21,8 @@ const ScheduleItem: Schema<IScheduleItem> = new Schema(
     lng: Number,
     platform: {
       type: String,
-      enum: Object.values(Platform),
-      default: Platform.IN_PERSON,
+      enum: Object.values(ScheduleItemPlatform),
+      default: ScheduleItemPlatform.IN_PERSON,
       required: true,
     },
     platformUrl: String,

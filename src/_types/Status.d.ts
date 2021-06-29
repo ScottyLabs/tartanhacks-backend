@@ -1,15 +1,16 @@
-import { Document, Schema } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 /**
  * Type for the Status model
  */
-interface IStatus extends Document {
-  user: Schema.Types.ObjectId;
-  event: Schema.Types.ObjectId;
+export interface IStatus extends Document {
+  _id: ObjectId;
+  user: ObjectId;
+  event: ObjectId;
   verified?: boolean;
   completedProfile?: boolean;
   admitted?: boolean;
-  admittedBy?: Schema.Types.ObjectId;
+  admittedBy?: ObjectId;
   confirmed?: boolean;
   declined?: boolean;
   createdAt?: Date;

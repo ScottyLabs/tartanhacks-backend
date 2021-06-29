@@ -1,3 +1,6 @@
+/**
+ * Service for sending emails to users
+ */
 import nodemailer, { Transporter } from "nodemailer";
 import templates from "../email-templates";
 import mustache from "mustache";

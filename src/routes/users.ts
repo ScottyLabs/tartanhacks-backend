@@ -1,5 +1,5 @@
-import express, { Router, Request, request } from "express";
-import { getUsers, getUserById } from "src/controllers/UsersController";
+import express, { Router } from "express";
+import { getUserById, getUsers } from "../controllers/UsersController";
 import { isAdmin, isOwnerOrAdmin } from "./middleware";
 
 const router: Router = express.Router();

@@ -7,22 +7,40 @@ import {
   Ethnicity,
   Gender,
   HackathonExperience,
-  IProfile,
   Region,
   ShirtSize,
   WorkPermission,
-} from "../_types/Profile";
+} from "../_enums/Profile";
+import { IProfile } from "../_types/Profile";
 
 /**
  * Confirmation signatures after a user is accepted into the event
  */
 const Confirmation: Schema<IConfirmation> = new Schema({
-  signatureLiability: Boolean,
-  signaturePhotoRelease: Boolean,
-  signatureCodeOfConduct: Boolean,
-  mlhCodeOfConduct: Boolean,
-  mlhEventLogistics: Boolean,
-  mlhPromotional: Boolean,
+  signatureLiability: {
+    type: Boolean,
+    required: true,
+  },
+  signaturePhotoRelease: {
+    type: Boolean,
+    required: true,
+  },
+  signatureCodeOfConduct: {
+    type: Boolean,
+    required: true,
+  },
+  mlhCodeOfConduct: {
+    type: Boolean,
+    required: true,
+  },
+  mlhEventLogistics: {
+    type: Boolean,
+    required: true,
+  },
+  mlhPromotional: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 /**

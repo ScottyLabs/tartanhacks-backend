@@ -1,26 +1,16 @@
-import { Document, Schema } from "mongoose";
-
-export enum TeamRequestType {
-  INVITE,
-  JOIN,
-}
-
-export enum TeamRequestStatus {
-  PENDING,
-  ACCEPTED,
-  DECLINED,
-  CANCELLED,
-}
+import { Document, ObjectId } from "mongoose";
+import * as TeamRequest from "../_enums/TeamRequest";
 
 /**
  * Type for the TeamRequest model
  */
 export interface ITeamRequest extends Document {
-  event: Schema.Types.ObjectId;
-  type: TeamRequestType;
-  user: Schema.Types.ObjectId;
-  team: Schema.Types.ObjectId;
-  status: TeamRequestStatus;
+  _id: ObjectId;
+  event: ObjectId;
+  type: TeamRequest.TeamRequestType;
+  user: ObjectId;
+  team: ObjectId;
+  status: TeamRequest.TeamRequestStatus;
   message?: string;
   createdAt: Date;
   updatedAt?: Date;

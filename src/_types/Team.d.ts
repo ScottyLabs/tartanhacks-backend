@@ -1,13 +1,14 @@
-import { Document, Schema } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 /**
  * Type for the Team model
  */
 interface ITeam extends Document {
-  event: Schema.Types.ObjectId;
+  _id: ObjectId;
+  event: ObjectId;
   name: string;
   admin: string;
-  members: [Schema.Types.ObjectId];
+  members: [ObjectId];
   open: boolean;
   createdAt: Date;
   updatedAt: Date;

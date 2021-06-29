@@ -40,12 +40,6 @@ const router: Router = express.Router();
  *          description: Internal Server Error.
  */
 router.post("/new/:id", isAdmin, createAdmin);
-/**
- * @swagger
- * tags:
- *  name: Admin Module
- *  description: Endpoints for admin control. Access - Admin only
- */
 
 /**
  * @swagger

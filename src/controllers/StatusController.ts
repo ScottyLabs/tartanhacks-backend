@@ -3,6 +3,7 @@ import User from "../models/User";
 import { IUser } from "../_types/User";
 import Status from "../models/Status";
 import { IStatus } from "../_types/Status";
+import { StatusField } from "../_enums/Status";
 import * as EventController from "./EventController";
 import { UpdateQuery } from "mongoose";
 
@@ -20,7 +21,7 @@ export const getByToken = async (token: string): Promise<IUser> => {
 /**
  * Get the status object associated with a user or create one if it does not
  * yet exist
- * @param userId The id of the user to associated with this status
+ * @param userId The id of the user associated with this status
  * @param update an optional update to apply to the status
  * @returns the Status document
  */
@@ -34,7 +35,10 @@ export const getStatus = async (
       user: userId,
       event: tartanhacks._id,
     },
-    update,
+    {
+      ...update,
+      updatedAt: new Date(),
+    },
     {
       upsert: true,
       returnOriginal: false,
@@ -44,13 +48,37 @@ export const getStatus = async (
 };
 
 /**
- * Set a user's status as verified
- * @param userId id of the User to check
+ * Update the status of a user (except for admission which requires authorizer)
+ * @param userId id of user to update
+ * @param field field in status to update
+ * @param value value to set in field
  */
-export const verifyUser = async (userId: ObjectId): Promise<void> => {
+export const updateStatus = async (
+  userId: ObjectId,
+  field: StatusField,
+  value: boolean
+): Promise<void> => {
+  const updateObject: Partial<IStatus> = {};
+  updateObject[field] = value;
+
+  await getStatus(userId, {
+    $set: updateObject,
+  });
+};
+
+/**
+ * Update a user's status after being admitted to the event
+ * @param userId id of the User to update
+ * @param admitterId id of the User admitting userId
+ */
+export const setAdmitted = async (
+  userId: ObjectId,
+  admitterId: ObjectId
+): Promise<void> => {
   await getStatus(userId, {
     $set: {
-      verified: true,
+      admitted: true,
+      admittedBy: admitterId,
     },
   });
 };

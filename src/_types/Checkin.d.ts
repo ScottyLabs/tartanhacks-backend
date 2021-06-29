@@ -1,12 +1,13 @@
-import { Schema, Document } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 /**
  * Type for Checkin Model
  */
 export interface ICheckin extends Document {
-  event: Schema.Types.ObjectId;
-  user: Schema.Types.ObjectId;
-  item: Schema.Types.ObjectId;
+  _id: ObjectId;
+  event: ObjectId;
+  user: ObjectId;
+  item: ObjectId;
   createdAt: Date;
   updatedAt?: Date;
 }

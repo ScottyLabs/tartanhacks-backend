@@ -1,31 +1,18 @@
-import { Document, Schema } from "mongoose";
-
-export enum EmailGroup {
-  PARTICIPANTS_VERIFIED,
-  PARTICIPANTS_COMPLETED,
-  PARTICIPANTS_CONFIRMED,
-  SPONSORS,
-  ADMINS,
-}
-
-export enum EmailStatus {
-  QUEUED,
-  SENT,
-  ERROR,
-  DELETED,
-}
+import { Document, ObjectId } from "mongoose";
+import * as Email from "../_enums/Email";
 
 /**
  * Type for Email model
  */
 export interface IEmail extends Document {
-  event: Schema.Types.ObjectId;
-  sender: Schema.Types.ObjectId;
-  groups: [EmailGroup];
+  _id: ObjectId;
+  event: ObjectId;
+  sender: ObjectId;
+  groups: [Email.EmailGroup];
   subject: string;
   body: string;
   sendTime?: Date;
-  status: EmailStatus;
+  status: Email.EmailStatus;
   createdAt: Date;
   updatedAt?: Date;
 }

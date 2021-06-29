@@ -90,7 +90,7 @@ User.statics.generateHash = (password: string): string => {
  */
 User.statics.decryptAuthToken = (token: string): string => {
   const decrypted = jwt.verify(token, process.env.JWT_SECRET) as IUser;
-  return decrypted._id;
+  return decrypted._id.toString();
 };
 
 /**
@@ -100,7 +100,7 @@ User.statics.decryptAuthToken = (token: string): string => {
  */
 User.statics.decryptPasswordResetToken = (token: string): string => {
   const decrypted = jwt.verify(token, process.env.JWT_SECRET) as IUser;
-  return decrypted._id;
+  return decrypted._id.toString();
 };
 
 /**
