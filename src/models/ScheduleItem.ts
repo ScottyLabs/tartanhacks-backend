@@ -14,6 +14,7 @@ const ScheduleItem: Schema<IScheduleItem> = new Schema(
       required: true,
     },
     name: { type: String, required: true },
+    description: String,
     startTime: { type: Number, required: true },
     endTime: { type: Number, required: true },
     location: { type: String, required: true },

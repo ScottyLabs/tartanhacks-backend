@@ -8,6 +8,7 @@ export interface IScheduleItem extends Document {
   _id: ObjectId;
   event: ObjectId;
   name: string;
+  description?: string;
   startTime: Date;
   endTime: Date;
   location: string;
