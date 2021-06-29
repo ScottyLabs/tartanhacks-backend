@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
-import { CheckinAccessLevel, ICheckinItem } from "../_types/CheckinItem";
+import { ICheckinItem } from "../_types/CheckinItem";
+import { CheckinAccessLevel } from "../_enums/CheckinItem";
 import isProduction from "../util/isProduction";
 
 /**

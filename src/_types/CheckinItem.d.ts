@@ -1,12 +1,5 @@
 import { Document, ObjectId } from "mongoose";
-
-
-export enum CheckinAccessLevel {
-  ALL,
-  SPONSORS_ONLY,
-  PARTICIPANTS_ONLY,
-  ADMINS_ONLY,
-}
+import * as CheckinItem from "../_enums/CheckinItem";
 
 /**
  * Type for CheckinItem model
@@ -19,7 +12,7 @@ export interface ICheckinItem extends Document {
   startTime: number;
   endTime: number;
   points: number;
-  accessLevel: CheckinAccessLevel;
+  accessLevel: CheckinItem.CheckinAccessLevel;
   active: boolean;
   enableSelfCheckin: boolean;
   checkinLimit?: number;

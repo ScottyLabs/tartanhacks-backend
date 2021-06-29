@@ -5,7 +5,7 @@ import {
   resendVerificationEmail,
   resetPassword,
   sendPasswordResetEmail,
-  verify
+  verify,
 } from "../controllers/AuthController";
 
 const router: Router = express.Router();

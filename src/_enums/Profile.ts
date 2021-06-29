@@ -1,6 +1,6 @@
-import { Document, ObjectId } from "mongoose";
-import { IConfirmation } from "./Confirmation";
-
+/**
+ * Profile application enums
+ */
 export enum CMUCollege {
   SCS = "SCS",
   CIT = "CIT",
@@ -66,46 +66,4 @@ export enum Region {
   RURAL = "Rural",
   SUBURBAN = "Suburban",
   URBAN = "Urban",
-}
-
-/**
- * Type for the profile model
- */
-export interface IProfile extends Document {
-  _id: ObjectId;
-  event: ObjectId;
-  user: ObjectId;
-  firstName: string;
-  lastName: string;
-  age: number;
-  school: string;
-  college?: CMUCollege;
-  level?: CollegeLevel;
-  graduationYear: number;
-  gender: Gender;
-  genderOther?: string;
-  ethnicity: Ethnicity;
-  ethnicityOther?: string;
-  phoneNumber: string;
-  major?: string;
-  coursework?: string;
-  languages?: string;
-  hackathonExperience?: HackathonExperience;
-  workPermission?: WorkPermission;
-  workLocation?: string;
-  workStrengths?: string;
-  sponsorRanking?: [ObjectId];
-  resume?: string;
-  github: string;
-  design?: string;
-  website?: string;
-  essays?: [string];
-  dietaryRestrictions?: [string];
-  shirtSize?: ShirtSize;
-  wantsHardware?: boolean;
-  address?: string;
-  region?: Region;
-  confirmation?: IConfirmation;
-  createdAt: Date;
-  updatedAt?: Date;
 }

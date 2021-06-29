@@ -2,7 +2,7 @@
  * Test suite for the Settings Controller
  */
 
-import * as SettingsController from "src/controllers/SettingsController";
+import * as SettingsController from "../controllers/SettingsController";
 import { setup, shutdown } from "../index";
 
 beforeAll(async () => {

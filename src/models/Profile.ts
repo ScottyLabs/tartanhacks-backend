@@ -7,11 +7,11 @@ import {
   Ethnicity,
   Gender,
   HackathonExperience,
-  IProfile,
   Region,
   ShirtSize,
   WorkPermission,
-} from "../_types/Profile";
+} from "../_enums/Profile";
+import { IProfile } from "../_types/Profile";
 
 /**
  * Confirmation signatures after a user is accepted into the event

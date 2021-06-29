@@ -1,13 +1,5 @@
 import { Document, ObjectId } from "mongoose";
-
-export enum Platform {
-  IN_PERSON,
-  ZOOM,
-  HOPIN,
-  DISCORD,
-  YOUTUBE,
-  OTHER,
-}
+import { ScheduleItemPlatform } from "../_enums/ScheduleItem";
 
 /**
  * Type for the ScheduleItem model
@@ -21,7 +13,7 @@ export interface IScheduleItem extends Document {
   location: string;
   lat?: number;
   lng?: number;
-  platform: Platform;
+  platform: ScheduleItemPlatform;
   platformUrl?: string;
   active: boolean;
   createdAt: Date;

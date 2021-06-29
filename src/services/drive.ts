@@ -6,8 +6,8 @@ import { google } from "googleapis";
 import readline from "readline";
 import fs from "fs";
 import { Readable } from "stream";
-import { IUser } from "src/_types/User";
-import { IProfile } from "src/_types/Profile";
+import { IUser } from "../_types/User";
+import { IProfile } from "../_types/Profile";
 
 const SCOPE = "https://www.googleapis.com/auth/drive.file";
 const TOKEN_PATH = "token.json";

@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import isProduction from "../util/isProduction";
-import { EmailGroup, EmailStatus, IEmail } from "../_types/Email";
+import { IEmail } from "../_types/Email";
+import { EmailGroup, EmailStatus } from "../_enums/Email";
 
 /**
  * Email logs for sent emails

@@ -2,7 +2,8 @@ import { ObjectId } from "mongoose";
 import User from "../models/User";
 import { IUser } from "../_types/User";
 import Status from "../models/Status";
-import { IStatus, StatusField } from "../_types/Status";
+import { IStatus } from "../_types/Status";
+import { StatusField } from "../_enums/Status";
 import * as EventController from "./EventController";
 import { UpdateQuery } from "mongoose";
 

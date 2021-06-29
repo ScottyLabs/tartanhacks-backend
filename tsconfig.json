@@ -10,11 +10,17 @@
     "rootDir": "src",
     "baseUrl": ".",
     "paths": {
-      "src/*": ["./src/*"],
+      "src/*": ["./src/*", "*"],
     },
     "allowJs": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types", "./src/_types"]
+    "typeRoots": ["./node_modules/@types", "./src/_types"],
+    "plugins": [
+      {
+          "transform": "@zerollup/ts-transform-paths",
+          "exclude": ["*"]
+      }
+    ]
   },
   "include": ["src/**/*"]
 }

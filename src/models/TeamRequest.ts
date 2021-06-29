@@ -1,10 +1,7 @@
 import { model, Schema } from "mongoose";
 import isProduction from "../util/isProduction";
-import {
-  TeamRequestType,
-  TeamRequestStatus,
-  ITeamRequest,
-} from "../_types/TeamRequest";
+import { ITeamRequest } from "../_types/TeamRequest";
+import { TeamRequestType, TeamRequestStatus } from "../_enums/TeamRequest";
 
 /**
  * Requests from users to join teams and invitations from teams to individual users
@@ -47,4 +44,9 @@ const TeamRequest: Schema<ITeamRequest> = new Schema(
   }
 );
 
-export default model<ITeamRequest>("TeamRequest", TeamRequest, "team-requests", !isProduction);
+export default model<ITeamRequest>(
+  "TeamRequest",
+  TeamRequest,
+  "team-requests",
+  !isProduction
+);

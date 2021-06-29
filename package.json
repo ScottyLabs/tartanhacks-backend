@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc --build && copyfiles -u 1 **/*.mjml dist",
-    "start": "node . || echo \"Did you run 'npm run build'?\"",
+    "start": "doppler setup -p tartanhacks-backend -c dev && doppler run -- node . || echo \"Did you run 'npm run build'?\"",
     "dev": "doppler setup -p tartanhacks-backend -c dev && doppler run -- nodemon --exec ts-node -r tsconfig-paths/register --files src/index.ts",
     "lint": "npm run lint:only && npm run lint:pretty",
     "lint:only": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
@@ -21,6 +21,7 @@
     "@types/multer": "^1.4.6",
     "@types/swagger-jsdoc": "^6.0.0",
     "@types/swagger-ui-express": "^4.1.2",
+    "@zerollup/ts-transform-paths": "^1.7.18",
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "email-templates": "^8.0.7",

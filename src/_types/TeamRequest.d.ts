@@ -1,16 +1,5 @@
 import { Document, ObjectId } from "mongoose";
-
-export enum TeamRequestType {
-  INVITE,
-  JOIN,
-}
-
-export enum TeamRequestStatus {
-  PENDING,
-  ACCEPTED,
-  DECLINED,
-  CANCELLED,
-}
+import * as TeamRequest from "../_enums/TeamRequest";
 
 /**
  * Type for the TeamRequest model
@@ -18,10 +7,10 @@ export enum TeamRequestStatus {
 export interface ITeamRequest extends Document {
   _id: ObjectId;
   event: ObjectId;
-  type: TeamRequestType;
+  type: TeamRequest.TeamRequestType;
   user: ObjectId;
   team: ObjectId;
-  status: TeamRequestStatus;
+  status: TeamRequest.TeamRequestStatus;
   message?: string;
   createdAt: Date;
   updatedAt?: Date;

@@ -212,6 +212,6 @@ router.put("/confirmation", isAuthenticated, submitConfirmation);
  *      500:
  *        description: Internal Server Error.
  */
- router.put("/decline", isAuthenticated, declineAcceptance);
+router.put("/decline", isAuthenticated, declineAcceptance);
 
 export default router;

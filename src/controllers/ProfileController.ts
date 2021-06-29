@@ -4,9 +4,9 @@
 import { Request, Response } from "express";
 import { ObjectId } from "mongoose";
 import multer from "multer";
-import { uploadResume } from "src/services/drive";
-import { IConfirmation } from "src/_types/Confirmation";
-import { StatusField } from "src/_types/Status";
+import { uploadResume } from "../services/drive";
+import { IConfirmation } from "../_types/Confirmation";
+import { StatusField } from "../_enums/Status";
 import Profile from "../models/Profile";
 import { bad, error, unauthorized } from "../util/error";
 import { IProfile } from "../_types/Profile";

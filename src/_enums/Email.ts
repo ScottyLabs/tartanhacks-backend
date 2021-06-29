@@ -1,0 +1,14 @@
+export enum EmailGroup {
+  PARTICIPANTS_VERIFIED,
+  PARTICIPANTS_COMPLETED,
+  PARTICIPANTS_CONFIRMED,
+  SPONSORS,
+  ADMINS,
+}
+
+export enum EmailStatus {
+  QUEUED,
+  SENT,
+  ERROR,
+  DELETED,
+}

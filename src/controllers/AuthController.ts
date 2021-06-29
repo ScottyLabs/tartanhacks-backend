@@ -2,7 +2,7 @@
  * Controller for auth routes
  */
 import { Request, Response } from "express";
-import { StatusField } from "src/_types/Status";
+import { StatusField } from "../_enums/Status";
 import User from "../models/User";
 import { bad, error, notFound } from "../util/error";
 import * as EmailController from "./EmailController";
