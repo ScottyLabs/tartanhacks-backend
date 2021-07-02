@@ -42,4 +42,5 @@ export interface IProfile extends Document {
   confirmation?: IConfirmation;
   createdAt: Date;
   updatedAt?: Date;
+  totalPoints: number;
 }

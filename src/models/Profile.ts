@@ -87,6 +87,7 @@ const Profile: Schema<IProfile> = new Schema(
       enum: Object.values(Ethnicity),
       required: true,
     },
+    totalPoints: { type: Number, default: 0, required: true },
     ethnicityOther: String,
     phoneNumber: {
       type: String,
