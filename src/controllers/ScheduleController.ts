@@ -125,3 +125,29 @@ export const getAllScheduleItems = async (
     }
   }
 };
+
+export const deleteScheduleItem = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  if (id === null) {
+    return bad(res, "Missing Schedule Item ID.");
+  }
+
+  try {
+    await ScheduleItem.findByIdAndDelete(id);
+
+    res.status(200).json({
+      message: "Successfully deleted schedule item.",
+    });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};

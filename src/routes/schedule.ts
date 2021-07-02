@@ -4,6 +4,7 @@ import {
   editScheduleItem,
   getScheduleItemByID,
   getAllScheduleItems,
+  deleteScheduleItem,
 } from "../controllers/ScheduleController";
 import { isAdmin } from "./middleware";
 
@@ -125,7 +126,7 @@ router.patch("/:id", isAdmin, editScheduleItem);
  *         name: id
  *         schema:
  *           type: string
- *         required: false
+ *         required: true
  *         description: Schedule Item ID
  *     responses:
  *       200:
@@ -158,4 +159,31 @@ router.get("/:id", getScheduleItemByID);
  */
 router.get("/", getAllScheduleItems);
 
+/**
+ * @swagger
+ * /schedule/{id}:
+ *   delete:
+ *     summary: Delete Schedule item by ID
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Schedule Module]
+ *     description: Delete schedule item by specifying ID. Access - Admin.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Schedule Item ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.delete("/:id", isAdmin, deleteScheduleItem);
 export default router;
