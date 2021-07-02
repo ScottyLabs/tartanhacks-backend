@@ -25,7 +25,7 @@ const router: Router = express.Router();
  *     security:
  *     - apiKeyAuth: []
  *     tags: [Schedule Module]
- *     description: Creates new user account. Access - Admin.
+ *     description: Creates new schedule item. Access - Admin.
  *     requestBody:
  *       required: true
  *       content:
