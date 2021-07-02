@@ -2,6 +2,8 @@ import express, { Router } from "express";
 import {
   addNewCheckInItem,
   editCheckInItem,
+  getCheckInItemByID,
+  getAllCheckInItems,
 } from "../controllers/CheckInController";
 import { isAdmin } from "./middleware";
 
@@ -71,7 +73,7 @@ router.post("/", isAdmin, addNewCheckInItem);
  *         schema:
  *           type: string
  *         required: true
- *         description: Schedule Item ID
+ *         description: Check In Item ID
  *     requestBody:
  *       required: true
  *       content:
@@ -104,5 +106,50 @@ router.post("/", isAdmin, addNewCheckInItem);
  *          description: Internal Server Error.
  */
 router.patch("/:id", isAdmin, editCheckInItem);
+
+/**
+ * @swagger
+ * /check-in/{id}:
+ *   get:
+ *     summary: Get Check In item by ID
+ *     tags: [Check In Module]
+ *     description: Get a single Check In item by iD. Access - Public.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Check In Item ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/:id", getCheckInItemByID);
+
+/**
+ * @swagger
+ * /check-in/:
+ *   get:
+ *     summary: Get Check In items
+ *     tags: [Check In Module]
+ *     description: Get all check in items. Access - Public.
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/", getAllCheckInItems);
 
 export default router;
