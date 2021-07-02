@@ -3,6 +3,7 @@ import {
   addNewScheduleItem,
   editScheduleItem,
   getScheduleItemByID,
+  getAllScheduleItems,
 } from "../controllers/ScheduleController";
 import { isAdmin } from "./middleware";
 
@@ -137,5 +138,24 @@ router.patch("/:id", isAdmin, editScheduleItem);
  *          description: Internal Server Error.
  */
 router.get("/:id", getScheduleItemByID);
+
+/**
+ * @swagger
+ * /schedule/:
+ *   get:
+ *     summary: Get Schedule items
+ *     tags: [Schedule Module]
+ *     description: Get all schedule items. Access - Public.
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/", getAllScheduleItems);
 
 export default router;

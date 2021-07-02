@@ -107,3 +107,21 @@ export const getScheduleItemByID = async (
     }
   }
 };
+
+export const getAllScheduleItems = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const result = await ScheduleItem.find();
+
+    res.status(200).json(result);
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
