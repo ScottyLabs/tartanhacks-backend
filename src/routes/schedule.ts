@@ -2,6 +2,7 @@ import express, { Router } from "express";
 import {
   addNewScheduleItem,
   editScheduleItem,
+  getScheduleItemByID,
 } from "../controllers/ScheduleController";
 import { isAdmin } from "./middleware";
 
@@ -65,8 +66,6 @@ router.post("/", isAdmin, addNewScheduleItem);
  * /schedule/{id}:
  *   patch:
  *     summary: Edit schedule item
- *     security:
- *     - apiKeyAuth: []
  *     tags: [Schedule Module]
  *     description: Edit existing schedule item information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.
  *     parameters:
@@ -112,5 +111,31 @@ router.post("/", isAdmin, addNewScheduleItem);
  *          description: Internal Server Error.
  */
 router.patch("/:id", isAdmin, editScheduleItem);
+
+/**
+ * @swagger
+ * /schedule/{id}:
+ *   get:
+ *     summary: Get Schedule item by ID
+ *     tags: [Schedule Module]
+ *     description: Get a single schedule item by iD. Access - Public.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: false
+ *         description: Schedule Item ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/:id", getScheduleItemByID);
 
 export default router;
