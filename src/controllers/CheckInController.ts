@@ -124,6 +124,32 @@ export const getAllCheckInItems = async (
   }
 };
 
+export const deleteCheckInItem = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  if (id === null) {
+    return bad(res, "Missing Check In Item ID.");
+  }
+
+  try {
+    await CheckinItem.findByIdAndDelete(id);
+
+    res.status(200).json({
+      message: "Successfully deleted check in item.",
+    });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
+
 export const getLeaderBoard = async (
   req: Request,
   res: Response

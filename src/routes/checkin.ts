@@ -4,6 +4,7 @@ import {
   editCheckInItem,
   getCheckInItemByID,
   getAllCheckInItems,
+  deleteCheckInItem,
   getLeaderBoard,
 } from "../controllers/CheckInController";
 import { isAdmin } from "./middleware";
@@ -171,5 +172,33 @@ router.get("/:id", getCheckInItemByID);
  *          description: Internal Server Error.
  */
 router.get("/", getAllCheckInItems);
+
+/**
+ * @swagger
+ * /check-in/{id}:
+ *   delete:
+ *     summary: Delete Check In item by ID
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Check In Module]
+ *     description: Delete Check In item by specifying ID. Access - Admin.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Check In Item ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.delete("/:id", isAdmin, deleteCheckInItem);
 
 export default router;
