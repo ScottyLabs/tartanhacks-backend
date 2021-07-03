@@ -129,7 +129,8 @@ export const getLeaderBoard = async (
   res: Response
 ): Promise<void> => {
   try {
-    const result = await Profile.find()
+    const tartanHacks = await getTartanHacks();
+    const result = await Profile.find({ event: tartanHacks._id })
       .select(["firstName", "totalPoints", "_id", "user"])
       .sort("totalPoints");
 
