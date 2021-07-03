@@ -1,5 +1,6 @@
 import Checkin from "src/models/Checkin";
 import CheckinItem from "src/models/CheckinItem";
+import Profile from "src/models/Profile";
 import { bad, error } from "../util/error";
 import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";
@@ -111,6 +112,26 @@ export const getAllCheckInItems = async (
 ): Promise<void> => {
   try {
     const result = await CheckinItem.find();
+
+    res.status(200).json(result);
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
+
+export const getLeaderBoard = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const result = await Profile.find()
+      .select(["firstName", "totalPoints", "_id", "user"])
+      .sort("totalPoints");
 
     res.status(200).json(result);
   } catch (err) {
