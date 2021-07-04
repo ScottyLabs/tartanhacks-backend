@@ -19,17 +19,20 @@ export const getSettings = async (
 };
 
 /**
- * Update the settings document
- * @param setting a possibly partial settings document to update the settings
+ * Express handler for updating settings
  */
-export const updateSettings = async (setting: ISettings): Promise<void> => {
-  await Settings.findOneAndUpdate(
+export const updateSettings = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const setting = await Settings.findOneAndUpdate(
     {},
     {
-      $set: setting,
+      $set: req.body,
     },
-    { new: true }
+    { new: true, runValidators: true }
   );
+  res.json(setting.toJSON());
 };
 
 /**

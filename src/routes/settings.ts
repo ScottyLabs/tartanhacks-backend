@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { getSettings } from "../controllers/SettingsController";
+import { getSettings, updateSettings } from "../controllers/SettingsController";
 import { isAdmin } from "./middleware";
 
 const router: Router = express.Router();
@@ -33,5 +33,56 @@ const router: Router = express.Router();
  *          description: Internal Server Error.
  */
 router.get("/", isAdmin, getSettings);
+
+/**
+ * @swagger
+ * /settings:
+ *   post:
+ *     summary: Update the settings
+ *     tags: [Settings Module]
+ *     description: Update the settings. Access - Admin only
+ *     security:
+ *       - apiKeyAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               timeOpen:
+ *                 type: string
+ *                 format: date-time
+ *               timeClose:
+ *                 type: string
+ *                 format: date-time
+ *               timeConfirm:
+ *                 type: string
+ *                 format: date-time
+ *               enableWhitelist
+ *                 type: boolean
+ *               whitelistedEmails:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               waitlistText:
+ *                 type: string
+ *               acceptanceText:
+ *                 type: string
+ *               confirmationText:
+ *                 type: string
+ *               allowMinors:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.post("/", isAdmin, updateSettings);
 
 export default router;
