@@ -4,6 +4,8 @@ import Profile from "src/models/Profile";
 import { bad, error } from "../util/error";
 import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";
+import User from "src/models/User";
+import { ICheckinItem } from "src/_types/CheckinItem";
 
 export const addNewCheckInItem = async (
   req: Request,
@@ -192,6 +194,47 @@ export const checkInUser = async (
     res.json({
       ...json,
     });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
+
+interface checkInHistory {
+  checkInItem: ICheckinItem;
+  hasCheckedIn: boolean;
+}
+
+export const getCheckInHistory = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id);
+    const tartanHacks = await getTartanHacks();
+    const checkInItems = await CheckinItem.find({
+      event: tartanHacks._id,
+    }).sort("startTime");
+    const result: checkInHistory[] = [];
+    for (let i = 0; i < checkInItems.length; i++) {
+      const histories = await Checkin.find({
+        user: user._id,
+        item: checkInItems[i]._id,
+      });
+      const history: checkInHistory = {
+        checkInItem: checkInItems[i],
+        hasCheckedIn: histories.length !== 0,
+      };
+      result.push(history);
+    }
+
+    res.json(result);
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       return bad(res);

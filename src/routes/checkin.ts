@@ -7,8 +7,9 @@ import {
   deleteCheckInItem,
   getLeaderBoard,
   checkInUser,
+  getCheckInHistory,
 } from "../controllers/CheckInController";
-import { isAdmin, canCheckIn } from "./middleware";
+import { isAdmin, canCheckIn, isOwnerOrAdmin } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -37,6 +38,34 @@ const router: Router = express.Router();
  *          description: Internal Server Error.
  */
 router.get("/leaderboard", getLeaderBoard);
+
+/**
+ * @swagger
+ * /check-in/history/{id}:
+ *   get:
+ *     summary: Get Check In history by user ID
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Check In Module]
+ *     description: Get a user's check in history. Access - Admin or User(Own).
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: User ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/history/:id", isOwnerOrAdmin, getCheckInHistory);
 
 /**
  * @swagger
