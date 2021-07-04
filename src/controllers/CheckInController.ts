@@ -159,8 +159,7 @@ export const getLeaderBoard = async (
   try {
     const tartanHacks = await getTartanHacks();
     const result = await Profile.find({ event: tartanHacks._id })
-      .select(["firstName", "totalPoints", "_id", "user"])
-      //TODO: change firstName above to displayName
+      .select(["displayName", "totalPoints", "_id", "user"])
       .sort("totalPoints");
 
     res.status(200).json(result);
@@ -242,8 +241,7 @@ export const getCheckInHistory = async (
     }
 
     res.json({
-      displayName: profile.firstName,
-      //TODO: change above to display name
+      displayName: profile.displayName,
       totalPoints: profile.totalPoints,
       history: result,
     });
