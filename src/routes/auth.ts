@@ -36,6 +36,7 @@ const router: Router = express.Router();
  *                 format: email
  *               password:
  *                 type: string
+ *                 format: password
  *     responses:
  *       200:
  *          description: Success.
@@ -67,6 +68,7 @@ router.post("/register", register);
  *                 format: email
  *               password:
  *                 type: string
+ *                 format: password
  *     responses:
  *       200:
  *          description: Success.

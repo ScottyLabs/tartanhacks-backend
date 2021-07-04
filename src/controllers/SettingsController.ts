@@ -1,23 +1,38 @@
 /**
  * Controller for settings
  */
+import { Request, Response } from "express";
 import { ISettings } from "../_types/Settings";
 import Settings from "../models/Settings";
 import { parameters } from "../settings.json";
 import { DateTime } from "luxon";
 
 /**
- * Update the settings document
- * @param setting a possibly partial settings document to update the settings
+ * Express handler for getting settings
  */
-export const updateSettings = async (setting: ISettings): Promise<void> => {
-  await Settings.findOneAndUpdate(
+export const getSettings = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const settings = await getInstance();
+  res.json(settings.toJSON());
+};
+
+/**
+ * Express handler for updating settings
+ */
+export const updateSettings = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const setting = await Settings.findOneAndUpdate(
     {},
     {
-      $set: setting,
+      $set: req.body,
     },
-    { new: true }
+    { new: true, runValidators: true }
   );
+  res.json(setting.toJSON());
 };
 
 /**
