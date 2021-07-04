@@ -213,7 +213,7 @@ router.delete("/:id", isAdmin, deleteCheckInItem);
  *     description: Checks in a user to a check in item. Access - Admin Users can check in any user for any check in item. Participants can only check themselves in for check-in items that have self check-in enabled.
  *     parameters:
  *       - in: query
- *         name: userId
+ *         name: userID
  *         required: true
  *         schema:
  *            type: string
