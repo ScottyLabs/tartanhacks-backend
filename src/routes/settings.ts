@@ -37,7 +37,7 @@ router.get("/", isAdmin, getSettings);
 /**
  * @swagger
  * /settings:
- *   post:
+ *   put:
  *     summary: Update the settings
  *     tags: [Settings Module]
  *     description: Update the settings. Access - Admin only
@@ -83,6 +83,6 @@ router.get("/", isAdmin, getSettings);
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/", isAdmin, updateSettings);
+router.put("/", isAdmin, updateSettings);
 
 export default router;
