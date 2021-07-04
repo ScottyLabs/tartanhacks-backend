@@ -159,7 +159,7 @@ export const getLeaderBoard = async (
   try {
     const tartanHacks = await getTartanHacks();
     const result = await Profile.find({ event: tartanHacks._id })
-      .select(["firstName", "totalPoints", "_id", "user"])
+      .select(["displayName", "totalPoints", "_id", "user"])
       //TODO: change firstName above to displayName
       .sort("totalPoints");
 
