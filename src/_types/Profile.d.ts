@@ -11,6 +11,7 @@ export interface IProfile extends Document {
   user: ObjectId;
   firstName: string;
   lastName: string;
+  displayName?: string;
   age: number;
   school: string;
   college?: Profile.CMUCollege;
@@ -42,4 +43,5 @@ export interface IProfile extends Document {
   confirmation?: IConfirmation;
   createdAt: Date;
   updatedAt?: Date;
+  totalPoints: number;
 }

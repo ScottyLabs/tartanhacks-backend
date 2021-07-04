@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { getByToken } from "../controllers/UserController";
 import { bad, error, unauthorized } from "../util/error";
+import CheckinItem from "src/models/CheckinItem";
 
 /**
  * Middleware to check if a user is logged in and authenticated.
@@ -75,6 +76,40 @@ export const isOwnerOrAdmin = async (
   try {
     const user = await getByToken(token);
     if (user?.admin || user._id.toString() === id) {
+      res.locals.user = user;
+      return next();
+    } else {
+      unauthorized(res);
+    }
+  } catch (err) {
+    return error(res, err);
+  }
+};
+
+export const canCheckIn = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const token = req.headers["x-access-token"] as string;
+  if (!token) {
+    return unauthorized(res);
+  }
+  const checkInItemID = req.query.checkInItemID;
+  const userID = req.query.userID;
+
+  if (!checkInItemID || !userID) {
+    return bad(res);
+  }
+
+  try {
+    const user = await getByToken(token);
+    const checkInItem = await CheckinItem.findById(checkInItemID);
+
+    if (
+      user?.admin ||
+      (checkInItem?.enableSelfCheckin && user._id.toString() === userID)
+    ) {
       res.locals.user = user;
       return next();
     } else {

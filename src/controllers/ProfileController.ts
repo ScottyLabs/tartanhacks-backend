@@ -12,8 +12,22 @@ import { bad, error, unauthorized } from "../util/error";
 import { IProfile } from "../_types/Profile";
 import * as EventController from "./EventController";
 import { getStatus, updateStatus } from "./StatusController";
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} from "unique-names-generator";
 
 const upload = multer({ storage: multer.memoryStorage() });
+
+const generateRandomName = (): string => {
+  return uniqueNamesGenerator({
+    dictionaries: [adjectives, colors, animals],
+    separator: "-",
+    style: "capital",
+  });
+};
 
 /**
  * File parsing middleware
@@ -49,7 +63,10 @@ export const submitProfile = async (
     const tartanhacks = await EventController.getTartanHacks();
     const profile = await Profile.findOneAndUpdate(
       { user: user._id, event: tartanhacks._id },
-      profileArgs,
+      {
+        ...profileArgs,
+        displayName: generateRandomName(),
+      },
       {
         upsert: true,
         returnOriginal: false,
