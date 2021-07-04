@@ -160,6 +160,7 @@ export const getLeaderBoard = async (
     const tartanHacks = await getTartanHacks();
     const result = await Profile.find({ event: tartanHacks._id })
       .select(["firstName", "totalPoints", "_id", "user"])
+      //TODO: change firstName above to displayName
       .sort("totalPoints");
 
     res.status(200).json(result);
@@ -217,6 +218,7 @@ export const getCheckInHistory = async (
 
   try {
     const user = await User.findById(id);
+    const profile = await Profile.findOne({ user: user._id });
     const tartanHacks = await getTartanHacks();
     const checkInItems = await CheckinItem.find({
       event: tartanHacks._id,
@@ -234,7 +236,12 @@ export const getCheckInHistory = async (
       result.push(history);
     }
 
-    res.json(result);
+    res.json({
+      displayName: profile.firstName,
+      //TODO: change above to display name
+      totalPoints: profile.totalPoints,
+      history: result,
+    });
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       return bad(res);
