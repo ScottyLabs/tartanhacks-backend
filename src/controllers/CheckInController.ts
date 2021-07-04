@@ -182,14 +182,19 @@ export const checkInUser = async (
     const { checkInItemID, userID } = req.query;
 
     const event = await getTartanHacks();
-
+    const user = await User.findById(userID);
+    const profile = await Profile.findOne({ user: user._id });
+    const item = await CheckinItem.findById(checkInItemID);
     const checkIn = new Checkin({
-      user: userID,
-      item: checkInItemID,
+      user: user._id,
+      item: item._id,
       event: event,
     });
 
+    profile.totalPoints += item.points;
+
     await checkIn.save();
+    await profile.save();
 
     const json = checkIn.toJSON();
     res.json({
