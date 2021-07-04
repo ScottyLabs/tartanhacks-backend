@@ -19,7 +19,7 @@ export const addNewCheckInItem = async (
       endTime,
       points,
       accessLevel,
-      enableSelfCheckin,
+      enableSelfCheckIn,
     } = req.body;
 
     const event = await getTartanHacks();
@@ -31,7 +31,7 @@ export const addNewCheckInItem = async (
       endTime: endTime,
       points: points,
       accessLevel: accessLevel,
-      enableSelfCheckin: enableSelfCheckin,
+      enableSelfCheckin: enableSelfCheckIn,
       event: event,
     });
 
