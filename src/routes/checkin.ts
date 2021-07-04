@@ -8,7 +8,7 @@ import {
   getLeaderBoard,
   checkInUser,
 } from "../controllers/CheckInController";
-import { isAdmin, isOwnerOrAdmin } from "./middleware";
+import { isAdmin, canCheckIn } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -233,6 +233,6 @@ router.delete("/:id", isAdmin, deleteCheckInItem);
  *          description: Internal Server Error.
  */
 
-router.put("/check-in/user", isOwnerOrAdmin, checkInUser);
+router.put("/user", canCheckIn, checkInUser);
 
 export default router;

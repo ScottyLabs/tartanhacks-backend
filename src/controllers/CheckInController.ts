@@ -175,5 +175,29 @@ export const checkInUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  res.status(200).json("k");
+  try {
+    const { checkInItemID, userID } = req.query;
+
+    const event = await getTartanHacks();
+
+    const checkIn = new Checkin({
+      user: userID,
+      item: checkInItemID,
+      event: event,
+    });
+
+    await checkIn.save();
+
+    const json = checkIn.toJSON();
+    res.json({
+      ...json,
+    });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
 };
