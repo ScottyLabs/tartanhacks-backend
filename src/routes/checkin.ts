@@ -6,8 +6,9 @@ import {
   getAllCheckInItems,
   deleteCheckInItem,
   getLeaderBoard,
+  checkInUser,
 } from "../controllers/CheckInController";
-import { isAdmin } from "./middleware";
+import { isAdmin, isOwnerOrAdmin } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -200,5 +201,38 @@ router.get("/", getAllCheckInItems);
  *          description: Internal Server Error.
  */
 router.delete("/:id", isAdmin, deleteCheckInItem);
+
+/**
+ * @swagger
+ * /check-in/user:
+ *   put:
+ *     summary: Check a User In
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Check In Module]
+ *     description: Checks in a user to a check in item. Access - Admin Users can check in any user for any check in item. Participants can only check themselves in for check-in items that have self check-in enabled.
+ *     parameters:
+ *       - in: query
+ *         name: userId
+ *         required: true
+ *         schema:
+ *            type: string
+ *       - in: query
+ *         name: checkInItemID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       404:
+ *          description: check in item or user not found.
+ *       400:
+ *          description: Bad Request.
+ *       500:
+ *          description: Internal Server Error.
+ */
+
+router.put("/check-in/user", isOwnerOrAdmin, checkInUser);
 
 export default router;

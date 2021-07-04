@@ -170,3 +170,10 @@ export const getLeaderBoard = async (
     }
   }
 };
+
+export const checkInUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  res.status(200).json("k");
+};
