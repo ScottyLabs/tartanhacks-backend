@@ -59,7 +59,7 @@ router.get("/", isAdmin, getSettings);
  *               timeConfirm:
  *                 type: string
  *                 format: date-time
- *               enableWhitelist
+ *               enableWhitelist:
  *                 type: boolean
  *               whitelistedEmails:
  *                 type: array
