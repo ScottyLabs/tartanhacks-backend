@@ -6,6 +6,7 @@ import { ISettings } from "../_types/Settings";
 import Settings from "../models/Settings";
 import { parameters } from "../settings.json";
 import { DateTime } from "luxon";
+import { getTartanHacks } from "./EventController";
 
 /**
  * Express handler for getting settings
@@ -39,7 +40,8 @@ export const updateSettings = async (
  * Get the singleton settings document
  */
 export const getInstance = async (): Promise<ISettings> => {
-  return await Settings.findOne({});
+  const event = await getTartanHacks();
+  return await Settings.findOne({ event: event._id });
 };
 
 /**
@@ -96,6 +98,8 @@ export const createSingleton = async (): Promise<ISettings> => {
       settingParams[key] = definition.value;
     }
   }
+  const event = await getTartanHacks();
+  settingParams["event"] = event._id;
 
   // Create the settings document
   const settingsDoc = new Settings(settingParams);

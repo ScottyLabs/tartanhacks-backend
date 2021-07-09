@@ -3,7 +3,7 @@ import { Document, ObjectId } from "mongoose";
 /**
  * Type for the Team model
  */
-interface ITeam extends Document {
+export interface ITeam extends Document {
   _id: ObjectId;
   event: ObjectId;
   name: string;

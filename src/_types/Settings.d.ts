@@ -5,6 +5,7 @@ import { Document, ObjectId } from "mongoose";
  */
 export interface ISettings extends Document {
   _id: ObjectId;
+  event: ObjectId;
   timeOpen?: Date;
   timeClose?: Date;
   timeConfirm?: Date;
