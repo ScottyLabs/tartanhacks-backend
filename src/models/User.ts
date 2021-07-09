@@ -19,7 +19,7 @@ const User: Schema<IUser> = new Schema(
     password: { type: String, required: true },
     admin: { type: Boolean, required: true, default: false },
     name: String,
-    sponsor: {
+    company: {
       type: Schema.Types.ObjectId,
       ref: "Sponsor",
     },
