@@ -16,6 +16,7 @@ export interface ISettings extends Document {
   acceptanceText?: string;
   confirmationText?: string;
   allowMinors?: boolean;
+  maxTeamSize?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

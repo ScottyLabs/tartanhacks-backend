@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import { getUserById, getUsers } from "../controllers/UsersController";
+import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin, isOwnerOrAdmin } from "./middleware";
 
 const router: Router = express.Router();
@@ -28,7 +29,7 @@ const router: Router = express.Router();
  *      500:
  *        description: Internal Server Error.
  */
-router.get("/", isAdmin, getUsers);
+router.get("/", isAdmin, asyncCatch(getUsers));
 
 /**
  * @swagger
@@ -54,6 +55,6 @@ router.get("/", isAdmin, getUsers);
  *      500:
  *        description: Internal Server Error.
  */
-router.get("/:id", isOwnerOrAdmin, getUserById);
+router.get("/:id", isOwnerOrAdmin, asyncCatch(getUserById));
 
 export default router;

@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import { createTeam, getTeams } from "../controllers/TeamController";
+import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin, isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
@@ -39,7 +40,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/", isAuthenticated, createTeam);
+router.post("/", isAuthenticated, asyncCatch(createTeam));
 
 /**
  * @swagger
@@ -60,48 +61,6 @@ router.post("/", isAuthenticated, createTeam);
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/", isAdmin, getTeams);
-
-/**
- * @swagger
- * /teams/:teamid/join:
- *   post:
- *     summary: Join a team
- *     tags: [Teams Module]
- *     description: Join a team. Access - User
- *     security:
- *       - apiKeyAuth: []
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       401:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.get("/:teamid/join", isAuthenticated, getTeams);
-
-/**
- * @swagger
- * /teams/:teamid/join:
- *   post:
- *     summary: Join a team
- *     tags: [Teams Module]
- *     description: Join a team. Access - User
- *     security:
- *       - apiKeyAuth: []
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       401:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.get("/:teamid/join", isAuthenticated, getTeams);
+router.get("/", isAdmin, asyncCatch(getTeams));
 
 export default router;

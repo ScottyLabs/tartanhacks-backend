@@ -37,6 +37,10 @@
     "allowMinors": {
       "value": false,
       "description": "Whether or not to allow minors to register for the event"
+    },
+    "maxTeamSize": {
+      "value": 4,
+      "description": "The maximum number of members allowed in a team"
     }
   }
 }

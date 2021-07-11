@@ -16,6 +16,7 @@ const Settings: Schema<ISettings> = new Schema(
     acceptanceText: String,
     confirmationText: String,
     allowMinors: Boolean,
+    maxTeamSize: Number,
   },
   {
     timestamps: {

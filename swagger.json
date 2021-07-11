@@ -118,7 +118,8 @@
                     "format": "email"
                   },
                   "password": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "password"
                   }
                 }
               }
@@ -160,7 +161,8 @@
                     "format": "email"
                   },
                   "password": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "password"
                   }
                 }
               }
@@ -323,6 +325,824 @@
           },
           "404": {
             "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in/leaderboard": {
+      "get": {
+        "summary": "Get Check In leaderboard",
+        "tags": [
+          "Check In Module"
+        ],
+        "description": "Get check in leader board. Access - Public.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in/history/{id}": {
+      "get": {
+        "summary": "Get Check In history by user ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Check In Module"
+        ],
+        "description": "Get a user's check in history. Access - Admin or User(Own).",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in": {
+      "post": {
+        "summary": "Add new Check In item",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Check In Module"
+        ],
+        "description": "Creates new Check in Item. Access - Admin.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "number"
+                  },
+                  "endTime": {
+                    "type": "number"
+                  },
+                  "points": {
+                    "type": "number"
+                  },
+                  "accessLevel": {
+                    "type": "string"
+                  },
+                  "enableSelfCheckIn": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in/{id}": {
+      "patch": {
+        "summary": "Edit check in item",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Check In Module"
+        ],
+        "description": "Edit existing check in item information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Check In Item ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "number"
+                  },
+                  "endTime": {
+                    "type": "number"
+                  },
+                  "points": {
+                    "type": "number"
+                  },
+                  "accessLevel": {
+                    "type": "string"
+                  },
+                  "enableSelfCheckIn": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Check In item by ID",
+        "tags": [
+          "Check In Module"
+        ],
+        "description": "Get a single Check In item by iD. Access - Public.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Check In Item ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Check In item by ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Check In Module"
+        ],
+        "description": "Delete Check In item by specifying ID. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Check In Item ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in/": {
+      "get": {
+        "summary": "Get Check In items",
+        "tags": [
+          "Check In Module"
+        ],
+        "description": "Get all check in items. Access - Public.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/check-in/user": {
+      "put": {
+        "summary": "Check a User In",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Check In Module"
+        ],
+        "description": "Checks in a user to a check in item. Access - Admin Users can check in any user for any check in item. Participants can only check themselves in for check-in items that have self check-in enabled.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "checkInItemID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad Request."
+          },
+          "404": {
+            "description": "check in item or user not found."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/team/{teamId}": {
+      "get": {
+        "summary": "View incoming and outgoing requests for a team",
+        "tags": [
+          "Team Requests Module"
+        ],
+        "description": "View incoming and outgoing requests for a team. Access - User",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/user/{userId}": {
+      "get": {
+        "summary": "View incoming and outgoing requests for a user",
+        "tags": [
+          "Team Requests Module"
+        ],
+        "description": "View incoming and outgoing requests for a user. Access - User",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/requests/accept/{requestId}": {
+      "post": {
+        "summary": "Accept a team request",
+        "tags": [
+          "Team Requests Module"
+        ],
+        "description": "Accept a team request.\nIf INVITE request, can only be accessed by team admin.\nIf JOIN request, can only be accessed by owner. Access - User\n",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/schedule": {
+      "post": {
+        "summary": "Add new schedule item",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Schedule Module"
+        ],
+        "description": "Creates new schedule item. Access - Admin.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "number"
+                  },
+                  "endTime": {
+                    "type": "number"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "lat": {
+                    "type": "number"
+                  },
+                  "lng": {
+                    "type": "number"
+                  },
+                  "platform": {
+                    "type": "string"
+                  },
+                  "platformUrl": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/schedule/{id}": {
+      "patch": {
+        "summary": "Edit schedule item",
+        "tags": [
+          "Schedule Module"
+        ],
+        "description": "Edit existing schedule item information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Schedule Item ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "number"
+                  },
+                  "endTime": {
+                    "type": "number"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "lat": {
+                    "type": "number"
+                  },
+                  "lng": {
+                    "type": "number"
+                  },
+                  "platform": {
+                    "type": "string"
+                  },
+                  "platformUrl": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Schedule item by ID",
+        "tags": [
+          "Schedule Module"
+        ],
+        "description": "Get a single schedule item by iD. Access - Public.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Schedule Item ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Schedule item by ID",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Schedule Module"
+        ],
+        "description": "Delete schedule item by specifying ID. Access - Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Schedule Item ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/schedule/": {
+      "get": {
+        "summary": "Get Schedule items",
+        "tags": [
+          "Schedule Module"
+        ],
+        "description": "Get all schedule items. Access - Public.",
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/settings": {
+      "get": {
+        "summary": "Get the settings",
+        "tags": [
+          "Settings Module"
+        ],
+        "description": "Get the settings. Access - Admin only",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "404": {
+            "description": "User does not exist."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update the settings",
+        "tags": [
+          "Settings Module"
+        ],
+        "description": "Update the settings. Access - Admin only",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "timeOpen": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "timeClose": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "timeConfirm": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "enableWhitelist": {
+                    "type": "boolean"
+                  },
+                  "whitelistedEmails": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "waitlistText": {
+                    "type": "string"
+                  },
+                  "acceptanceText": {
+                    "type": "string"
+                  },
+                  "confirmationText": {
+                    "type": "string"
+                  },
+                  "allowMinors": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/teams": {
+      "post": {
+        "summary": "List all existing teams",
+        "tags": [
+          "Teams Module"
+        ],
+        "description": "List all existing teams. Access - Admin",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized."
           },
           "500": {
             "description": "Internal Server Error."
@@ -731,6 +1551,26 @@
     {
       "name": "Authentication Module",
       "description": "Endpoints to manage user authentication."
+    },
+    {
+      "name": "Check In Module",
+      "description": "Endpoints to manage check in items and histories."
+    },
+    {
+      "name": "Team Requests Module",
+      "description": "Endpoints for team request management. Access - User"
+    },
+    {
+      "name": "Schedule Module",
+      "description": "Endpoints to manage dynamic event schedules."
+    },
+    {
+      "name": "Settings Module",
+      "description": "Endpoints for settings control. Access - Admin only"
+    },
+    {
+      "name": "Teams Module",
+      "description": "Endpoints for team management. Access - User"
     },
     {
       "name": "User Module",

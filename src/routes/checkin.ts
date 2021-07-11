@@ -9,6 +9,7 @@ import {
   checkInUser,
   getCheckInHistory,
 } from "../controllers/CheckInController";
+import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin, canCheckIn, isOwnerOrAdmin } from "./middleware";
 
 const router: Router = express.Router();
@@ -37,7 +38,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/leaderboard", getLeaderBoard);
+router.get("/leaderboard", asyncCatch(getLeaderBoard));
 
 /**
  * @swagger
@@ -65,7 +66,7 @@ router.get("/leaderboard", getLeaderBoard);
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/history/:id", isOwnerOrAdmin, getCheckInHistory);
+router.get("/history/:id", isOwnerOrAdmin, asyncCatch(getCheckInHistory));
 
 /**
  * @swagger
@@ -107,7 +108,7 @@ router.get("/history/:id", isOwnerOrAdmin, getCheckInHistory);
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/", isAdmin, addNewCheckInItem);
+router.post("/", isAdmin, asyncCatch(addNewCheckInItem));
 
 /**
  * @swagger
@@ -156,7 +157,7 @@ router.post("/", isAdmin, addNewCheckInItem);
  *       500:
  *          description: Internal Server Error.
  */
-router.patch("/:id", isAdmin, editCheckInItem);
+router.patch("/:id", isAdmin, asyncCatch(editCheckInItem));
 
 /**
  * @swagger
@@ -182,7 +183,7 @@ router.patch("/:id", isAdmin, editCheckInItem);
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/:id", getCheckInItemByID);
+router.get("/:id", asyncCatch(getCheckInItemByID));
 
 /**
  * @swagger
@@ -201,7 +202,7 @@ router.get("/:id", getCheckInItemByID);
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/", getAllCheckInItems);
+router.get("/", asyncCatch(getAllCheckInItems));
 
 /**
  * @swagger
@@ -229,7 +230,7 @@ router.get("/", getAllCheckInItems);
  *       500:
  *          description: Internal Server Error.
  */
-router.delete("/:id", isAdmin, deleteCheckInItem);
+router.delete("/:id", isAdmin, asyncCatch(deleteCheckInItem));
 
 /**
  * @swagger
@@ -262,6 +263,6 @@ router.delete("/:id", isAdmin, deleteCheckInItem);
  *          description: Internal Server Error.
  */
 
-router.put("/user", canCheckIn, checkInUser);
+router.put("/user", canCheckIn, asyncCatch(checkInUser));
 
 export default router;
