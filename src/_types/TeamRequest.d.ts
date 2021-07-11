@@ -1,4 +1,5 @@
-import { Document, ObjectId } from "mongoose";
+import { Document } from "mongoose";
+import { ObjectId } from "bson";
 import * as TeamRequest from "../_enums/TeamRequest";
 
 /**

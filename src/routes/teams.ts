@@ -1,6 +1,6 @@
 import express, { Router } from "express";
-import { createTeam } from "../controllers/TeamController";
-import { isAdmin } from "./middleware";
+import { createTeam, getTeams } from "../controllers/TeamController";
+import { isAdmin, isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -13,7 +13,7 @@ const router: Router = express.Router();
 
 /**
  * @swagger
- * /teams/new:
+ * /teams:
  *   post:
  *     summary: Create and join a team
  *     tags: [Teams Module]
@@ -39,6 +39,69 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/new", isAdmin, createTeam);
+router.post("/", isAuthenticated, createTeam);
+
+/**
+ * @swagger
+ * /teams:
+ *   post:
+ *     summary: List all existing teams
+ *     tags: [Teams Module]
+ *     description: List all existing teams. Access - Admin
+ *     security:
+ *       - apiKeyAuth: []
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/", isAdmin, getTeams);
+
+/**
+ * @swagger
+ * /teams/:teamid/join:
+ *   post:
+ *     summary: Join a team
+ *     tags: [Teams Module]
+ *     description: Join a team. Access - User
+ *     security:
+ *       - apiKeyAuth: []
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/:teamid/join", isAuthenticated, getTeams);
+
+/**
+ * @swagger
+ * /teams/:teamid/join:
+ *   post:
+ *     summary: Join a team
+ *     tags: [Teams Module]
+ *     description: Join a team. Access - User
+ *     security:
+ *       - apiKeyAuth: []
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/:teamid/join", isAuthenticated, getTeams);
 
 export default router;

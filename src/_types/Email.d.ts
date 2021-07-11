@@ -1,5 +1,6 @@
-import { Document, ObjectId } from "mongoose";
+import { Document } from "mongoose";
 import * as Email from "../_enums/Email";
+import { ObjectId } from "bson";
 
 /**
  * Type for Email model
