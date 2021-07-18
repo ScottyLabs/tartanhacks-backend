@@ -6,6 +6,7 @@ import {
   getAllScheduleItems,
   deleteScheduleItem,
 } from "../controllers/ScheduleController";
+import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
 
 const router: Router = express.Router();
@@ -61,7 +62,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/", isAdmin, addNewScheduleItem);
+router.post("/", isAdmin, asyncCatch(addNewScheduleItem));
 
 /**
  * @swagger
@@ -112,7 +113,7 @@ router.post("/", isAdmin, addNewScheduleItem);
  *       500:
  *          description: Internal Server Error.
  */
-router.patch("/:id", isAdmin, editScheduleItem);
+router.patch("/:id", isAdmin, asyncCatch(editScheduleItem));
 
 /**
  * @swagger
@@ -138,7 +139,7 @@ router.patch("/:id", isAdmin, editScheduleItem);
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/:id", getScheduleItemByID);
+router.get("/:id", asyncCatch(getScheduleItemByID));
 
 /**
  * @swagger
@@ -157,7 +158,7 @@ router.get("/:id", getScheduleItemByID);
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/", getAllScheduleItems);
+router.get("/", asyncCatch(getAllScheduleItems));
 
 /**
  * @swagger
@@ -185,5 +186,5 @@ router.get("/", getAllScheduleItems);
  *       500:
  *          description: Internal Server Error.
  */
-router.delete("/:id", isAdmin, deleteScheduleItem);
+router.delete("/:id", isAdmin, asyncCatch(deleteScheduleItem));
 export default router;

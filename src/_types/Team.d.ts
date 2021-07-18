@@ -1,14 +1,15 @@
-import { Document, ObjectId } from "mongoose";
+import { Document } from "mongoose";
+import { ObjectId } from "bson";
 
 /**
  * Type for the Team model
  */
-interface ITeam extends Document {
+export interface ITeam extends Document {
   _id: ObjectId;
   event: ObjectId;
   name: string;
-  admin: string;
-  members: [ObjectId];
+  admin: ObjectId;
+  members: ObjectId[];
   open: boolean;
   createdAt: Date;
   updatedAt: Date;

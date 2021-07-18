@@ -6,6 +6,7 @@ import {
   submitProfile,
   submitResume,
 } from "../controllers/ProfileController";
+import { asyncCatch } from "../util/asyncCatch";
 import { isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
@@ -120,7 +121,7 @@ const router: Router = express.Router();
  *       500:
  *           description: Internal Server Error.
  */
-router.put("/profile", isAuthenticated, submitProfile);
+router.put("/profile", isAuthenticated, asyncCatch(submitProfile));
 
 /**
  * @swagger
@@ -151,7 +152,7 @@ router.put("/profile", isAuthenticated, submitProfile);
  *      500:
  *        description: Internal Server Error.
  */
-router.post("/resume", isAuthenticated, fileMiddleware, submitResume);
+router.post("/resume", isAuthenticated, fileMiddleware, asyncCatch(submitResume));
 
 /**
  * @swagger
@@ -191,7 +192,7 @@ router.post("/resume", isAuthenticated, fileMiddleware, submitResume);
  *      500:
  *        description: Internal Server Error.
  */
-router.put("/confirmation", isAuthenticated, submitConfirmation);
+router.put("/confirmation", isAuthenticated, asyncCatch(submitConfirmation));
 
 /**
  * @swagger
@@ -212,6 +213,6 @@ router.put("/confirmation", isAuthenticated, submitConfirmation);
  *      500:
  *        description: Internal Server Error.
  */
-router.put("/decline", isAuthenticated, declineAcceptance);
+router.put("/decline", isAuthenticated, asyncCatch(declineAcceptance));
 
 export default router;

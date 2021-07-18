@@ -1,5 +1,9 @@
 import express, { Router } from "express";
-import { getSettings, updateSettings } from "../controllers/SettingsController";
+import {
+  handleGetSettings,
+  updateSettings,
+} from "../controllers/SettingsController";
+import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
 
 const router: Router = express.Router();
@@ -32,7 +36,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/", isAdmin, getSettings);
+router.get("/", isAdmin, asyncCatch(handleGetSettings));
 
 /**
  * @swagger
@@ -59,7 +63,7 @@ router.get("/", isAdmin, getSettings);
  *               timeConfirm:
  *                 type: string
  *                 format: date-time
- *               enableWhitelist
+ *               enableWhitelist:
  *                 type: boolean
  *               whitelistedEmails:
  *                 type: array
@@ -83,6 +87,6 @@ router.get("/", isAdmin, getSettings);
  *       500:
  *          description: Internal Server Error.
  */
-router.put("/", isAdmin, updateSettings);
+router.put("/", isAdmin, asyncCatch(updateSettings));
 
 export default router;

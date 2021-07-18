@@ -7,6 +7,7 @@ import {
   sendPasswordResetEmail,
   verify,
 } from "../controllers/AuthController";
+import { asyncCatch } from "../util/asyncCatch";
 
 const router: Router = express.Router();
 
@@ -47,7 +48,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/register", register);
+router.post("/register", asyncCatch(register));
 
 /**
  * @swagger
@@ -79,7 +80,7 @@ router.post("/register", register);
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/login", login);
+router.post("/login", asyncCatch(login));
 
 /**
  * @swagger
@@ -103,7 +104,7 @@ router.post("/login", login);
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/verify/:token", verify);
+router.get("/verify/:token", asyncCatch(verify));
 
 /**
  * @swagger
@@ -130,7 +131,7 @@ router.get("/verify/:token", verify);
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/verify/resend", resendVerificationEmail);
+router.post("/verify/resend", asyncCatch(resendVerificationEmail));
 
 /**
  * @swagger
@@ -159,7 +160,7 @@ router.post("/verify/resend", resendVerificationEmail);
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/reset", sendPasswordResetEmail);
+router.post("/reset", asyncCatch(sendPasswordResetEmail));
 
 /**
  * @swagger
@@ -189,6 +190,6 @@ router.post("/reset", sendPasswordResetEmail);
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/reset/password", resetPassword);
+router.post("/reset/password", asyncCatch(resetPassword));
 
 export default router;

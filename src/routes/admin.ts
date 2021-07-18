@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import { createAdmin, removeAdmin } from "../controllers/AdminController";
 import { isAdmin } from "./middleware";
+import { asyncCatch } from "../util/asyncCatch";
 
 const router: Router = express.Router();
 
@@ -39,7 +40,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/new/:id", isAdmin, createAdmin);
+router.post("/new/:id", isAdmin, asyncCatch(createAdmin));
 
 /**
  * @swagger
@@ -69,6 +70,6 @@ router.post("/new/:id", isAdmin, createAdmin);
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/remove/:id", isAdmin, removeAdmin);
+router.post("/remove/:id", isAdmin, asyncCatch(removeAdmin));
 
 export default router;

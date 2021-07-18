@@ -1,4 +1,5 @@
-import { Document, ObjectId } from "mongoose";
+import { Document } from "mongoose";
+import { ObjectId } from "bson";
 
 /**
  * Type for Event model
@@ -14,7 +15,7 @@ export interface IEvent extends Document {
   enableTeams: boolean;
   enableSponsors: boolean;
   logoUrl?: string;
-  essayQuestions?: [string];
+  essayQuestions?: string[];
   createdAt: Date;
   updatedAt?: Date;
 }

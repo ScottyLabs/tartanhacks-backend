@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import { ObjectId } from "bson";
 import User from "../models/User";
 import { IUser } from "../_types/User";
 import Status from "../models/Status";

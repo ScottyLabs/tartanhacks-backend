@@ -16,7 +16,7 @@ afterAll(async () => {
 describe("SettingsController", () => {
   describe("Singleton", () => {
     it("should exist", async () => {
-      const instance = await SettingsController.getInstance();
+      const instance = await SettingsController.getSettings();
       expect(instance).not.toBeNull();
     });
   });

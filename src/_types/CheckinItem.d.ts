@@ -1,5 +1,6 @@
-import { Document, ObjectId } from "mongoose";
+import { Document } from "mongoose";
 import * as CheckinItem from "../_enums/CheckinItem";
+import { ObjectId } from "bson";
 
 /**
  * Type for CheckinItem model

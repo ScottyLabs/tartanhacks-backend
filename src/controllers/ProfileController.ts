@@ -2,7 +2,6 @@
  * Controller for admin routes
  */
 import { Request, Response } from "express";
-import { ObjectId } from "mongoose";
 import multer from "multer";
 import { uploadResume } from "../services/drive";
 import { IConfirmation } from "../_types/Confirmation";
@@ -18,6 +17,7 @@ import {
   colors,
   animals,
 } from "unique-names-generator";
+import { ObjectId } from "bson";
 
 const upload = multer({ storage: multer.memoryStorage() });
 

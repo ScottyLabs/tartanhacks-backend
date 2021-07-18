@@ -12,7 +12,7 @@ const Team: Schema<ITeam> = new Schema(
       ref: "Event",
       required: true,
     },
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     admin: {
       type: Schema.Types.ObjectId,
       ref: "User",

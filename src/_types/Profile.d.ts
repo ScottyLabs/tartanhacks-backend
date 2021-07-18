@@ -1,4 +1,5 @@
-import { Document, ObjectId } from "mongoose";
+import { Document } from "mongoose";
+import { ObjectId } from "bson";
 import { IConfirmation } from "./Confirmation";
 import * as Profile from "../_enums/Profile";
 
@@ -29,13 +30,13 @@ export interface IProfile extends Document {
   workPermission?: Profile.WorkPermission;
   workLocation?: string;
   workStrengths?: string;
-  sponsorRanking?: [ObjectId];
+  sponsorRanking?: ObjectId[];
   resume?: string;
   github: string;
   design?: string;
   website?: string;
-  essays?: [string];
-  dietaryRestrictions?: [string];
+  essays?: string[];
+  dietaryRestrictions?: string[];
   shirtSize?: Profile.ShirtSize;
   wantsHardware?: boolean;
   address?: string;
