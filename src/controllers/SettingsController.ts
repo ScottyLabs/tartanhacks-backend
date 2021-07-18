@@ -11,11 +11,11 @@ import { getTartanHacks } from "./EventController";
 /**
  * Express handler for getting settings
  */
-export const getSettings = async (
+export const handleGetSettings = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const settings = await getInstance();
+  const settings = await getSettings();
   res.json(settings.toJSON());
 };
 
@@ -39,7 +39,7 @@ export const updateSettings = async (
 /**
  * Get the singleton settings document
  */
-export const getInstance = async (): Promise<ISettings> => {
+export const getSettings = async (): Promise<ISettings> => {
   const event = await getTartanHacks();
   return await Settings.findOne({ event: event._id });
 };
@@ -48,7 +48,7 @@ export const getInstance = async (): Promise<ISettings> => {
  * Check whether or not registration for new participants is open
  */
 export const isRegistrationOpen = async (): Promise<boolean> => {
-  const settings = await getInstance();
+  const settings = await getSettings();
   const { timeOpen, timeClose } = settings;
   const timestamp = DateTime.now();
 
@@ -64,7 +64,7 @@ export const isRegistrationOpen = async (): Promise<boolean> => {
  * Check whether or not confirmation for accepted participants is open
  */
 export const isConfirmationOpen = async (): Promise<boolean> => {
-  const settings = await getInstance();
+  const settings = await getSettings();
   const { timeOpen, timeConfirm } = settings;
   const timestamp = DateTime.now();
 
@@ -80,12 +80,10 @@ export const isConfirmationOpen = async (): Promise<boolean> => {
 /**
  * Create the singleton settings document or return it if it already exists.
  * This loads the template from `settings.json`
+ * Populates any missing setting values from the template
  */
 export const createSingleton = async (): Promise<ISettings> => {
-  const settings = await getInstance();
-  if (settings != null) {
-    return settings;
-  }
+  const settings = await getSettings();
   // Parse the settings template
   const settingParams: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -101,8 +99,22 @@ export const createSingleton = async (): Promise<ISettings> => {
   const event = await getTartanHacks();
   settingParams["event"] = event._id;
 
-  // Create the settings document
-  const settingsDoc = new Settings(settingParams);
-  await settingsDoc.save();
-  return settingsDoc;
+  if (settings) {
+    const update = {
+      ...settingParams,
+      ...settings.toJSON(),
+    };
+    const updatedSettings = await settings.updateOne(
+      {
+        $set: update,
+      },
+      { new: true }
+    );
+    return updatedSettings;
+  } else {
+    // Create the settings document
+    const settingsDoc = new Settings(settingParams);
+    await settingsDoc.save();
+    return settingsDoc;
+  }
 };

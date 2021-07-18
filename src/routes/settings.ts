@@ -1,5 +1,8 @@
 import express, { Router } from "express";
-import { getSettings, updateSettings } from "../controllers/SettingsController";
+import {
+  handleGetSettings,
+  updateSettings,
+} from "../controllers/SettingsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
 
@@ -33,7 +36,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/", isAdmin, asyncCatch(getSettings));
+router.get("/", isAdmin, asyncCatch(handleGetSettings));
 
 /**
  * @swagger

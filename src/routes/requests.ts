@@ -1,6 +1,8 @@
 import express, { Router } from "express";
 import {
   acceptTeamRequest,
+  cancelTeamRequest,
+  declineTeamRequest,
   getTeamRequests,
   getUserRequests,
 } from "../controllers/TeamRequestController";
@@ -76,8 +78,8 @@ router.get("/user/:teamId", isAuthenticated, asyncCatch(getUserRequests));
  *     tags: [Team Requests Module]
  *     description: |
  *       Accept a team request.
- *       If INVITE request, can only be accessed by team admin.
- *       If JOIN request, can only be accessed by owner. Access - User
+ *       If JOIN request, can only be accessed by team admin.
+ *       If INVITE request, can only be accessed by owner. Access - User
  *     security:
  *       - apiKeyAuth: []
  *     parameters:
@@ -99,6 +101,72 @@ router.post(
   "/accept/:requestId",
   isAuthenticated,
   asyncCatch(acceptTeamRequest)
+);
+
+/**
+ * @swagger
+ * /requests/decline/{requestId}:
+ *   post:
+ *     summary: Decline a team request
+ *     tags: [Team Requests Module]
+ *     description: |
+ *       Decline a team request.
+ *       If JOIN request, can only be accessed by team admin.
+ *       If INVITE request, can only be accessed by owner. Access - User
+ *     security:
+ *       - apiKeyAuth: []
+ *     parameters:
+ *     - in: path
+ *       name: requestId
+ *       required: true
+ *       type: string
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.post(
+  "/decline/:requestId",
+  isAuthenticated,
+  asyncCatch(declineTeamRequest)
+);
+
+/**
+ * @swagger
+ * /requests/cancel/{requestId}:
+ *   post:
+ *     summary: Cancel a team request
+ *     tags: [Team Requests Module]
+ *     description: |
+ *       Cancel a team request.
+ *       If INVITE request, can only be accessed by team admin.
+ *       If JOIN request, can only be accessed by owner. Access - User
+ *     security:
+ *       - apiKeyAuth: []
+ *     parameters:
+ *     - in: path
+ *       name: requestId
+ *       required: true
+ *       type: string
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.post(
+  "/cancel/:requestId",
+  isAuthenticated,
+  asyncCatch(cancelTeamRequest)
 );
 
 export default router;

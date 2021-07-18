@@ -11,7 +11,7 @@ export interface ISettings extends Document {
   timeClose?: Date;
   timeConfirm?: Date;
   enableWhitelist?: number;
-  whitelistedEmails?: [string];
+  whitelistedEmails?: string[];
   waitlistText?: string;
   acceptanceText?: string;
   confirmationText?: string;

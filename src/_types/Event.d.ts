@@ -15,7 +15,7 @@ export interface IEvent extends Document {
   enableTeams: boolean;
   enableSponsors: boolean;
   logoUrl?: string;
-  essayQuestions?: [string];
+  essayQuestions?: string[];
   createdAt: Date;
   updatedAt?: Date;
 }

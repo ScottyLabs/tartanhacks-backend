@@ -2,10 +2,12 @@ import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import Team from "../models/Team";
 import TeamRequest from "../models/TeamRequest";
-import { bad, notFound } from "../util/error";
+import User from "../models/User";
+import { bad, notFound, unauthorized } from "../util/error";
 import { TeamRequestStatus, TeamRequestType } from "../_enums/TeamRequest";
 import { ITeam } from "../_types/Team";
 import { getTartanHacks } from "./EventController";
+import * as SettingsController from "./SettingsController";
 
 /**
  * Find the team of a user
@@ -67,7 +69,7 @@ export const createTeam = async (
     event: event._id,
     name,
     admin: user._id,
-    members: [],
+    members: [user._id],
     open,
   });
 
@@ -138,4 +140,94 @@ export const joinTeam = async (req: Request, res: Response): Promise<void> => {
   });
   await teamRequest.save();
   res.json(teamRequest.toJSON());
+};
+
+/**
+ * Invite a user to a team
+ */
+export const inviteUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const event = await getTartanHacks();
+  const { userId } = req.params;
+  const currentUser = res.locals.user;
+
+  if (!userId) {
+    return bad(res, "Missing user ID");
+  }
+
+  const team = await findUserTeam(currentUser._id);
+  if (!team) {
+    return bad(res, "You're not in a team!");
+  }
+
+  if (!team.admin.equals(currentUser._id)) {
+    return unauthorized(res, "You're not the team admin!");
+  }
+
+  const { maxTeamSize } = await SettingsController.getSettings();
+
+  if (team.members.length >= maxTeamSize) {
+    return bad(res, "The team is full!");
+  }
+
+  if (team.members.includes(new ObjectId(userId))) {
+    return bad(res, "User is already in the team!");
+  }
+
+  const user = await User.findOne({
+    event: event._id,
+    _id: new ObjectId(userId),
+  });
+  if (!user) {
+    return notFound(res, "User does not exist!");
+  }
+
+  const request = new TeamRequest({
+    event: event._id,
+    user: user._id,
+    team: team._id,
+    type: TeamRequestType.INVITE,
+    status: TeamRequestStatus.PENDING,
+  });
+
+  await request.save();
+
+  res.json(request.toJSON());
+};
+
+/**
+ * Leave a team
+ */
+export const leaveTeam = async (req: Request, res: Response): Promise<void> => {
+  const user = res.locals.user;
+  const team = await findUserTeam(user._id);
+
+  if (!team) {
+    return bad(res, "You're not in a team!");
+  }
+
+  if (!team.members.includes(user._id)) {
+    return bad(res, "You're not in the team!");
+  }
+
+  if (team.admin.equals(user._id) && team.members.length > 1) {
+    return bad(
+      res,
+      "You can't leave the team if you're the team admin Make another member admin first!"
+    );
+  }
+
+  if (team.members.length === 1) {
+    await team.remove();
+    res.status(200).send();
+  } else {
+    const updatedTeam = await team.updateOne({
+      $pull: {
+        members: user._id,
+      },
+    });
+    res.json(updatedTeam.toJson());
+  }
 };

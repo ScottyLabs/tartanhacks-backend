@@ -9,7 +9,7 @@ export interface IEmail extends Document {
   _id: ObjectId;
   event: ObjectId;
   sender: ObjectId;
-  groups: [Email.EmailGroup];
+  groups: Email.EmailGroup[];
   subject: string;
   body: string;
   sendTime?: Date;

@@ -7,6 +7,11 @@ import { ISettings } from "../_types/Settings";
  */
 const Settings: Schema<ISettings> = new Schema(
   {
+    event: {
+      type: Schema.Types.ObjectId,
+      ref: "Event",
+      required: true,
+    },
     timeOpen: Number,
     timeClose: Number,
     timeConfirm: Number,

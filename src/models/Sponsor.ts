@@ -12,13 +12,7 @@ const Sponsor: Schema<ISponsor> = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Event",
       required: true,
-    },
-    representatives: {
-      type: [Schema.Types.ObjectId],
-      ref: "User",
-      required: true,
-      default: [],
-    },
+    }
   },
   {
     timestamps: {

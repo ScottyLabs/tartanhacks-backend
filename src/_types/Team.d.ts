@@ -8,8 +8,8 @@ export interface ITeam extends Document {
   _id: ObjectId;
   event: ObjectId;
   name: string;
-  admin: string;
-  members: [ObjectId];
+  admin: ObjectId;
+  members: ObjectId[];
   open: boolean;
   createdAt: Date;
   updatedAt: Date;
