@@ -13,7 +13,6 @@ export interface IProject extends Document {
   slides?: string;
   video?: string;
   team: ObjectId;
-  isDeleted: boolean;
   prizes: ObjectId;
   createdAt: Date;
   updatedAt?: Date;

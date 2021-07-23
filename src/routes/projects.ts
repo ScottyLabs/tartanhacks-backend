@@ -1,5 +1,8 @@
 import express, { Router } from "express";
-import { createNewProject } from "../controllers/ProjectsController";
+import {
+  createNewProject,
+  editProject,
+} from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
 
@@ -51,5 +54,50 @@ const router: Router = express.Router();
  *          description: Internal Server Error.
  */
 router.post("/", isAdmin, asyncCatch(createNewProject));
+
+/**
+ * @swagger
+ * /projects/{id}:
+ *   patch:
+ *     summary: Edit project info
+ *     tags: [Projects Module]
+ *     description: Edit existing project information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Schedule Item ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               team:
+ *                 type: string
+ *               slides:
+ *                 type: string
+ *               video:
+ *                 type: string
+ *               url:
+ *                 type: string
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.patch("/:id", isAdmin, asyncCatch(editProject));
 
 export default router;
