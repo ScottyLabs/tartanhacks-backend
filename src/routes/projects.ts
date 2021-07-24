@@ -4,6 +4,7 @@ import {
   editProject,
   getProjectByID,
   getAllProjects,
+  deleteProject,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
@@ -152,5 +153,33 @@ router.get("/:id", asyncCatch(getProjectByID));
  *          description: Internal Server Error.
  */
 router.get("/", isAdmin, asyncCatch(getAllProjects));
+
+/**
+ * @swagger
+ * /projects/{id}:
+ *   delete:
+ *     summary: Delete project by ID
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Projects Module]
+ *     description: Delete project by specifying ID. Access - Admin.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Project ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.delete("/:id", isAdmin, asyncCatch(deleteProject));
 
 export default router;

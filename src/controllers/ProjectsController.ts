@@ -125,3 +125,29 @@ export const getAllProjects = async (
     }
   }
 };
+
+export const deleteProject = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  if (id === null) {
+    return bad(res, "Missing Project ID.");
+  }
+
+  try {
+    await Project.findByIdAndDelete(id);
+
+    res.status(200).json({
+      message: "Successfully deleted project.",
+    });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
