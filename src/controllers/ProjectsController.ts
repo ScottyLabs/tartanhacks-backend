@@ -87,3 +87,41 @@ export const editProject = async (
     }
   }
 };
+
+export const getProjectByID = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  try {
+    const result = await Project.findById(id);
+
+    res.json(result);
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
+
+export const getAllProjects = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const result = await Project.find();
+
+    res.status(200).json(result);
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};

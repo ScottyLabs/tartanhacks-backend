@@ -2,6 +2,8 @@ import express, { Router } from "express";
 import {
   createNewProject,
   editProject,
+  getProjectByID,
+  getAllProjects,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
@@ -60,6 +62,8 @@ router.post("/", isAdmin, asyncCatch(createNewProject));
  * /projects/{id}:
  *   patch:
  *     summary: Edit project info
+ *     security:
+ *     - apiKeyAuth: []
  *     tags: [Projects Module]
  *     description: Edit existing project information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.
  *     parameters:
@@ -68,7 +72,7 @@ router.post("/", isAdmin, asyncCatch(createNewProject));
  *         schema:
  *           type: string
  *         required: true
- *         description: Schedule Item ID
+ *         description: Project ID
  *     requestBody:
  *       required: true
  *       content:
@@ -99,5 +103,54 @@ router.post("/", isAdmin, asyncCatch(createNewProject));
  *          description: Internal Server Error.
  */
 router.patch("/:id", isAdmin, asyncCatch(editProject));
+
+/**
+ * @swagger
+ * /projects/{id}:
+ *   get:
+ *     summary: Get Project by ID
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Projects Module]
+ *     description: Get a single project by iD. Access - Public.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Project ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/:id", asyncCatch(getProjectByID));
+
+/**
+ * @swagger
+ * /projects/:
+ *   get:
+ *     summary: Get Projects
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Projects Module]
+ *     description: Get all Projects. Access - Admin.
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/", isAdmin, asyncCatch(getAllProjects));
 
 export default router;
