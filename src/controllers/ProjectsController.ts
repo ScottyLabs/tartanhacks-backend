@@ -3,6 +3,7 @@ import Prize from "src/models/Prize";
 import { bad, error } from "../util/error";
 import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";
+import { findUserTeam } from "./TeamController";
 
 export const createNewProject = async (
   req: Request,
@@ -23,6 +24,14 @@ export const createNewProject = async (
         res,
         "You already have a project. Please edit or delete your existing project."
       );
+    }
+
+    if (!res.locals.user.admin) {
+      const userTeam = await findUserTeam(res.locals.user._id);
+
+      if (userTeam?._id !== team) {
+        return bad(res, "You can only create projects for your team.");
+      }
     }
 
     const project = new Project({

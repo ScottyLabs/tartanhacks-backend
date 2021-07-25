@@ -204,8 +204,6 @@ router.patch("/prizes/:id", isAdmin, asyncCatch(editPrize));
  *                 type: string
  *               description:
  *                 type: string
- *               team:
- *                 type: string
  *               slides:
  *                 type: string
  *               video:
