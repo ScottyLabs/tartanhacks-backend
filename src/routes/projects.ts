@@ -10,6 +10,7 @@ import {
   editPrize,
   deletePrize,
   getPrizeByID,
+  enterProject,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
@@ -58,6 +59,38 @@ const router: Router = express.Router();
  *          description: Internal Server Error.
  */
 router.post("/prizes", isAdmin, asyncCatch(createNewPrize));
+
+/**
+ * @swagger
+ * /projects/prizes/enter:
+ *   put:
+ *     summary: Enter a project for a prize
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Projects Module]
+ *     description: Enters project for a prize. Access - Admin.
+ *     parameters:
+ *       - in: query
+ *         name: projectID
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: prizeID
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.put("/prizes/enter", isAdmin, asyncCatch(enterProject));
 
 /**
  * @swagger

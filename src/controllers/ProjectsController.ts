@@ -283,3 +283,42 @@ export const deletePrize = async (
     }
   }
 };
+
+export const enterProject = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { projectID, prizeID } = req.query;
+
+  if (projectID === null) {
+    return bad(res, "Missing Project ID");
+  }
+
+  if (prizeID === null) {
+    return bad(res, "Missing Prize ID");
+  }
+
+  try {
+    const project = await Project.findById(projectID);
+    const prize = await Prize.findById(prizeID);
+
+    if (!project || !prize) {
+      return bad(res, "Invalid Project or Prize ID");
+    }
+
+    project.prizes.push(prize._id);
+
+    await project.save();
+    const json = project.toJSON();
+    res.json({
+      ...json,
+    });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
