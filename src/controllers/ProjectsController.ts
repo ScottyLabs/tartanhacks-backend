@@ -203,3 +203,37 @@ export const createNewPrize = async (
     }
   }
 };
+
+export const editPrize = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+
+  if (id === null) {
+    return bad(res, "Missing Prize ID.");
+  }
+
+  try {
+    await Prize.findByIdAndUpdate(
+      id,
+      { $set: req.body },
+      { new: true },
+      function (err, result) {
+        if (err) {
+          console.error(err);
+          return error(res);
+        }
+
+        const json = result.toJSON();
+        res.json({
+          ...json,
+        });
+      }
+    );
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};

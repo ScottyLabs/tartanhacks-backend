@@ -7,6 +7,7 @@ import {
   deleteProject,
   getAllPrizes,
   createNewPrize,
+  editPrize,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
@@ -95,6 +96,51 @@ router.post("/prizes", isAdmin, asyncCatch(createNewPrize));
  *          description: Internal Server Error.
  */
 router.post("/", isAdmin, asyncCatch(createNewProject));
+
+/**
+ * @swagger
+ * /projects/prizes/{id}:
+ *   patch:
+ *     summary: Edit prize info
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Projects Module]
+ *     description: Edit existing prize information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Prize ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               eligibility:
+ *                 type: string
+ *               provider:
+ *                 type: string
+ *               winner:
+ *                 type: string
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.patch("/prizes/:id", isAdmin, asyncCatch(editPrize));
 
 /**
  * @swagger
