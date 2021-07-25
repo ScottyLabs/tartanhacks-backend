@@ -62,19 +62,20 @@ router.post("/prizes", isAdmin, asyncCatch(createNewPrize));
 
 /**
  * @swagger
- * /projects/prizes/enter:
+ * /projects/prizes/enter/{id}:
  *   put:
  *     summary: Enter a project for a prize
  *     security:
  *     - apiKeyAuth: []
  *     tags: [Projects Module]
- *     description: Enters project for a prize. Access - Admin.
+ *     description: Enters project for a prize. Access - User(Own)/Admin.
  *     parameters:
- *       - in: query
- *         name: projectID
+ *       - in: path
+ *         name: id
  *         required: true
  *         schema:
  *           type: string
+ *         description: Project ID
  *       - in: query
  *         name: prizeID
  *         required: true
@@ -90,7 +91,7 @@ router.post("/prizes", isAdmin, asyncCatch(createNewPrize));
  *       500:
  *          description: Internal Server Error.
  */
-router.put("/prizes/enter", isAdmin, asyncCatch(enterProject));
+router.put("/prizes/enter", isProjectOwnerOrAdmin, asyncCatch(enterProject));
 
 /**
  * @swagger

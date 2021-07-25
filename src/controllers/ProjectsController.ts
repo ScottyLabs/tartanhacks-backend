@@ -297,9 +297,10 @@ export const enterProject = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { projectID, prizeID } = req.query;
+  const { prizeID } = req.query;
+  const { id } = req.params;
 
-  if (projectID === null) {
+  if (id === null) {
     return bad(res, "Missing Project ID");
   }
 
@@ -308,7 +309,7 @@ export const enterProject = async (
   }
 
   try {
-    const project = await Project.findById(projectID);
+    const project = await Project.findById(id);
     const prize = await Prize.findById(prizeID);
 
     if (!project || !prize) {
