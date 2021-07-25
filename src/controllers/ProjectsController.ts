@@ -237,3 +237,29 @@ export const editPrize = async (req: Request, res: Response): Promise<void> => {
     }
   }
 };
+
+export const deletePrize = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  if (id === null) {
+    return bad(res, "Missing Prize ID.");
+  }
+
+  try {
+    await Prize.findByIdAndDelete(id);
+
+    res.status(200).json({
+      message: "Successfully deleted prize.",
+    });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
