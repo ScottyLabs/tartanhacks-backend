@@ -110,12 +110,13 @@ export const isProjectOwnerOrAdmin = async (
     const project = await Project.findById(id);
 
     if (user?.admin || team._id === project.team) {
-      res.locals.user(user);
+      res.locals.user = user;
       return next();
     } else {
       unauthorized(res);
     }
   } catch (err) {
+    console.error(err);
     return error(res, err);
   }
 };

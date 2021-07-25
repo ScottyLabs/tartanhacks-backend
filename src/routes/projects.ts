@@ -91,7 +91,11 @@ router.post("/prizes", isAdmin, asyncCatch(createNewPrize));
  *       500:
  *          description: Internal Server Error.
  */
-router.put("/prizes/enter", isProjectOwnerOrAdmin, asyncCatch(enterProject));
+router.put(
+  "/prizes/enter/:id",
+  isProjectOwnerOrAdmin,
+  asyncCatch(enterProject)
+);
 
 /**
  * @swagger
