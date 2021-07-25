@@ -1,4 +1,5 @@
 import Project from "src/models/Project";
+import Prize from "src/models/Prize";
 import { bad, error } from "../util/error";
 import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";
@@ -142,6 +143,24 @@ export const deleteProject = async (
     res.status(200).json({
       message: "Successfully deleted project.",
     });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
+
+export const getAllPrizes = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const result = await Prize.find();
+
+    res.status(200).json(result);
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       return bad(res);

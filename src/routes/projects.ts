@@ -5,6 +5,7 @@ import {
   getProjectByID,
   getAllProjects,
   deleteProject,
+  getAllPrizes,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
@@ -104,6 +105,25 @@ router.post("/", isAdmin, asyncCatch(createNewProject));
  *          description: Internal Server Error.
  */
 router.patch("/:id", isAdmin, asyncCatch(editProject));
+
+/**
+ * @swagger
+ * /projects/prizes:
+ *   get:
+ *     summary: Get Prizes
+ *     tags: [Projects Module]
+ *     description: Get all Prizes. Access - Public.
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/prizes", asyncCatch(getAllPrizes));
 
 /**
  * @swagger
