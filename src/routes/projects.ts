@@ -9,6 +9,7 @@ import {
   createNewPrize,
   editPrize,
   deletePrize,
+  getPrizeByID,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
@@ -192,6 +193,32 @@ router.patch("/:id", isAdmin, asyncCatch(editProject));
 
 /**
  * @swagger
+ * /projects/prizes/{id}:
+ *   get:
+ *     summary: Get Prize by ID
+ *     tags: [Projects Module]
+ *     description: Get a single prize by iD. Access - Public.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Prize ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/prizes/:id", asyncCatch(getPrizeByID));
+
+/**
+ * @swagger
  * /projects/prizes:
  *   get:
  *     summary: Get Prizes
@@ -239,7 +266,7 @@ router.get("/:id", asyncCatch(getProjectByID));
 
 /**
  * @swagger
- * /projects/:
+ * /projects:
  *   get:
  *     summary: Get Projects
  *     security:

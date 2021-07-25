@@ -171,6 +171,26 @@ export const getAllPrizes = async (
   }
 };
 
+export const getPrizeByID = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  try {
+    const result = await Prize.findById(id);
+
+    res.json(result);
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
+
 export const createNewPrize = async (
   req: Request,
   res: Response
