@@ -6,6 +6,7 @@ import {
   getAllProjects,
   deleteProject,
   getAllPrizes,
+  createNewPrize,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
@@ -18,6 +19,42 @@ const router: Router = express.Router();
  *  name: Projects Module
  *  description: Endpoints to manage dynamic projects.
  */
+
+/**
+ * @swagger
+ * /projects/prizes:
+ *   post:
+ *     summary: Create new prize
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Projects Module]
+ *     description: Creates new prize. Access - Admin.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               eligibility:
+ *                 type: string
+ *               provider:
+ *                 type: string
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.post("/prizes", isAdmin, asyncCatch(createNewPrize));
 
 /**
  * @swagger

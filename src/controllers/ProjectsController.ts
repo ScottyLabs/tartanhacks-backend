@@ -170,3 +170,36 @@ export const getAllPrizes = async (
     }
   }
 };
+
+export const createNewPrize = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { name, description, eligibility, provider } = req.body;
+
+    const event = await getTartanHacks();
+
+    const prize = new Prize({
+      name: name,
+      description: description,
+      event: event._id,
+      eligibility: eligibility,
+      provider: provider,
+    });
+
+    await prize.save();
+
+    const json = prize.toJSON();
+    res.json({
+      ...json,
+    });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
