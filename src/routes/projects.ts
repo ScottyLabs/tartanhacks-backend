@@ -13,7 +13,7 @@ import {
   enterProject,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAdmin } from "./middleware";
+import { isAdmin, isAuthenticated, isProjectOwnerOrAdmin } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -100,7 +100,7 @@ router.put("/prizes/enter", isAdmin, asyncCatch(enterProject));
  *     security:
  *     - apiKeyAuth: []
  *     tags: [Projects Module]
- *     description: Creates new project. Access - Admin.
+ *     description: Creates new project. Access - Authenticated Users.
  *     requestBody:
  *       required: true
  *       content:
@@ -130,7 +130,7 @@ router.put("/prizes/enter", isAdmin, asyncCatch(enterProject));
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/", isAdmin, asyncCatch(createNewProject));
+router.post("/", isAuthenticated, asyncCatch(createNewProject));
 
 /**
  * @swagger
@@ -185,7 +185,7 @@ router.patch("/prizes/:id", isAdmin, asyncCatch(editPrize));
  *     security:
  *     - apiKeyAuth: []
  *     tags: [Projects Module]
- *     description: Edit existing project information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.
+ *     description: Edit existing project information. All body parameters are optional. If unspecified, the parameters are not updated. Access - User(own)/Admin.
  *     parameters:
  *       - in: path
  *         name: id
@@ -222,7 +222,7 @@ router.patch("/prizes/:id", isAdmin, asyncCatch(editPrize));
  *       500:
  *          description: Internal Server Error.
  */
-router.patch("/:id", isAdmin, asyncCatch(editProject));
+router.patch("/:id", isProjectOwnerOrAdmin, asyncCatch(editProject));
 
 /**
  * @swagger
@@ -277,7 +277,7 @@ router.get("/prizes", asyncCatch(getAllPrizes));
  *     security:
  *     - apiKeyAuth: []
  *     tags: [Projects Module]
- *     description: Get a single project by iD. Access - Public.
+ *     description: Get a single project by iD. Access - User(own)/Admin.
  *     parameters:
  *       - in: path
  *         name: id
@@ -295,7 +295,7 @@ router.get("/prizes", asyncCatch(getAllPrizes));
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/:id", asyncCatch(getProjectByID));
+router.get("/:id", isProjectOwnerOrAdmin, asyncCatch(getProjectByID));
 
 /**
  * @swagger
@@ -354,7 +354,7 @@ router.delete("/prizes/:id", isAdmin, asyncCatch(deletePrize));
  *     security:
  *     - apiKeyAuth: []
  *     tags: [Projects Module]
- *     description: Delete project by specifying ID. Access - Admin.
+ *     description: Delete project by specifying ID. Access - User(Own)/Admin.
  *     parameters:
  *       - in: path
  *         name: id
@@ -372,6 +372,6 @@ router.delete("/prizes/:id", isAdmin, asyncCatch(deletePrize));
  *       500:
  *          description: Internal Server Error.
  */
-router.delete("/:id", isAdmin, asyncCatch(deleteProject));
+router.delete("/:id", isProjectOwnerOrAdmin, asyncCatch(deleteProject));
 
 export default router;
