@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { getByToken } from "../controllers/UserController";
 import { bad, error, unauthorized } from "../util/error";
-import CheckinItem from "src/models/CheckinItem";
-import { findUserTeam } from "src/controllers/TeamController";
-import Project from "src/models/Project";
+import CheckinItem from "../models/CheckinItem";
+import { findUserTeam } from "../controllers/TeamController";
+import Project from "../models/Project";
 
 /**
  * Middleware to check if a user is logged in and authenticated.

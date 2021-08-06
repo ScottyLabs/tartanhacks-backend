@@ -1,5 +1,5 @@
-import Project from "src/models/Project";
-import Prize from "src/models/Prize";
+import Project from "../models/Project";
+import Prize from "../models/Prize";
 import { bad, error } from "../util/error";
 import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";

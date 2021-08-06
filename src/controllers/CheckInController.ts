@@ -1,11 +1,11 @@
-import Checkin from "src/models/Checkin";
-import CheckinItem from "src/models/CheckinItem";
-import Profile from "src/models/Profile";
+import Checkin from "../models/Checkin";
+import CheckinItem from "../models/CheckinItem";
+import Profile from "../models/Profile";
 import { bad, error } from "../util/error";
 import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";
-import User from "src/models/User";
-import { ICheckinItem } from "src/_types/CheckinItem";
+import User from "../models/User";
+import { ICheckinItem } from "../_types/CheckinItem";
 
 export const addNewCheckInItem = async (
   req: Request,
