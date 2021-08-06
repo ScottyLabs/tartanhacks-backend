@@ -13,7 +13,8 @@
     "test": "NODE_OPTIONS=--trace-warnings doppler setup -p tartanhacks-backend -c dev && doppler run -- jest tests --detectOpenHandles",
     "test:nodoppler": "NODE_OPTIONS=--trace-warnings && jest tests --detectOpenHandles",
     "coverage": "doppler setup -p tartanhacks-backend -c dev && doppler run -- jest tests --coverage",
-    "build:swagger": "swagger-jsdoc -d src/swagger.js src/routes/*.ts -o swagger.json"
+    "build:swagger": "swagger-jsdoc -d src/swagger.js src/routes/*.ts -o swagger.json",
+    "heroku": "node ."
   },
   "author": "gramliu",
   "license": "ISC",
