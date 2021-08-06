@@ -7,6 +7,7 @@ import scheduleRouter from "./schedule";
 import settingsRouter from "./settings";
 import checkInRouter from "./checkin";
 import teamsRouter from "./teams";
+import projectsRouter from "./projects";
 import requestsRouter from "./requests";
 
 const router = express.Router();
@@ -19,5 +20,5 @@ router.use("/settings", settingsRouter);
 router.use("/teams", teamsRouter);
 router.use("/requests", requestsRouter);
 router.use("/check-in", checkInRouter);
-
+router.use("/projects", projectsRouter);
 export default router;

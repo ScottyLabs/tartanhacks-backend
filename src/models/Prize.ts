@@ -18,11 +18,12 @@ const Prize: Schema<IPrize> = new Schema(
     provider: {
       type: Schema.Types.ObjectId,
       ref: "Sponsor",
-      required: true,
+      required: false,
     },
     winner: {
       type: Schema.Types.ObjectId,
       ref: "Project",
+      required: false,
     },
   },
   {

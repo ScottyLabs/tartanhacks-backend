@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { getByToken } from "../controllers/UserController";
 import { bad, error, unauthorized } from "../util/error";
 import CheckinItem from "src/models/CheckinItem";
+import { findUserTeam } from "src/controllers/TeamController";
+import Project from "src/models/Project";
 
 /**
  * Middleware to check if a user is logged in and authenticated.
@@ -82,6 +84,39 @@ export const isOwnerOrAdmin = async (
       unauthorized(res);
     }
   } catch (err) {
+    return error(res, err);
+  }
+};
+
+//Middleware function to check if the user can access data associated with a project.
+export const isProjectOwnerOrAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const token = req.headers["x-access-token"] as string;
+  if (!token) {
+    return unauthorized(res);
+  }
+
+  const { id } = req.params;
+  if (!id) {
+    return bad(res);
+  }
+
+  try {
+    const user = await getByToken(token);
+    const team = await findUserTeam(user._id);
+    const project = await Project.findById(id);
+
+    if (user?.admin || team._id === project.team) {
+      res.locals.user = user;
+      return next();
+    } else {
+      unauthorized(res);
+    }
+  } catch (err) {
+    console.error(err);
     return error(res, err);
   }
 };

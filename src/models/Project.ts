@@ -22,7 +22,6 @@ const Project: Schema<IProject> = new Schema(
       ref: "Team",
       required: true,
     },
-    isDeleted: { type: Boolean, required: true, default: false },
     prizes: {
       type: [Schema.Types.ObjectId],
       ref: "Prize",
