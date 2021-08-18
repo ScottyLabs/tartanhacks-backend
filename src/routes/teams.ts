@@ -66,7 +66,7 @@ router.get("/", isAdmin, asyncCatch(getTeams));
  *       500:
  *          description: Internal Server Error.
  */
- router.post("/new", isAuthenticated, asyncCatch(createTeam));
+router.post("/new", isAuthenticated, asyncCatch(createTeam));
 
 /**
  * @swagger

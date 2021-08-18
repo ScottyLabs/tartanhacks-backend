@@ -130,7 +130,7 @@ router.put("/profile", isAuthenticated, asyncCatch(submitProfile));
  *    summary: Submit a user's resume
  *    security:
  *    - apiKeyAuth: []
- *    tags: [Users Module]
+ *    tags: [User Module]
  *    description: Submit a user's resume. Must have an associated profile. Access - User
  *    requestBody:
  *      required: true
@@ -152,7 +152,12 @@ router.put("/profile", isAuthenticated, asyncCatch(submitProfile));
  *      500:
  *        description: Internal Server Error.
  */
-router.post("/resume", isAuthenticated, fileMiddleware, asyncCatch(submitResume));
+router.post(
+  "/resume",
+  isAuthenticated,
+  fileMiddleware,
+  asyncCatch(submitResume)
+);
 
 /**
  * @swagger
@@ -161,7 +166,7 @@ router.post("/resume", isAuthenticated, fileMiddleware, asyncCatch(submitResume)
  *    summary: Submit a user's confirmation
  *    security:
  *    - apiKeyAuth: []
- *    tags: [Users Module]
+ *    tags: [User Module]
  *    description: Submit a user's confirmation. Must have been accepted. Access - User
  *    requestBody:
  *      required: true
@@ -201,7 +206,7 @@ router.put("/confirmation", isAuthenticated, asyncCatch(submitConfirmation));
  *    summary: Decline a user's acceptance
  *    security:
  *    - apiKeyAuth: []
- *    tags: [Users Module]
+ *    tags: [User Module]
  *    description: Decline a user's acceptance. Must have been accepted. Access - User
  *    responses:
  *      200:

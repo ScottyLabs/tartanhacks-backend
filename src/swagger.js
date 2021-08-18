@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
  * Setup swagger options.
- * 
+ *
  * Separated from index.ts and written in ES5 for compatibility with swagger-jsdoc
  * CLI for exporting to JSON
  */

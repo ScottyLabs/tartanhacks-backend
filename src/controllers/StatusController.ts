@@ -73,11 +73,12 @@ export const updateStatus = async (
  */
 export const setAdmitted = async (
   userId: ObjectId,
-  admitterId: ObjectId
+  admitterId: ObjectId,
+  admitted = true
 ): Promise<void> => {
   await getStatus(userId, {
     $set: {
-      admitted: true,
+      admitted,
       admittedBy: admitterId,
     },
   });

@@ -12,7 +12,7 @@ const Sponsor: Schema<ISponsor> = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Event",
       required: true,
-    }
+    },
   },
   {
     timestamps: {
