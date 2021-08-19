@@ -1,11 +1,11 @@
 export enum TeamRequestType {
-  INVITE,
-  JOIN,
+  INVITE = "INVITE",
+  JOIN = "JOIN",
 }
 
 export enum TeamRequestStatus {
-  PENDING,
-  ACCEPTED,
-  DECLINED,
-  CANCELLED,
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  DECLINED = "DECLINED",
+  CANCELLED = "CANCELLED",
 }

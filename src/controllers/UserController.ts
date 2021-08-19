@@ -1,5 +1,10 @@
+import { Request, Response } from "express";
+import { ObjectId } from "mongodb";
+import Sponsor from "../models/Sponsor";
 import User from "../models/User";
+import { bad, notFound } from "../util/error";
 import { IUser } from "../_types/User";
+import { getTartanHacks } from "./EventController";
 
 /**
  * Get a User by their authentication token
@@ -10,4 +15,58 @@ export const getByToken = async (token: string): Promise<IUser> => {
   const id = User.decryptAuthToken(token);
   const user = await User.findById(id);
   return user;
+};
+
+/**
+ * Make a user into a recruiter
+ */
+export const makeRecruiter = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const event = await getTartanHacks();
+  const { id } = req.params;
+  const { sponsor } = req.body;
+
+  const user = await User.findOne({ _id: new ObjectId(id), event: event._id });
+  if (!user) {
+    return notFound(res, "User not found");
+  }
+  if (user.company) {
+    return bad(res, "User is already a recruiter");
+  }
+
+  const sponsorDoc = await Sponsor.findOne({
+    _id: new ObjectId(sponsor),
+    event: event._id,
+  });
+  if (!sponsorDoc) {
+    return notFound(res, "Sponsor not found");
+  }
+
+  user.company = sponsorDoc._id;
+  await user.save();
+  res.json(user.toJSON());
+};
+
+/**
+ * Demote an existing recruiter
+ */
+export const removeRecruiter = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const event = await getTartanHacks();
+  const { id } = req.params;
+
+  const user = await User.findOne({ _id: new ObjectId(id), event: event._id });
+  if (!user) {
+    return notFound(res, "User not found");
+  }
+  if (!user.company) {
+    return bad(res, "User is not a recruiter");
+  }
+  delete user.company;
+  await user.save();
+  res.json(user.toJSON());
 };
