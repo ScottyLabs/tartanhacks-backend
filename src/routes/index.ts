@@ -9,6 +9,8 @@ import checkInRouter from "./checkin";
 import teamsRouter from "./teams";
 import projectsRouter from "./projects";
 import requestsRouter from "./requests";
+import recruiterRouter from "./recruiter";
+import sponsorRouter from "./sponsor";
 
 const router = express.Router();
 router.use("/auth", authRouter);
@@ -21,4 +23,6 @@ router.use("/teams", teamsRouter);
 router.use("/requests", requestsRouter);
 router.use("/check-in", checkInRouter);
 router.use("/projects", projectsRouter);
+router.use("/sponsor", sponsorRouter);
+router.use("/recruiter", recruiterRouter);
 export default router;
