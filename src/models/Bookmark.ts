@@ -45,9 +45,9 @@ const Bookmark: Schema<IBookmark> = new Schema(
   }
 );
 
-export default model<ICheckinItem>(
-  "CheckinItem",
-  CheckinItem,
-  "checkin-items",
+export default model<IBookmark>(
+  "Bookmark",
+  Bookmark,
+  "bookmarks",
   !isProduction
 );

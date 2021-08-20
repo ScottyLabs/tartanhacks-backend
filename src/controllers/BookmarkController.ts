@@ -64,11 +64,11 @@ export const createBookmark = async (
     if (existing) {
       return bad(res, "Bookmark already exists");
     }
-    const project = await Project.findOne({
+    const projectDoc = await Project.findOne({
       _id: new ObjectId(project),
       event: event._id,
     });
-    if (!project) {
+    if (!projectDoc) {
       return notFound(res, "Project does not exist");
     }
     const bookmark = new Bookmark({
