@@ -7,7 +7,7 @@ import { uploadResume } from "../services/drive";
 import { IConfirmation } from "../_types/Confirmation";
 import { StatusField } from "../_enums/Status";
 import Profile from "../models/Profile";
-import { bad, error, unauthorized } from "../util/error";
+import { bad, error, notFound, unauthorized } from "../util/error";
 import { IProfile } from "../_types/Profile";
 import * as EventController from "./EventController";
 import { getStatus, updateStatus } from "./StatusController";
@@ -43,6 +43,22 @@ export const getProfile = async (userId: ObjectId): Promise<IProfile> => {
     user: userId,
     event: tartanhacks._id,
   });
+};
+
+/**
+ * Submit a user's profile or update it if it already exists
+ */
+export const getUserProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  const profile = await getProfile(new ObjectId(id));
+  if (!profile) {
+    return notFound(res);
+  }
+  res.json(profile);
 };
 
 /**

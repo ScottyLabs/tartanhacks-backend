@@ -2,12 +2,13 @@ import express, { Router } from "express";
 import {
   declineAcceptance,
   fileMiddleware,
+  getUserProfile,
   submitConfirmation,
   submitProfile,
   submitResume,
 } from "../controllers/ProfileController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAuthenticated } from "./middleware";
+import { isAuthenticated, isOwnerRecruiterOrAdmin } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -17,6 +18,34 @@ const router: Router = express.Router();
  *  name: User Module
  *  description: Endpoints for personal user control. Access - User only
  */
+
+/**
+ * @swagger
+ * /user/profile:
+ *   put:
+ *     summary: Submit a user application
+ *     tags: [User Module]
+ *     description: Submit a user application. Access - User only
+ *     security:
+ *       - apiKeyAuth: []
+ *     parameters:
+ *     - in: path
+ *       name: id
+ *       required: true
+ *       type: string
+ *     responses:
+ *       200:
+ *           description: Success.
+ *       400:
+ *           description: Bad request
+ *       401:
+ *           description: Unauthorized.
+ *       404:
+ *           description: User does not exist.
+ *       500:
+ *           description: Internal Server Error.
+ */
+router.get("/profile", isOwnerRecruiterOrAdmin, asyncCatch(getUserProfile));
 
 /**
  * @swagger

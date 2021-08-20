@@ -88,6 +88,37 @@ export const isOwnerOrAdmin = async (
   }
 };
 
+/**
+ * Middleware to check if a user is the owner, recruiter, or admin (based on the param ID)
+ * Continues if true. Otherwise, errors with 403
+ */
+export const isOwnerRecruiterOrAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  const token = req.headers["x-access-token"] as string;
+  if (!token) {
+    return unauthorized(res);
+  }
+  const { id } = req.params;
+  if (!id) {
+    return bad(res);
+  }
+
+  try {
+    const user = await getByToken(token);
+    if (user?.admin || user?.company || user._id.toString() === id) {
+      res.locals.user = user;
+      return next();
+    } else {
+      unauthorized(res);
+    }
+  } catch (err) {
+    return error(res, err);
+  }
+};
+
 //Middleware function to check if the user can access data associated with a project.
 export const isProjectOwnerOrAdmin = async (
   req: Request,
