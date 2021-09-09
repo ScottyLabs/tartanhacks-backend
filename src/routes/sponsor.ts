@@ -14,7 +14,7 @@ const router: Router = express.Router();
 
 /**
  * @swagger
- * /sponsor/new:
+ * /sponsor/:
  *   post:
  *     summary: Create a new sponsor (company)
  *     security:
