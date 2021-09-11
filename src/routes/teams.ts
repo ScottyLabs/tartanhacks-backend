@@ -40,7 +40,7 @@ router.get("/", isAdmin, asyncCatch(getTeams));
 
 /**
  * @swagger
- * /teams/new:
+ * /teams/:
  *   post:
  *     summary: Create and join a team
  *     tags: [Teams Module]
@@ -66,7 +66,7 @@ router.get("/", isAdmin, asyncCatch(getTeams));
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/new", isAuthenticated, asyncCatch(createTeam));
+router.post("/", isAuthenticated, asyncCatch(createTeam));
 
 /**
  * @swagger
