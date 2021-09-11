@@ -15,7 +15,7 @@ const router: Router = express.Router();
 
 /**
  * @swagger
- * /recruiter/new/{id}:
+ * /recruiter/{id}:
  *   post:
  *     summary: Make an existing user into a recruiter for a sponsor
  *     security:
@@ -37,7 +37,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/new/:id", isAdmin, asyncCatch(makeRecruiter));
+router.post("/:id", isAdmin, asyncCatch(makeRecruiter));
 
 /**
  * @swagger
