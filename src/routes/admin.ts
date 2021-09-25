@@ -14,7 +14,7 @@ const router: Router = express.Router();
 
 /**
  * @swagger
- * /admin/new/{id}:
+ * /admin/{id}:
  *   post:
  *     summary: Make a user an admin
  *     tags: [Admin Module]
@@ -40,7 +40,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/new/:id", isAdmin, asyncCatch(createAdmin));
+router.post("/:id", isAdmin, asyncCatch(createAdmin));
 
 /**
  * @swagger
