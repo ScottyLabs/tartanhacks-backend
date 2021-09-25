@@ -6,6 +6,7 @@ import swaggerUi from "swagger-ui-express";
 import router from "./routes";
 import swaggerSpecification from "./swagger";
 import { startup } from "./util/startup";
+import cors from "cors";
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
