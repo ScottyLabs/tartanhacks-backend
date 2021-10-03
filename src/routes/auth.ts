@@ -77,7 +77,6 @@ router.post("/register", asyncCatch(register));
  *         name: x-access-token
  *         schema:
  *           type: string
- *           format: uuid
  *     responses:
  *       200:
  *          description: Success.
