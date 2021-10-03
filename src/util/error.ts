@@ -45,6 +45,7 @@ export const notFound = (res: Response, message?: string): void => {
  * @param message message to send to the user
  */
 export const error = (res: Response, message?: string): void => {
+  console.error(message);
   if (!message) {
     res.status(500).send("Internal server error");
   } else {

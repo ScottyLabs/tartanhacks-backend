@@ -46,6 +46,41 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 };
 
 /**
+ * Login with email and password
+ * @param email email of the account to login
+ * @param password email of the password to login
+ */
+const loginWithInfo = async (
+  email: string,
+  password: string,
+  res: Response
+): Promise<void> => {
+  // Login with email & password
+  if (!email || !password) {
+    return bad(res, "Missing email or password");
+  } else {
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return notFound(res, "Unknown account");
+      } else {
+        if (!user.checkPassword(password)) {
+          return bad(res, "Incorrect password");
+        } else {
+          // Return json of user without password hash
+          const token = user.generateAuthToken();
+          const json = user.toJSON();
+          delete json.password;
+          res.json({ ...json, token });
+        }
+      }
+    } catch (err) {
+      error(res, err);
+    }
+  }
+};
+
+/**
  * Login a user with email and password or with a token in the header
  */
 export const login = async (req: Request, res: Response): Promise<void> => {
@@ -57,7 +92,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     try {
       const user = await getByToken(token);
       if (!user) {
-        return bad(res, "Unknown account");
+        if (email && password) {
+          // Attempt login with email & password instead
+          return loginWithInfo(email, password, res);
+        } else {
+          return bad(res, "Unknown account");
+        }
       }
       const json = user.toJSON();
       res.json({
@@ -68,29 +108,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       error(res, err);
     }
   } else {
-    // Login with email & password
-    if (!email || !password) {
-      return bad(res, "Missing email or password");
-    } else {
-      try {
-        const user = await User.findOne({ email });
-        if (!user) {
-          return notFound(res, "Unknown account");
-        } else {
-          if (!user.checkPassword(password)) {
-            return bad(res, "Incorrect password");
-          } else {
-            // Return json of user without password hash
-            const token = user.generateAuthToken();
-            const json = user.toJSON();
-            delete json.password;
-            res.json({ ...json, token });
-          }
-        }
-      } catch (err) {
-        error(res, err);
-      }
-    }
+    await loginWithInfo(email, password, res);
   }
 };
 

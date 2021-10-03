@@ -86,11 +86,15 @@ User.statics.generateHash = (password: string): string => {
 /**
  * Decrypt an authentication token
  * @param token login authentication token
- * @returns the `_id` associated with the User document
+ * @returns the `_id` associated with the User document or `null` if the token is invalid
  */
 User.statics.decryptAuthToken = (token: string): string => {
-  const decrypted = jwt.verify(token, process.env.JWT_SECRET) as IUser;
-  return decrypted._id.toString();
+  try {
+    const decrypted = jwt.verify(token, process.env.JWT_SECRET) as IUser;
+    return decrypted._id.toString();
+  } catch (err) {
+    return null;
+  }
 };
 
 /**

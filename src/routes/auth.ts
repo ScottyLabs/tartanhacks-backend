@@ -56,9 +56,11 @@ router.post("/register", asyncCatch(register));
  *   post:
  *     summary: Login user
  *     tags: [Authentication Module]
- *     description: Verifies user credentials. Access - Open
+ *     description: |
+ *      Verifies user credentials. Either the login credentials can be specified
+ *      in the request body, or an access token can be specified in the header.. Access - Open
  *     requestBody:
- *       required: true
+ *       required: false
  *       content:
  *         application/json:
  *           schema:
@@ -70,6 +72,12 @@ router.post("/register", asyncCatch(register));
  *               password:
  *                 type: string
  *                 format: password
+ *     parameters:
+ *       - in: header
+ *         name: x-access-token
+ *         schema:
+ *           type: string
+ *           format: uuid
  *     responses:
  *       200:
  *          description: Success.
