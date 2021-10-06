@@ -4,10 +4,8 @@
 import { Express } from "express";
 import request from "supertest";
 import { setup, getApp, shutdown } from "../index";
-import { mockNodeMailer } from "../util/mock";
 
 let app: Express = null;
-mockNodeMailer();
 
 beforeAll(async () => {
   await setup();
@@ -19,16 +17,17 @@ afterAll(async () => {
 });
 
 describe("auth", () => {
+  // Registration should work normally
   describe("register", () => {
     it("should create a user", async () => {
       const response = await request(app).post("/auth/register").send({
-        email: "tech0@scottylabs.org",
+        email: "dummy@scottylabs.org",
         password: "abc123",
       });
       expect(response.status).toEqual(200);
       expect(response.body).not.toBeNull();
       const user = response.body;
-      expect(user.email).toEqual("tech0@scottylabs.org");
+      expect(user.email).toEqual("dummy@scottylabs.org");
     });
   });
 
@@ -36,11 +35,11 @@ describe("auth", () => {
   describe("register duplicate", () => {
     it("should fail", async () => {
       await request(app).post("/auth/register").send({
-        email: "tech1@scottylabs.org",
+        email: "dummy1@scottylabs.org",
         password: "abc123",
       });
       const response = await request(app).post("/auth/register").send({
-        email: "tech1@scottylabs.org",
+        email: "dummy1@scottylabs.org",
         password: "def456",
       });
       expect(response.status).toEqual(400);
@@ -50,11 +49,11 @@ describe("auth", () => {
   describe("login", () => {
     it("should work via email password", async () => {
       const register = await request(app).post("/auth/register").send({
-        email: "tech2@scottylabs.org",
+        email: "dummy2@scottylabs.org",
         password: "abc123",
       });
       const login = await request(app).post("/auth/login").send({
-        email: "tech2@scottylabs.org",
+        email: "dummy2@scottylabs.org",
         password: "abc123",
       });
       expect(register.body._id).not.toBeNull();
@@ -63,7 +62,7 @@ describe("auth", () => {
 
     it("should work via token", async () => {
       const register = await request(app).post("/auth/register").send({
-        email: "tech3@scottylabs.org",
+        email: "dummy3@scottylabs.org",
         password: "abc123",
       });
       const token = register.body.token;

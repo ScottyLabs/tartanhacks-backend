@@ -5,9 +5,6 @@
 import * as UserController from "src/controllers/UserController";
 import User from "src/models/User";
 import { setup, shutdown } from "../index";
-import { mockNodeMailer } from "../util/mock";
-
-mockNodeMailer();
 
 beforeAll(async () => {
   await setup();
@@ -22,7 +19,7 @@ describe("UserController", () => {
     // ensure that getByToken resolves correctly
     it("should match", async () => {
       const user = new User({
-        email: "tech1@scottylabs.org",
+        email: "dummy1@scottylabs.org",
         password: "abc123",
       });
       await user.save();
