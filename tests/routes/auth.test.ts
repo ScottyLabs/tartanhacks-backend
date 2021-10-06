@@ -22,13 +22,13 @@ describe("auth", () => {
   describe("register", () => {
     it("should create a user", async () => {
       const response = await request(app).post("/auth/register").send({
-        email: "tech@scottylabs.org",
+        email: "tech0@scottylabs.org",
         password: "abc123",
       });
       expect(response.status).toEqual(200);
       expect(response.body).not.toBeNull();
       const user = response.body;
-      expect(user.email).toEqual("tech@scottylabs.org");
+      expect(user.email).toEqual("tech0@scottylabs.org");
     });
   });
 

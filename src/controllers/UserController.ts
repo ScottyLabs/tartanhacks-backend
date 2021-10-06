@@ -12,9 +12,14 @@ import { getTartanHacks } from "./EventController";
  * @returns the user associated with the login authentication token
  */
 export const getByToken = async (token: string): Promise<IUser> => {
-  const id = User.decryptAuthToken(token);
-  const user = await User.findById(id);
-  return user;
+  try {
+    const id = User.decryptAuthToken(token);
+    const user = await User.findById(id);
+    return user;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
 
 /**

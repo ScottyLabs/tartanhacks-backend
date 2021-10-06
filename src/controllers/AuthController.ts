@@ -122,10 +122,20 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
   }
 
   try {
-    const email = User.decryptEmailVerificationToken(token);
-    if (email == null) {
-      return bad(res, "Bad token");
+    let email;
+    try {
+      email = User.decryptEmailVerificationToken(token);
+    } catch (err) {
+      console.log(err);
+      if (err.name === "TokenExpiredError") {
+        return bad(res, "Expired token!");
+      } else if (err.name === "JsonWebTokenError") {
+        return bad(res, "Bad token");
+      } else {
+        throw err;
+      }
     }
+      
 
     const user = await User.findOne({ email });
     if (user == null) {
@@ -186,9 +196,17 @@ export const resetPassword = async (
   }
 
   try {
-    const email = User.decryptPasswordResetToken(token);
-    if (email == null) {
-      return bad(res, "Bad token");
+    let email;
+    try {
+      email = User.decryptPasswordResetToken(token);
+    } catch (err) {
+      if (err.name === "TokenExpiredError") {
+        return bad(res, "Expired token!");
+      } else if (err.name === "JsonWebTokenError") {
+        return bad(res, "Bad token");
+      } else {
+        throw err;
+      }
     }
 
     const hash = User.generateHash(password);

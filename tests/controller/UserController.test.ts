@@ -22,7 +22,7 @@ describe("UserController", () => {
     // ensure that getByToken resolves correctly
     it("should match", async () => {
       const user = new User({
-        email: "tech@scottylabs.org",
+        email: "tech1@scottylabs.org",
         password: "abc123",
       });
       await user.save();

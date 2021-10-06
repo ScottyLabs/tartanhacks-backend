@@ -23,7 +23,7 @@ describe("User", () => {
    */
   beforeAll(async () => {
     user = new User({
-      email: "tech@scottylabs.org",
+      email: "tech0@scottylabs.org",
       password: "abc123",
       admin: false,
     });
@@ -61,7 +61,7 @@ describe("User", () => {
     it("should encrypt and decrypt properly", () => {
       const emailToken = user.generateEmailVerificationToken();
       const email = User.decryptEmailVerificationToken(emailToken);
-      expect(email).toEqual("tech@scottylabs.org");
+      expect(email).toEqual("tech0@scottylabs.org");
     });
   });
 
