@@ -126,7 +126,6 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
     try {
       email = User.decryptEmailVerificationToken(token);
     } catch (err) {
-      console.log(err);
       if (err.name === "TokenExpiredError") {
         return bad(res, "Expired token!");
       } else if (err.name === "JsonWebTokenError") {

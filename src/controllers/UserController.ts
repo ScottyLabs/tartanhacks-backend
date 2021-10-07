@@ -17,7 +17,6 @@ export const getByToken = async (token: string): Promise<IUser> => {
     const user = await User.findById(id);
     return user;
   } catch (err) {
-    console.error(err);
     return null;
   }
 };
