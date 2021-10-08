@@ -138,7 +138,7 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
 
     const user = await User.findOne({ email });
     if (user == null) {
-      return notFound(res, "User not found");
+      return notFound(res, "User not found " + email);
     }
 
     await StatusController.updateStatus(user._id, StatusField.VERIFIED, true);
