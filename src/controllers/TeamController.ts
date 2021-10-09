@@ -87,6 +87,20 @@ export const getTeams = async (req: Request, res: Response): Promise<void> => {
   res.json(teams);
 };
 
+export const getTeam = async (req: Request, res: Response): Promise<void> => {
+  const event = await getTartanHacks();
+  const { teamId } = req.params;
+  const team = await Team.find({
+    eventId: event._id,
+    _id: new ObjectId(teamId),
+  });
+  if (team == null) {
+    return notFound(res, "Team not found!");
+  } else {
+    res.json(team);
+  }
+};
+
 /**
  * Join a team
  */

@@ -45,7 +45,7 @@ const router: Router = express.Router();
  *       500:
  *           description: Internal Server Error.
  */
-router.get("/profile", isOwnerRecruiterOrAdmin, asyncCatch(getUserProfile));
+router.get("/profile/:id", isOwnerRecruiterOrAdmin, asyncCatch(getUserProfile));
 
 /**
  * @swagger
