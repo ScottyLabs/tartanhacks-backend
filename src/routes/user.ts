@@ -22,10 +22,10 @@ const router: Router = express.Router();
 /**
  * @swagger
  * /user/profile:
- *   put:
- *     summary: Submit a user application
+ *   get:
+ *     summary: Get a user's application profile
  *     tags: [User Module]
- *     description: Submit a user application. Access - User only
+ *     description: Get a user's application profile. Access - User only
  *     security:
  *       - apiKeyAuth: []
  *     parameters:
