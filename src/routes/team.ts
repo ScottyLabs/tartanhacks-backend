@@ -1,9 +1,6 @@
 import express, { Router } from "express";
 import {
-  createTeam,
-  getTeams,
-  inviteUser,
-  leaveTeam,
+  getTeam,
 } from "../controllers/TeamController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin, isAuthenticated } from "./middleware";
@@ -13,94 +10,22 @@ const router: Router = express.Router();
 /**
  * @swagger
  * tags:
- *  name: Team Module
- *  description: Endpoints for single team management. Access - User
+ *  name: Teams Module
+ *  description: Endpoints for team management. Access - User
  */
 
 /**
  * @swagger
- * /teams:
+ * /team/{teamId}:
  *   get:
- *     summary: List all existing teams
+ *     summary: Get information about a specific team
  *     tags: [Teams Module]
- *     description: List all existing teams. Access - Admin
- *     security:
- *       - apiKeyAuth: []
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       401:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.get("/", isAdmin, asyncCatch(getTeams));
-
-/**
- * @swagger
- * /teams/:
- *   post:
- *     summary: Create and join a team
- *     tags: [Teams Module]
- *     description: Create and join a team. Access - User
- *     security:
- *       - apiKeyAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       401:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.post("/", isAuthenticated, asyncCatch(createTeam));
-
-/**
- * @swagger
- * /teams/invite/{userId}:
- *   post:
- *     summary: Invite a user to a team
- *     tags: [Teams Module]
- *     description: Invite a user to a team. Access - User
- *     security:
- *       - apiKeyAuth: []
+ *     description: Get information about a specific team. Access - User
  *     parameters:
  *     - in: path
- *       name: userId
+ *       name: teamId
  *       required: true
  *       type: string
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       401:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.post("/invite/:userId", isAdmin, asyncCatch(inviteUser));
-
-/**
- * @swagger
- * /teams/leave:
- *   post:
- *     summary: Leave your current team
- *     tags: [Teams Module]
- *     description: Leave your current team. Access - User
  *     security:
  *       - apiKeyAuth: []
  *     responses:
@@ -113,6 +38,6 @@ router.post("/invite/:userId", isAdmin, asyncCatch(inviteUser));
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/leave", isAdmin, asyncCatch(leaveTeam));
+router.get("/:id", isAuthenticated, asyncCatch(getTeam));
 
 export default router;

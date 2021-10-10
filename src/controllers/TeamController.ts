@@ -87,16 +87,20 @@ export const getTeams = async (req: Request, res: Response): Promise<void> => {
   res.json(teams);
 };
 
+/**
+ * Get information about a specific team
+ */
 export const getTeam = async (req: Request, res: Response): Promise<void> => {
   const event = await getTartanHacks();
-  const { teamId } = req.params;
-  const team = await Team.find({
-    eventId: event._id,
-    _id: new ObjectId(teamId),
+  const { id } = req.params;
+  const team = await Team.findOne({
+    event: event._id,
+    _id: new ObjectId(id),
   });
   if (team == null) {
     return notFound(res, "Team not found!");
   } else {
+    console.log("Team", team);
     res.json(team);
   }
 };

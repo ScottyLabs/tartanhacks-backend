@@ -21,7 +21,7 @@ const router: Router = express.Router();
 
 /**
  * @swagger
- * /user/profile:
+ * /user/profile/{id}:
  *   get:
  *     summary: Get a user's application profile
  *     tags: [User Module]
