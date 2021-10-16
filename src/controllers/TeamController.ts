@@ -83,7 +83,7 @@ export const createTeam = async (
  */
 export const getTeams = async (req: Request, res: Response): Promise<void> => {
   const event = await getTartanHacks();
-  const teams = await Team.find({ eventId: event._id });
+  const teams = await Team.find({ event: event._id });
   res.json(teams);
 };
 
@@ -100,7 +100,6 @@ export const getTeam = async (req: Request, res: Response): Promise<void> => {
   if (team == null) {
     return notFound(res, "Team not found!");
   } else {
-    console.log("Team", team);
     res.json(team);
   }
 };
