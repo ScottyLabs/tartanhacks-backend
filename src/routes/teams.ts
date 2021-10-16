@@ -23,7 +23,7 @@ const router: Router = express.Router();
  *   get:
  *     summary: List all existing teams
  *     tags: [Teams Module]
- *     description: List all existing teams. Access - Admin
+ *     description: List all existing teams. Access - User
  *     security:
  *       - apiKeyAuth: []
  *     responses:
@@ -36,7 +36,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/", isAdmin, asyncCatch(getTeams));
+router.get("/", isAuthenticated, asyncCatch(getTeams));
 
 /**
  * @swagger
