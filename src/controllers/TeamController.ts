@@ -59,7 +59,7 @@ export const createTeam = async (
     );
   }
 
-  const { name, open } = req.body;
+  const { name, description, visible } = req.body;
   const existingTeam = await findTeamByName(name);
   if (existingTeam) {
     return bad(res, "That team name is already taken!");
@@ -68,14 +68,57 @@ export const createTeam = async (
   const team = new Team({
     event: event._id,
     name,
+    description,
     admin: user._id,
     members: [user._id],
-    open,
+    visible,
   });
 
   await team.save();
 
   res.json(team.toJSON());
+};
+
+/**
+ * Update a team, i.e. change visibility, name, or description
+ */
+export const updateTeam = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = res.locals.user;
+
+  const userTeam = await findUserTeam(user._id);
+  if (!userTeam) {
+    return bad(res, "You do not belong to a team");
+  }
+
+  if (userTeam.admin != user._id) {
+    return unauthorized(res, "You are not the team admin!");
+  }
+
+  const { name, description, visible } = req.body;
+  const existingTeam = await findTeamByName(name);
+  if (existingTeam) {
+    return bad(res, "That team name is already taken!");
+  }
+
+  const update: { name?: string; description?: string; visible?: boolean } = {};
+  if (name) {
+    update.name = name;
+  }
+  if (description) {
+    update.description = description;
+  }
+  if (visible) {
+    update.visible = visible;
+  }
+
+  await userTeam.updateOne({
+    $set: update,
+  });
+
+  res.json(userTeam.toJSON());
 };
 
 /**
@@ -160,6 +203,43 @@ export const joinTeam = async (req: Request, res: Response): Promise<void> => {
 };
 
 /**
+ * Kick a member from a team
+ */
+export const kickUser = async (req: Request, res: Response): Promise<void> => {
+  const { userId } = req.params;
+  const currentUser = res.locals.user;
+
+  if (!userId) {
+    return bad(res, "Missing user ID");
+  }
+
+  const team = await findUserTeam(currentUser._id);
+  if (!team) {
+    return bad(res, "You're not in a team!");
+  }
+
+  if (!team.admin.equals(currentUser._id)) {
+    return unauthorized(res, "You're not the team admin!");
+  }
+
+  if (userId === currentUser._id.toString()) {
+    return bad(res, "You can't kick yourself! Leave the team instead.");
+  }
+
+  if (!team.members.includes(new ObjectId(userId))) {
+    return bad(res, "That user is not in your team!");
+  }
+
+  await team.updateOne({
+    $pull: {
+      members: userId,
+    },
+  });
+
+  res.status(200).send();
+}
+
+/**
  * Invite a user to a team
  */
 export const inviteUser = async (
@@ -215,6 +295,45 @@ export const inviteUser = async (
 };
 
 /**
+ * Promote another team member into an admin
+ * This can only be done by a team admin and simultaneously demotes the admin
+ * that performed this action.
+ */
+export const promoteUser = async (req: Request, res: Response): Promise<void> => {
+  const { userId } = req.params;
+  const currentUser = res.locals.user;
+
+  if (!userId) {
+    return bad(res, "Missing user ID");
+  }
+
+  const team = await findUserTeam(currentUser._id);
+  if (!team) {
+    return bad(res, "You're not in a team!");
+  }
+
+  if (!team.admin.equals(currentUser._id)) {
+    return unauthorized(res, "You're not the team admin!");
+  }
+
+  if (userId === currentUser._id.toString()) {
+    return bad(res, "You can't promote yourself! You are already the team admin.");
+  }
+
+  if (!team.members.includes(new ObjectId(userId))) {
+    return bad(res, "That user is not in your team!");
+  }
+
+  await team.updateOne({
+    $set: {
+      admin: new ObjectId(userId)
+    }
+  })
+
+  res.status(200).send();
+}
+
+/**
  * Leave a team
  */
 export const leaveTeam = async (req: Request, res: Response): Promise<void> => {
@@ -223,10 +342,6 @@ export const leaveTeam = async (req: Request, res: Response): Promise<void> => {
 
   if (!team) {
     return bad(res, "You're not in a team!");
-  }
-
-  if (!team.members.includes(user._id)) {
-    return bad(res, "You're not in the team!");
   }
 
   if (team.admin.equals(user._id) && team.members.length > 1) {

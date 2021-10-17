@@ -13,6 +13,7 @@ const Team: Schema<ITeam> = new Schema(
       required: true,
     },
     name: { type: String, required: true, unique: true },
+    description: { type: String },
     admin: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -23,7 +24,7 @@ const Team: Schema<ITeam> = new Schema(
       ref: "User",
       required: true,
     },
-    open: { type: Boolean, required: true, default: true },
+    visible: { type: Boolean, required: true, default: true },
   },
   {
     timestamps: {

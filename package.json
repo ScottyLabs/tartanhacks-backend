@@ -7,7 +7,7 @@
     "build": "rm -rf dist && tsc --build && copyfiles -u 1 **/*.mjml dist",
     "start": "doppler setup -p tartanhacks-backend -c dev && doppler run -- node . || echo \"Did you run 'npm run build'?\"",
     "dev": "doppler setup -p tartanhacks-backend -c dev && doppler run -- nodemon --exec ts-node -r tsconfig-paths/register --files src/index.ts",
-    "lint": "npm run lint:only && npm run lint:pretty",
+    "lint": "npm run lint:pretty && npm run lint:only",
     "lint:only": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:pretty": "prettier --write .",
     "test": "NODE_OPTIONS=--trace-warnings doppler setup -p tartanhacks-backend -c dev && doppler run -- jest tests --detectOpenHandles",
