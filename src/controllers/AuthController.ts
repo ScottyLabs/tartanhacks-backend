@@ -134,7 +134,6 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
         throw err;
       }
     }
-      
 
     const user = await User.findOne({ email });
     if (user == null) {

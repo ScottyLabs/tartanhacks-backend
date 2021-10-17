@@ -34,10 +34,12 @@ describe("creation", () => {
     const adminToken = adminUser.generateAuthToken();
 
     // Create user to promote
-    const userRegisterResponse = await request(app).post("/auth/register").send({
-      email: "dummy1@scottylabs.org",
-      password: "abc123",
-    });
+    const userRegisterResponse = await request(app)
+      .post("/auth/register")
+      .send({
+        email: "dummy1@scottylabs.org",
+        password: "abc123",
+      });
     expect(userRegisterResponse.status).toEqual(200);
     const { _id: userId, token: userToken } = userRegisterResponse.body;
 
@@ -63,10 +65,12 @@ describe("creation", () => {
 
   it("should fail for non-admin calls", async () => {
     // Create user to try promoting
-    const userRegisterResponse = await request(app).post("/auth/register").send({
-      email: "dummy2@scottylabs.org",
-      password: "abc123",
-    });
+    const userRegisterResponse = await request(app)
+      .post("/auth/register")
+      .send({
+        email: "dummy2@scottylabs.org",
+        password: "abc123",
+      });
     expect(userRegisterResponse.status).toEqual(200);
     const { _id: userId, token: userToken } = userRegisterResponse.body;
 

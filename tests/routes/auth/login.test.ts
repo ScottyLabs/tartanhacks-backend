@@ -1,20 +1,20 @@
 /**
  * Test suite for login
  */
- import { Express } from "express";
- import request from "supertest";
- import { setup, getApp, shutdown } from "../../index";
- 
- let app: Express = null;
- 
- beforeAll(async () => {
-   await setup();
-   app = getApp();
- });
- 
- afterAll(async () => {
-   await shutdown();
- });
+import { Express } from "express";
+import request from "supertest";
+import { setup, getApp, shutdown } from "../../index";
+
+let app: Express = null;
+
+beforeAll(async () => {
+  await setup();
+  app = getApp();
+});
+
+afterAll(async () => {
+  await shutdown();
+});
 
 describe("login", () => {
   // Standard login with just email and password should pass
@@ -75,9 +75,8 @@ describe("login", () => {
       .set("x-access-token", token)
       .send({
         email: "dummy4@scottylabs.org",
-        password: "abc124"
+        password: "abc124",
       });
     expect(login.body._id).toEqual(registerResponse.body._id);
   });
-
 });

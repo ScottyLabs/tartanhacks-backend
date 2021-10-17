@@ -67,7 +67,7 @@ router.get("/:id", isAuthenticated, asyncCatch(getTeam));
  *               description:
  *                 type: string
  *               visible:
- *                 type: string
+ *                 type: boolean
  *     responses:
  *       200:
  *          description: Success.
@@ -78,9 +78,9 @@ router.get("/:id", isAuthenticated, asyncCatch(getTeam));
  *       500:
  *          description: Internal Server Error.
  */
- router.post("/", isAuthenticated, asyncCatch(createTeam));
+router.post("/", isAuthenticated, asyncCatch(createTeam));
 
- /**
+/**
  * @swagger
  * /team/:
  *   patch:
@@ -112,9 +112,9 @@ router.get("/:id", isAuthenticated, asyncCatch(getTeam));
  *       500:
  *          description: Internal Server Error.
  */
- router.patch("/", isAuthenticated, asyncCatch(updateTeam));
+router.patch("/", isAuthenticated, asyncCatch(updateTeam));
 
- /**
+/**
  * @swagger
  * /team/invite/{userId}:
  *   post:
@@ -140,7 +140,7 @@ router.get("/:id", isAuthenticated, asyncCatch(getTeam));
  */
 router.post("/invite/:userId", isAuthenticated, asyncCatch(inviteUser));
 
- /**
+/**
  * @swagger
  * /team/kick/{userId}:
  *   post:
@@ -166,7 +166,7 @@ router.post("/invite/:userId", isAuthenticated, asyncCatch(inviteUser));
  */
 router.post("/kick/:userId", isAuthenticated, asyncCatch(kickUser));
 
- /**
+/**
  * @swagger
  * /team/promote/{userId}:
  *   post:

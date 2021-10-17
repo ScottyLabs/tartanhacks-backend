@@ -1,7 +1,5 @@
 import express, { Router } from "express";
-import {
-  getTeams
-} from "../controllers/TeamController";
+import { getTeams } from "../controllers/TeamController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAuthenticated } from "./middleware";
 

@@ -11,13 +11,10 @@ This is the backend system for the TartanHacks software suite.
 5. Run `npm install` to install packages
 6. Run `npm run build`
 7. Run `npm run dev` to run the project in dev mode.
-8. See the swagger endpoint documentation by visiting `localhost:3000/docs`
+8. See the swagger endpoint documentation by visiting `/docs`
 
-## Documentation
-|||
-|--|--|
-|Database Model|https://www.figma.com/file/TXPqZa0vUg3BNw9fHGn9vT/TartanHacks-Model?node-id=1%3A6|
-|Endpoints| https://www.notion.so/TartanHacks-Backend-efb4ac6250244dbab85254a56a85f318
+## Database Model
+https://www.figma.com/file/TXPqZa0vUg3BNw9fHGn9vT/TartanHacks-Model?node-id=1%3A6
 
 ## Style
 Please install [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)

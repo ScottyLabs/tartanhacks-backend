@@ -1,23 +1,23 @@
 /**
  * Test suite for email verification
  */
- import { Express } from "express";
- import request from "supertest";
- import { setup, getApp, shutdown } from "../../index";
- import User from "src/models/User";
- import Status from "src/models/Status";
- import { ObjectId } from "bson";
- 
- let app: Express = null;
- 
- beforeAll(async () => {
-   await setup();
-   app = getApp();
- });
- 
- afterAll(async () => {
-   await shutdown();
- });
+import { Express } from "express";
+import request from "supertest";
+import { setup, getApp, shutdown } from "../../index";
+import User from "src/models/User";
+import Status from "src/models/Status";
+import { ObjectId } from "bson";
+
+let app: Express = null;
+
+beforeAll(async () => {
+  await setup();
+  app = getApp();
+});
+
+afterAll(async () => {
+  await shutdown();
+});
 
 describe("verify", () => {
   // Standard verification should create a Status object, verifying the user
@@ -29,7 +29,9 @@ describe("verify", () => {
     const { _id } = registerResponse.body;
     const user = await User.findById(_id);
     const token = user.generateEmailVerificationToken();
-    const verifyResponse = await request(app).get(`/auth/verify/${token}`).send();
+    const verifyResponse = await request(app)
+      .get(`/auth/verify/${token}`)
+      .send();
     expect(verifyResponse.status).toEqual(200);
 
     const status = await Status.findOne({ user: new ObjectId(_id) });
@@ -49,5 +51,5 @@ describe("verify", () => {
 
     const status = await Status.findOne({ user: new ObjectId(_id) });
     expect(status).toBeNull();
-  })
+  });
 });

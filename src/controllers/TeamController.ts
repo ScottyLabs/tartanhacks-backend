@@ -237,7 +237,7 @@ export const kickUser = async (req: Request, res: Response): Promise<void> => {
   });
 
   res.status(200).send();
-}
+};
 
 /**
  * Invite a user to a team
@@ -299,7 +299,10 @@ export const inviteUser = async (
  * This can only be done by a team admin and simultaneously demotes the admin
  * that performed this action.
  */
-export const promoteUser = async (req: Request, res: Response): Promise<void> => {
+export const promoteUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { userId } = req.params;
   const currentUser = res.locals.user;
 
@@ -317,7 +320,10 @@ export const promoteUser = async (req: Request, res: Response): Promise<void> =>
   }
 
   if (userId === currentUser._id.toString()) {
-    return bad(res, "You can't promote yourself! You are already the team admin.");
+    return bad(
+      res,
+      "You can't promote yourself! You are already the team admin."
+    );
   }
 
   if (!team.members.includes(new ObjectId(userId))) {
@@ -326,12 +332,12 @@ export const promoteUser = async (req: Request, res: Response): Promise<void> =>
 
   await team.updateOne({
     $set: {
-      admin: new ObjectId(userId)
-    }
-  })
+      admin: new ObjectId(userId),
+    },
+  });
 
   res.status(200).send();
-}
+};
 
 /**
  * Leave a team
