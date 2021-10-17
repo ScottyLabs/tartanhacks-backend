@@ -2,10 +2,12 @@ import { ObjectId } from "bson";
 import User from "../models/User";
 import { IUser } from "../_types/User";
 import Status from "../models/Status";
+import { Request, Response } from "express";
 import { IStatus } from "../_types/Status";
 import { StatusField } from "../_enums/Status";
 import * as EventController from "./EventController";
 import { UpdateQuery } from "mongoose";
+import { bad, notFound } from "src/util/error";
 
 /**
  * Get a User by their authentication token
@@ -82,4 +84,23 @@ export const setAdmitted = async (
       admittedBy: admitterId,
     },
   });
+};
+
+export const getUserStatus = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  const currentUser = res.locals.user;
+
+  if (!id) {
+    return bad(res, "Missing user ID");
+  }
+
+  const status = await getStatus(currentUser._id);
+  if (!status) {
+    return notFound(res, "No recorded status associated with that user!");
+  }
+
+  res.json(status.toJSON());
 };

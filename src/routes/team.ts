@@ -138,7 +138,7 @@ router.patch("/", isAuthenticated, asyncCatch(updateTeam));
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/invite/:userId", isAuthenticated, asyncCatch(inviteUser));
+router.post("/invite/:id", isAuthenticated, asyncCatch(inviteUser));
 
 /**
  * @swagger
@@ -164,7 +164,7 @@ router.post("/invite/:userId", isAuthenticated, asyncCatch(inviteUser));
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/kick/:userId", isAuthenticated, asyncCatch(kickUser));
+router.post("/kick/:id", isAuthenticated, asyncCatch(kickUser));
 
 /**
  * @swagger
@@ -190,7 +190,7 @@ router.post("/kick/:userId", isAuthenticated, asyncCatch(kickUser));
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/promote/:userId", isAuthenticated, asyncCatch(promoteUser));
+router.post("/promote/:id", isAuthenticated, asyncCatch(promoteUser));
 
 /**
  * @swagger

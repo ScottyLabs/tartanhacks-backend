@@ -206,10 +206,10 @@ export const joinTeam = async (req: Request, res: Response): Promise<void> => {
  * Kick a member from a team
  */
 export const kickUser = async (req: Request, res: Response): Promise<void> => {
-  const { userId } = req.params;
+  const { id } = req.params;
   const currentUser = res.locals.user;
 
-  if (!userId) {
+  if (!id) {
     return bad(res, "Missing user ID");
   }
 
@@ -222,17 +222,17 @@ export const kickUser = async (req: Request, res: Response): Promise<void> => {
     return unauthorized(res, "You're not the team admin!");
   }
 
-  if (userId === currentUser._id.toString()) {
+  if (id === currentUser._id.toString()) {
     return bad(res, "You can't kick yourself! Leave the team instead.");
   }
 
-  if (!team.members.includes(new ObjectId(userId))) {
+  if (!team.members.includes(new ObjectId(id))) {
     return bad(res, "That user is not in your team!");
   }
 
   await team.updateOne({
     $pull: {
-      members: userId,
+      members: id,
     },
   });
 
@@ -247,10 +247,10 @@ export const inviteUser = async (
   res: Response
 ): Promise<void> => {
   const event = await getTartanHacks();
-  const { userId } = req.params;
+  const { id } = req.params;
   const currentUser = res.locals.user;
 
-  if (!userId) {
+  if (!id) {
     return bad(res, "Missing user ID");
   }
 
@@ -269,13 +269,13 @@ export const inviteUser = async (
     return bad(res, "The team is full!");
   }
 
-  if (team.members.includes(new ObjectId(userId))) {
+  if (team.members.includes(new ObjectId(id))) {
     return bad(res, "User is already in the team!");
   }
 
   const user = await User.findOne({
     event: event._id,
-    _id: new ObjectId(userId),
+    _id: new ObjectId(id),
   });
   if (!user) {
     return notFound(res, "User does not exist!");
@@ -303,10 +303,10 @@ export const promoteUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { userId } = req.params;
+  const { id } = req.params;
   const currentUser = res.locals.user;
 
-  if (!userId) {
+  if (!id) {
     return bad(res, "Missing user ID");
   }
 
@@ -319,20 +319,20 @@ export const promoteUser = async (
     return unauthorized(res, "You're not the team admin!");
   }
 
-  if (userId === currentUser._id.toString()) {
+  if (id === currentUser._id.toString()) {
     return bad(
       res,
       "You can't promote yourself! You are already the team admin."
     );
   }
 
-  if (!team.members.includes(new ObjectId(userId))) {
+  if (!team.members.includes(new ObjectId(id))) {
     return bad(res, "That user is not in your team!");
   }
 
   await team.updateOne({
     $set: {
-      admin: new ObjectId(userId),
+      admin: new ObjectId(id),
     },
   });
 

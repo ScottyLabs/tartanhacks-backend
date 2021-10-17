@@ -1,4 +1,5 @@
 import express, { Router } from "express";
+import { getUserStatus } from "src/controllers/StatusController";
 import {
   declineAcceptance,
   fileMiddleware,
@@ -8,7 +9,11 @@ import {
   submitResume,
 } from "../controllers/ProfileController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAuthenticated, isOwnerRecruiterOrAdmin } from "./middleware";
+import {
+  isAuthenticated,
+  isOwnerOrAdmin,
+  isOwnerRecruiterOrAdmin,
+} from "./middleware";
 
 const router: Router = express.Router();
 
@@ -21,16 +26,16 @@ const router: Router = express.Router();
 
 /**
  * @swagger
- * /user/profile/{id}:
+ * /user/profile/{userId}:
  *   get:
  *     summary: Get a user's application profile
  *     tags: [User Module]
- *     description: Get a user's application profile. Access - User only
+ *     description: Get a user's application profile. Access - Owner, Recruiter, or Admin only
  *     security:
  *       - apiKeyAuth: []
  *     parameters:
  *     - in: path
- *       name: id
+ *       name: userId
  *       required: true
  *       type: string
  *     responses:
@@ -46,6 +51,34 @@ const router: Router = express.Router();
  *           description: Internal Server Error.
  */
 router.get("/profile/:id", isOwnerRecruiterOrAdmin, asyncCatch(getUserProfile));
+
+/**
+ * @swagger
+ * /user/status/{userId}:
+ *   get:
+ *     summary: Get a user's status (application progress)
+ *     tags: [User Module]
+ *     description: Get a user's status. Access - Owner or Admin only
+ *     security:
+ *       - apiKeyAuth: []
+ *     parameters:
+ *     - in: path
+ *       name: userId
+ *       required: true
+ *       type: string
+ *     responses:
+ *       200:
+ *           description: Success.
+ *       400:
+ *           description: Bad request
+ *       401:
+ *           description: Unauthorized.
+ *       404:
+ *           description: User does not exist.
+ *       500:
+ *           description: Internal Server Error.
+ */
+router.get("/status/:id", isOwnerOrAdmin, asyncCatch(getUserStatus));
 
 /**
  * @swagger
