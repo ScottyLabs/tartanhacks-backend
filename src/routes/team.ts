@@ -51,7 +51,7 @@ router.get("/:id", isAuthenticated, asyncCatch(getTeam));
  * /team/:
  *   post:
  *     summary: Create and join a team
- *     tags: [Team Module]
+ *     tags: [Teams Module]
  *     description: Create and join a team. Access - User
  *     security:
  *       - apiKeyAuth: []
@@ -85,7 +85,7 @@ router.get("/:id", isAuthenticated, asyncCatch(getTeam));
  * /team/:
  *   patch:
  *     summary: Update a team's information
- *     tags: [Team Module]
+ *     tags: [Teams Module]
  *     description: Update a team's name, description, or visibility. Access - User, Team Admin
  *     security:
  *       - apiKeyAuth: []
@@ -119,7 +119,7 @@ router.get("/:id", isAuthenticated, asyncCatch(getTeam));
  * /team/invite/{userId}:
  *   post:
  *     summary: Invite a user to a team
- *     tags: [Team Module]
+ *     tags: [Teams Module]
  *     description: Invite a user to a team. Access - User, Team Admin
  *     security:
  *       - apiKeyAuth: []
@@ -145,7 +145,7 @@ router.post("/invite/:userId", isAuthenticated, asyncCatch(inviteUser));
  * /team/kick/{userId}:
  *   post:
  *     summary: Kick a user from your team
- *     tags: [Team Module]
+ *     tags: [Teams Module]
  *     description: Kick a user from your team. Access - User, Team Admin
  *     security:
  *       - apiKeyAuth: []
@@ -171,7 +171,7 @@ router.post("/kick/:userId", isAuthenticated, asyncCatch(kickUser));
  * /team/promote/{userId}:
  *   post:
  *     summary: Promote another member of your team into the admin
- *     tags: [Team Module]
+ *     tags: [Teams Module]
  *     description: Promote another member of your team into the admin. This will remove your admin status. Access - User, Team Admin
  *     security:
  *       - apiKeyAuth: []
@@ -197,7 +197,7 @@ router.post("/promote/:userId", isAuthenticated, asyncCatch(promoteUser));
  * /team/leave:
  *   post:
  *     summary: Leave your current team
- *     tags: [Team Module]
+ *     tags: [Teams Module]
  *     description: Leave your current team. Access - User
  *     security:
  *       - apiKeyAuth: []
