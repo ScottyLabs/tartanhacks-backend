@@ -7,7 +7,7 @@ import { IStatus } from "../_types/Status";
 import { StatusField } from "../_enums/Status";
 import * as EventController from "./EventController";
 import { UpdateQuery } from "mongoose";
-import { bad, notFound } from "src/util/error";
+import { bad, notFound } from "../util/error";
 
 /**
  * Get a User by their authentication token
