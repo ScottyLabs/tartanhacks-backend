@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { getUserStatus } from "src/controllers/StatusController";
+import { getUserStatus } from "../controllers/StatusController";
 import {
   declineAcceptance,
   fileMiddleware,
