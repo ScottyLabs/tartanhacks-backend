@@ -33,8 +33,8 @@ jobs:
 
       - name: Build project
         run: |
-          npm run lint:only
           npm install
+          npm run lint:only
           npm run build
 
       - name: Run tests
