@@ -68,7 +68,7 @@ router.get("/team/:teamId", isAuthenticated, asyncCatch(getTeamRequests));
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/user/:teamId", isAuthenticated, asyncCatch(getUserRequests));
+router.get("/user/:userId", isAuthenticated, asyncCatch(getUserRequests));
 
 /**
  * @swagger

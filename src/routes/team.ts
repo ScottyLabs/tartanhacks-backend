@@ -3,13 +3,14 @@ import {
   createTeam,
   getTeam,
   inviteUser,
+  joinTeam,
   kickUser,
   leaveTeam,
   promoteUser,
   updateTeam,
 } from "../controllers/TeamController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAdmin, isAuthenticated } from "./middleware";
+import { isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -113,6 +114,33 @@ router.post("/", isAuthenticated, asyncCatch(createTeam));
  *          description: Internal Server Error.
  */
 router.patch("/", isAuthenticated, asyncCatch(updateTeam));
+
+/**
+ * @swagger
+ * /team/join/{teamId}:
+ *   post:
+ *     summary: Send a request to join a team
+ *     tags: [Teams Module]
+ *     description: Send a request to join a team. Access - User
+ *     security:
+ *       - apiKeyAuth: []
+ *     parameters:
+ *     - in: path
+ *       name: teamId
+ *       required: true
+ *       type: string
+ *       description: The id of the team to join
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.post("/join/:id", isAuthenticated, asyncCatch(joinTeam));
 
 /**
  * @swagger

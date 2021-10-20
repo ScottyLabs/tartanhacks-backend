@@ -152,11 +152,11 @@ export const getTeam = async (req: Request, res: Response): Promise<void> => {
  */
 export const joinTeam = async (req: Request, res: Response): Promise<void> => {
   const event = await getTartanHacks();
-  const { teamId } = req.params;
+  const { id } = req.params;
   const user = res.locals.user;
   const { message } = req.body || {};
 
-  if (!teamId) {
+  if (!id) {
     return bad(res, "Missing team ID");
   }
 
@@ -169,7 +169,7 @@ export const joinTeam = async (req: Request, res: Response): Promise<void> => {
   }
 
   const team = await Team.findOne({
-    _id: new ObjectId(teamId),
+    _id: new ObjectId(id),
     event: event._id,
   });
 
@@ -180,7 +180,7 @@ export const joinTeam = async (req: Request, res: Response): Promise<void> => {
   const existingRequest = await TeamRequest.findOne({
     event: event._id,
     user: user._id,
-    team: new ObjectId(teamId),
+    team: new ObjectId(id),
   });
 
   if (existingRequest) {
@@ -193,7 +193,7 @@ export const joinTeam = async (req: Request, res: Response): Promise<void> => {
   const teamRequest = new TeamRequest({
     event: event._id,
     user: user._id,
-    team: new ObjectId(teamId),
+    team: new ObjectId(id),
     type: TeamRequestType.JOIN,
     status: TeamRequestStatus.PENDING,
     message,
