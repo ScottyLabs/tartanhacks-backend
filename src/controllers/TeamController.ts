@@ -134,17 +134,100 @@ export const getTeams = async (req: Request, res: Response): Promise<void> => {
  * Get information about a specific team
  */
 export const getTeam = async (req: Request, res: Response): Promise<void> => {
+  interface MemberEmail {
+    _id: string;
+    email: string;
+  }
+  interface MemberName {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  }
+  type MemberType = MemberEmail & MemberName;
+
   const event = await getTartanHacks();
   const { id } = req.params;
-  const team = await Team.findOne({
-    event: event._id,
-    _id: new ObjectId(id),
-  });
-  if (team == null) {
+  // Perform an aggregation to get email from User collection and name from Profile collection
+  const matchingTeams: any = await Team.aggregate([
+    {
+      $match: {
+        event: event._id,
+        _id: new ObjectId(id),
+      },
+    },
+    {
+      $limit: 1,
+    },
+    {
+      $lookup: {
+        from: "users",
+        let: { members: "$members" },
+        as: "emails",
+        pipeline: [
+          {
+            $match: { $expr: { $in: ["$_id", "$$members"] } },
+          },
+          {
+            $project: { _id: 1, email: 1 },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "profiles",
+        let: { members: "$members" },
+        as: "profiles",
+        pipeline: [
+          {
+            $match: { $expr: { $in: ["$user", "$$members"] } },
+          },
+          {
+            $project: { _id: "$user", firstName: 1, lastName: 1 },
+          },
+        ],
+      },
+    },
+    {
+      $addFields: { info: { $concatArrays: ["$emails", "$profiles"] } },
+    },
+    {
+      $project: { profiles: 0, emails: 0 },
+    },
+  ]);
+  // Email and name are in separate objects of type `MemberName` and `MemberEmail`
+  // in an array in `team.info`
+
+  if (matchingTeams.length == 0) {
     return notFound(res, "Team not found!");
-  } else {
-    res.json(team);
   }
+
+  const team = matchingTeams[0];
+
+  // Merge `MemberName` and `MemberEmail` objects corresponding to the same id
+  const memberMap: { [key: string]: Partial<MemberType> } = {};
+  const memberInfo = team.info as (MemberEmail | MemberName)[];
+  for (const member of memberInfo) {
+    const { _id }: { _id: string } = member;
+    if (memberMap[_id] != null) {
+      memberMap[_id] = { ...memberMap[_id], ...member };
+    } else {
+      memberMap[_id] = {
+        ...member,
+        firstName: null,
+        lastName: null,
+      };
+    }
+  }
+
+  // Map original members field to corresponding objects with name and email information
+  const members = team.members.map((memberId: string) => memberMap[memberId]);
+  team.members = members;
+
+  // Delete intermediate aggregation array
+  delete team.info;
+
+  res.json(team);
 };
 
 /**
