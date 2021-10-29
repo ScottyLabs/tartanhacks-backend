@@ -23,7 +23,6 @@ const User: Schema<IUser> = new Schema(
     company: {
       type: Schema.Types.ObjectId,
       ref: "Sponsor",
-      required: true,
       default: null,
     },
     lastLogin: Number,

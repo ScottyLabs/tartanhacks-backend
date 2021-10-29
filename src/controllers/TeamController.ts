@@ -42,6 +42,23 @@ const findTeamByName = async (name: string): Promise<ITeam> => {
 };
 
 /**
+ * Get the team of the currently logged in user
+ */
+export const getCurrentUserTeam = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = res.locals.user;
+
+  const team = await findUserTeam(user._id);
+  if (!team) {
+    return bad(res, "You are not in a team!");
+  }
+
+  res.json(team.toJSON());
+};
+
+/**
  * Create a new team
  */
 export const createTeam = async (
@@ -223,6 +240,7 @@ export const getTeam = async (req: Request, res: Response): Promise<void> => {
   // Map original members field to corresponding objects with name and email information
   const members = team.members.map((memberId: string) => memberMap[memberId]);
   team.members = members;
+  team.admin = memberMap[team.admin];
 
   // Delete intermediate aggregation array
   delete team.info;

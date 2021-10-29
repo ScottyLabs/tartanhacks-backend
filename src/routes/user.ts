@@ -14,6 +14,7 @@ import {
   isOwnerOrAdmin,
   isOwnerRecruiterOrAdmin,
 } from "./middleware";
+import { getCurrentUserTeam } from "src/controllers/TeamController";
 
 const router: Router = express.Router();
 
@@ -79,6 +80,27 @@ router.get("/profile/:id", isOwnerRecruiterOrAdmin, asyncCatch(getUserProfile));
  *           description: Internal Server Error.
  */
 router.get("/status/:id", isOwnerOrAdmin, asyncCatch(getUserStatus));
+
+/**
+ * @swagger
+ * /user/team:
+ *   get:
+ *     summary: Get the current user's team
+ *     tags: [User Module]
+ *     description: Get the current user's team. Access - Owner only
+ *     security:
+ *       - apiKeyAuth: []
+ *     responses:
+ *       200:
+ *           description: Success.
+ *       400:
+ *           description: Bad request or user does not have a team
+ *       401:
+ *           description: Unauthorized.
+ *       500:
+ *           description: Internal Server Error.
+ */
+router.get("/team", isAuthenticated, asyncCatch(getCurrentUserTeam));
 
 /**
  * @swagger
