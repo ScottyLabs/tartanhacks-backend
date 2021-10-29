@@ -14,7 +14,7 @@ import {
   isOwnerOrAdmin,
   isOwnerRecruiterOrAdmin,
 } from "./middleware";
-import { getCurrentUserTeam } from "src/controllers/TeamController";
+import { getCurrentUserTeam } from "../controllers/TeamController";
 
 const router: Router = express.Router();
 

@@ -1,7 +1,5 @@
 import express, { Router } from "express";
 import { createBookmark } from "../controllers/BookmarkController";
-import { createSponsor, getSponsor } from "../controllers/SponsorController";
-import { makeRecruiter, removeRecruiter } from "../controllers/UserController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
 
