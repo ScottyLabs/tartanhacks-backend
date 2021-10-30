@@ -12,7 +12,8 @@
     "lint:pretty": "prettier --write .",
     "test": "NODE_OPTIONS=--trace-warnings doppler setup -p tartanhacks-backend -c dev && doppler run -- jest tests --detectOpenHandles",
     "test:nodoppler": "NODE_OPTIONS=--trace-warnings && jest tests --detectOpenHandles",
-    "coverage": "doppler setup -p tartanhacks-backend -c dev && doppler run -- jest tests --coverage",
+    "coverage": "npm test -- --coverage",
+    "coverage:badges": "npm run coverage && jest-coverage-badges",
     "build:swagger": "swagger-jsdoc -d src/swagger.js src/routes/*.ts -o swagger.json",
     "heroku": "node ."
   },
@@ -30,6 +31,7 @@
     "email-templates": "^8.0.7",
     "express": "^4.17.1",
     "googleapis": "^77.0.0",
+    "jest-coverage-badges": "^1.1.2",
     "jsonwebtoken": "^8.5.1",
     "luxon": "^1.27.0",
     "mjml": "^4.9.3",

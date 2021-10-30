@@ -12,7 +12,7 @@ export interface IProfile extends Document {
   user: ObjectId;
   firstName: string;
   lastName: string;
-  displayName?: string;
+  displayName: string;
   age: number;
   school: string;
   college?: Profile.CMUCollege;

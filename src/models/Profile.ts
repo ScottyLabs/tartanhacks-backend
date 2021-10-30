@@ -60,6 +60,7 @@ const Profile: Schema<IProfile> = new Schema(
     },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
+    displayName: { type: String, required: true },
     age: { type: Number, required: true },
     school: { type: String, required: true },
     college: {
@@ -87,7 +88,7 @@ const Profile: Schema<IProfile> = new Schema(
       enum: Object.values(Ethnicity),
       required: true,
     },
-    totalPoints: { type: Number, default: 0, required: true },
+    totalPoints: { type: Number, default: 0 },
     ethnicityOther: String,
     phoneNumber: {
       type: String,

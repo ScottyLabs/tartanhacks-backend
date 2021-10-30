@@ -1,5 +1,7 @@
 # TartanHacks backend
 
+![TartanHacks Backend](https://github.com/ScottyLabs/tartanhacks-backend/actions/workflows/main.yml/badge.svg)
+
 This is the backend system for the TartanHacks software suite. 
 
 ## Getting Started
