@@ -147,6 +147,6 @@ router.post("/:id/reject", isAdmin, asyncCatch(rejectUser));
  *      500:
  *        description: Internal Server Error.
  */
-router.post("/:id/team", isOwnerOrAdmin, asyncCatch(getUserTeam));
+router.get("/:id/team", isOwnerOrAdmin, asyncCatch(getUserTeam));
 
 export default router;
