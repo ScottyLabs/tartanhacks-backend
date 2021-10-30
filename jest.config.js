@@ -6,5 +6,5 @@ module.exports = {
   moduleNameMapper: {
     "^src/(.*)$": "<rootDir>/src/$1",
   },
-  coverageReporters: ["json-summary"]
+  coverageReporters: ["json-summary"],
 };

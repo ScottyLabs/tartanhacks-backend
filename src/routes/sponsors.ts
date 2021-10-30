@@ -1,7 +1,5 @@
 import express, { Router } from "express";
-import {
-  getSponsors
-} from "../controllers/SponsorController";
+import { getSponsors } from "../controllers/SponsorController";
 import { asyncCatch } from "../util/asyncCatch";
 
 const router: Router = express.Router();

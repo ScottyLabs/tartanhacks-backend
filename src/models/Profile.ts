@@ -150,6 +150,13 @@ const Profile: Schema<IProfile> = new Schema(
       createdAt: "createdAt",
       updatedAt: "updatedAt",
     },
+    toJSON: {
+      // Remove password field when getting json of user
+      transform: (doc, ret, options) => {
+        ret.resume = `https://drive.google.com/file/d/${ret.resume}`;
+        return ret;
+      },
+    },
   }
 );
 
