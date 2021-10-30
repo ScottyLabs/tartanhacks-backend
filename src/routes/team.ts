@@ -3,6 +3,7 @@ import {
   createTeam,
   getTeam,
   inviteUser,
+  inviteUserByEmail,
   joinTeam,
   kickUser,
   leaveTeam,
@@ -146,9 +147,9 @@ router.post("/join/:id", isAuthenticated, asyncCatch(joinTeam));
  * @swagger
  * /team/invite/{userId}:
  *   post:
- *     summary: Invite a user to a team
+ *     summary: Invite a user to a team by their ID
  *     tags: [Teams Module]
- *     description: Invite a user to a team. Access - User, Team Admin
+ *     description: Invite a user to a team by their ID. Access - User, Team Admin
  *     security:
  *       - apiKeyAuth: []
  *     parameters:
@@ -167,6 +168,36 @@ router.post("/join/:id", isAuthenticated, asyncCatch(joinTeam));
  *          description: Internal Server Error.
  */
 router.post("/invite/:id", isAuthenticated, asyncCatch(inviteUser));
+
+/**
+ * @swagger
+ * /team/invite:
+ *   post:
+ *     summary: Invite a user to a team by their email address
+ *     tags: [Teams Module]
+ *     description: Invite a user to a team by their email address. Access - User, Team Admin
+ *     security:
+ *       - apiKeyAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       401:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.post("/invite", isAuthenticated, asyncCatch(inviteUserByEmail));
 
 /**
  * @swagger

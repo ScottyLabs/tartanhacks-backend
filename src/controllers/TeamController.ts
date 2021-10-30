@@ -396,6 +396,62 @@ export const inviteUser = async (
 };
 
 /**
+ * Invite a user to a team
+ */
+export const inviteUserByEmail = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const event = await getTartanHacks();
+  const { email } = req.body;
+  const currentUser = res.locals.user;
+
+  if (!email) {
+    return bad(res, "Missing email in request body");
+  }
+
+  const team = await findUserTeam(currentUser._id);
+  if (!team) {
+    return bad(res, "You're not in a team!");
+  }
+
+  if (!team.admin.equals(currentUser._id)) {
+    return unauthorized(res, "You're not the team admin!");
+  }
+
+  const { maxTeamSize } = await SettingsController.getSettings();
+
+  if (team.members.length >= maxTeamSize) {
+    return bad(res, "The team is full!");
+  }
+
+  const user = await User.findOne({
+    event: event._id,
+    email,
+  });
+
+  if (!user) {
+    return notFound(res, "User does not exist!");
+  }
+
+  if (team.members.includes(user._id)) {
+    return bad(res, "User is already in the team!");
+  }
+
+  const request = new TeamRequest({
+    event: event._id,
+    user: user._id,
+    team: team._id,
+    type: TeamRequestType.INVITE,
+    status: TeamRequestStatus.PENDING,
+  });
+
+  await request.save();
+
+  res.json(request.toJSON());
+};
+
+/**
  * Promote another team member into an admin
  * This can only be done by a team admin and simultaneously demotes the admin
  * that performed this action.
