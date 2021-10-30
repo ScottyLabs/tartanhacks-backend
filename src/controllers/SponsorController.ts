@@ -55,3 +55,19 @@ export const getSponsor = async (
     recruiters,
   });
 };
+
+/**
+ * Get list of all sponsors
+ */
+export const getSponsors = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
+  const sponsors = await Sponsor.find({ event: tartanhacks._id }).select([
+    "_id",
+    "name",
+  ]);
+
+  res.json(sponsors);
+};
