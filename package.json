@@ -48,6 +48,9 @@
   "devDependencies": {
     "@jest/types": "^27.0.2",
     "@shelf/jest-mongodb": "^1.2.5",
+    "@swc/cli": "^0.1.51",
+    "@swc/core": "^1.2.106",
+    "@swc/helpers": "^0.2.13",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.11",
     "@types/jest": "^26.0.23",

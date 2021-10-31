@@ -1,9 +1,7 @@
 import { model, Schema } from "mongoose";
-import { ICheckinItem } from "../_types/CheckinItem";
-import { CheckinAccessLevel } from "../_enums/CheckinItem";
 import isProduction from "../util/isProduction";
-import { IBookmark } from "../_types/Bookmark";
 import { BookmarkType } from "../_enums/BookmarkType";
+import { IBookmark } from "../_types/Bookmark";
 
 /**
  * Checkin items, e.g. arrival, attending a workshop
