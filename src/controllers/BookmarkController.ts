@@ -7,6 +7,7 @@ import { IUser } from "../_types/User";
 import { ObjectId } from "bson";
 import User from "../models/User";
 import Project from "../models/Project";
+import { driveIdToUrl } from "src/util/driveIdToUrl";
 
 /**
  * Create a new bookmark
@@ -37,7 +38,6 @@ export const createBookmark = async (
     }
     const participantUser = await User.findOne({
       _id: new ObjectId(participant),
-      event: event._id,
     });
     if (!participantUser) {
       return notFound(res, "Participant does not exist");
@@ -81,4 +81,97 @@ export const createBookmark = async (
     await bookmark.save();
     res.json(bookmark);
   }
+};
+
+export const getParticipantBookmarks = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const event = await getTartanHacks();
+  const user: IUser = res.locals.user;
+  const bookmarks = await Bookmark.aggregate([
+    {
+      $match: {
+        event: event._id,
+        user: user._id,
+        type: BookmarkType.PARTICIPANT,
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        let: { participantId: "$participant" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ["$_id", "$$participantId"],
+              },
+            },
+          },
+          {
+            $project: {
+              email: 1,
+            },
+          },
+        ],
+        as: "participant",
+      },
+    },
+    {
+      $unwind: "$participant",
+    },
+    {
+      $lookup: {
+        from: "profiles",
+        let: { participantId: "$participant._id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ["$user", "$$participantId"],
+              },
+            },
+          },
+          {
+            $project: {
+              firstName: 1,
+              lastName: 1,
+              resume: 1,
+              _id: 0,
+            },
+          },
+        ],
+        as: "profile",
+      },
+    },
+    {
+      $unwind: "$profile",
+    },
+    {
+      $project: {
+        type: 1,
+        description: 1,
+        createdAt: 1,
+        participant: 1,
+        profile: 1,
+      },
+    },
+  ]);
+
+  bookmarks.forEach((bookmark) => {
+    bookmark.participant = { ...bookmark.participant, ...bookmark.profile };
+    if (bookmark.participant.resume) {
+      bookmark.participant.resume = driveIdToUrl(bookmark.participant.resume);
+    }
+    delete bookmark.profile;
+  });
+  res.json(bookmarks);
+};
+
+export const getProjectBookmarks = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  res.json([]);
 };

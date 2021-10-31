@@ -1,6 +1,8 @@
 import express from "express";
 import authRouter from "./auth";
 import adminRouter from "./admin";
+import bookmarkRouter from "./bookmark";
+import bookmarksRouter from "./bookmarks";
 import userRouter from "./user";
 import usersRouter from "./users";
 import scheduleRouter from "./schedule";
@@ -17,6 +19,8 @@ import sponsorsRouter from "./sponsors";
 const router = express.Router();
 router.use("/auth", authRouter);
 router.use("/admin", adminRouter);
+router.use("/bookmark", bookmarkRouter);
+router.use("/bookmarks", bookmarksRouter);
 router.use("/user", userRouter);
 router.use("/users", usersRouter);
 router.use("/schedule", scheduleRouter);

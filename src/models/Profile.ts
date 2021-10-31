@@ -12,6 +12,7 @@ import {
   WorkPermission,
 } from "../_enums/Profile";
 import { IProfile } from "../_types/Profile";
+import { driveIdToUrl } from "src/util/driveIdToUrl";
 
 /**
  * Confirmation signatures after a user is accepted into the event
@@ -153,7 +154,7 @@ const Profile: Schema<IProfile> = new Schema(
     toJSON: {
       // Remove password field when getting json of user
       transform: (doc, ret, options) => {
-        ret.resume = `https://drive.google.com/uc?export=download&id=${ret.resume}`;
+        ret.resume = driveIdToUrl(ret.resume);
         return ret;
       },
     },
