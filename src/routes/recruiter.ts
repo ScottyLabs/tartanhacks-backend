@@ -27,6 +27,15 @@ const router: Router = express.Router();
  *       name: id
  *       required: true
  *       type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               sponsor:
+ *                 type: string
  *     responses:
  *       200:
  *          description: Success.
