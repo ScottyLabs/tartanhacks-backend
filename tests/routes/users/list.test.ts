@@ -49,7 +49,6 @@ describe("list", () => {
     const response = await request(app)
       .get("/users")
       .set("x-access-token", token);
-    console.log("Response", response);
     expect(response.body.length).toEqual(user_count);
   });
 });
