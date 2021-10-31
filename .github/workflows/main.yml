@@ -42,4 +42,4 @@ jobs:
 
       - name: Run tests
         run: |
-          npm run test:nodoppler
+          npm run test:coverage

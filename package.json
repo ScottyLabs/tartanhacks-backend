@@ -13,7 +13,7 @@
     "test": "NODE_OPTIONS=--trace-warnings doppler setup -p tartanhacks-backend -c dev && doppler run -- jest tests --detectOpenHandles",
     "test:nodoppler": "NODE_OPTIONS=--trace-warnings && jest tests --detectOpenHandles",
     "coverage": "npm test -- --coverage",
-    "coverage:badges": "npm run coverage && jest-coverage-badges",
+    "test:coverage": "npm run test:nodoppler -- --coverage",
     "build:swagger": "swagger-jsdoc -d src/swagger.js src/routes/*.ts -o swagger.json",
     "heroku": "node ."
   },
