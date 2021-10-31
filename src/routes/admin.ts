@@ -33,7 +33,7 @@ const router: Router = express.Router();
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       404:
  *          description: User does not exist.
@@ -63,7 +63,7 @@ router.post("/:id", isAdmin, asyncCatch(createAdmin));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       404:
  *          description: User does not exist.

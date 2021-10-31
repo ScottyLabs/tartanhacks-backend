@@ -30,8 +30,8 @@ const router: Router = express.Router();
  *    responses:
  *      200:
  *        description: Success.
- *      401:
- *        description: Unauthorized.
+ *      403:
+ *        description: Forbidden.
  *      500:
  *        description: Internal Server Error.
  */
@@ -54,8 +54,6 @@ router.get("/", isAdmin, asyncCatch(getUsers));
  *    responses:
  *      200:
  *        description: Success.
- *      401:
- *        description: Unauthorized.
  *      403:
  *        description: Forbidden.
  *      500:
@@ -80,8 +78,6 @@ router.get("/:id", isOwnerOrAdmin, asyncCatch(getUserById));
  *    responses:
  *      200:
  *        description: Success.
- *      401:
- *        description: Unauthorized.
  *      403:
  *        description: Forbidden.
  *      404:
@@ -108,8 +104,6 @@ router.post("/:id/admit", isAdmin, asyncCatch(admitUser));
  *    responses:
  *      200:
  *        description: Success.
- *      401:
- *        description: Unauthorized.
  *      403:
  *        description: Forbidden.
  *      404:
@@ -138,8 +132,6 @@ router.post("/:id/reject", isAdmin, asyncCatch(rejectUser));
  *        description: Success.
  *      400:
  *        description: User does not have a team
- *      401:
- *        description: Unauthorized.
  *      403:
  *        description: Forbidden.
  *      404:

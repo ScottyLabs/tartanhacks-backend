@@ -33,7 +33,7 @@ const router: Router = express.Router();
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -61,7 +61,7 @@ router.get("/leaderboard", asyncCatch(getLeaderBoard));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -103,7 +103,7 @@ router.get("/history/:id", isOwnerOrAdmin, asyncCatch(getCheckInHistory));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -152,7 +152,7 @@ router.post("/", isAdmin, asyncCatch(addNewCheckInItem));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -178,7 +178,7 @@ router.patch("/:id", isAdmin, asyncCatch(editCheckInItem));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -197,7 +197,7 @@ router.get("/:id", asyncCatch(getCheckInItemByID));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -225,7 +225,7 @@ router.get("/", asyncCatch(getAllCheckInItems));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.

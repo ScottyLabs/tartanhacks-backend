@@ -79,7 +79,7 @@ describe("creation", () => {
       .post(`/admin/${userId}`)
       .set("x-access-token", userToken)
       .send();
-    expect(promoteResponse.status).toEqual(401);
+    expect(promoteResponse.status).toEqual(403);
 
     //  Login user to get details
     const loginResponse = await request(app)

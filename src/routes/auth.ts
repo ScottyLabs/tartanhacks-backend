@@ -43,7 +43,7 @@ const router: Router = express.Router();
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -80,7 +80,7 @@ router.post("/register", asyncCatch(register));
  *     responses:
  *       200:
  *          description: Success.
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       404:
  *          description: User does not exist.
@@ -160,7 +160,7 @@ router.post("/verify/resend", asyncCatch(resendVerificationEmail));
  *     responses:
  *       200:
  *          description: Success.
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       404:
  *          description: User does not exist.
@@ -190,7 +190,7 @@ router.post("/reset", asyncCatch(sendPasswordResetEmail));
  *     responses:
  *       200:
  *          description: Success.
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       404:
  *          description: User does not exist.

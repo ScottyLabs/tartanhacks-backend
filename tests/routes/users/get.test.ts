@@ -130,6 +130,6 @@ describe("get", () => {
       .set("x-access-token", user2Token)
       .send();
 
-    expect(getResponse.status).toEqual(401);
+    expect(getResponse.status).toEqual(403);
   });
 });

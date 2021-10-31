@@ -41,7 +41,7 @@ const router: Router = express.Router();
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -75,7 +75,7 @@ router.get("/:id", isAuthenticated, asyncCatch(getTeam));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -109,7 +109,7 @@ router.post("/", isAuthenticated, asyncCatch(createTeam));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -136,7 +136,7 @@ router.patch("/", isAuthenticated, asyncCatch(updateTeam));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -162,7 +162,7 @@ router.post("/join/:id", isAuthenticated, asyncCatch(joinTeam));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -192,7 +192,7 @@ router.post("/invite/:id", isAuthenticated, asyncCatch(inviteUser));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -218,7 +218,7 @@ router.post("/invite", isAuthenticated, asyncCatch(inviteUserByEmail));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -244,7 +244,7 @@ router.post("/kick/:id", isAuthenticated, asyncCatch(kickUser));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -265,7 +265,7 @@ router.post("/promote/:id", isAuthenticated, asyncCatch(promoteUser));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.

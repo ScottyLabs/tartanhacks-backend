@@ -97,7 +97,7 @@ describe("removal", () => {
       .post(`/admin/remove/${adminId}`)
       .set("x-access-token", userToken)
       .send();
-    expect(demoteResponse.status).toEqual(401);
+    expect(demoteResponse.status).toEqual(403);
 
     //  Login to admin user admin to get details
     const loginResponse = await request(app)

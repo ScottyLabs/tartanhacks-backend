@@ -20,9 +20,9 @@ export const bad = (res: Response, message?: string): void => {
  */
 export const unauthorized = (res: Response, message?: string): void => {
   if (!message) {
-    res.status(401).send("Unauthorized");
+    res.status(403).send("Unauthorized");
   } else {
-    res.status(401).json({ message });
+    res.status(403).json({ message });
   }
 };
 

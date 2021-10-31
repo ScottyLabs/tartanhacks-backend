@@ -44,7 +44,7 @@ const router: Router = express.Router();
  *           description: Success.
  *       400:
  *           description: Bad request
- *       401:
+ *       403:
  *           description: Unauthorized.
  *       404:
  *           description: User does not exist.
@@ -72,7 +72,7 @@ router.get("/profile/:id", isOwnerRecruiterOrAdmin, asyncCatch(getUserProfile));
  *           description: Success.
  *       400:
  *           description: Bad request
- *       401:
+ *       403:
  *           description: Unauthorized.
  *       404:
  *           description: User does not exist.
@@ -95,7 +95,7 @@ router.get("/status/:id", isOwnerOrAdmin, asyncCatch(getUserStatus));
  *           description: Success.
  *       400:
  *           description: Bad request or user does not have a team
- *       401:
+ *       403:
  *           description: Unauthorized.
  *       500:
  *           description: Internal Server Error.
@@ -198,7 +198,7 @@ router.get("/team", isAuthenticated, asyncCatch(getCurrentUserTeam));
  *           description: Success.
  *       400:
  *           description: Bad request
- *       401:
+ *       403:
  *           description: Unauthorized.
  *       404:
  *           description: User does not exist.
@@ -231,7 +231,7 @@ router.put("/profile", isAuthenticated, asyncCatch(submitProfile));
  *        description: Success.
  *      400:
  *        description: Bad request
- *      401:
+ *      403:
  *        description: Unauthorized.
  *      500:
  *        description: Internal Server Error.
@@ -276,7 +276,7 @@ router.post(
  *        description: Success.
  *      400:
  *        description: Bad request
- *      401:
+ *      403:
  *        description: Unauthorized.
  *      500:
  *        description: Internal Server Error.
@@ -297,7 +297,7 @@ router.put("/confirmation", isAuthenticated, asyncCatch(submitConfirmation));
  *        description: Success.
  *      400:
  *        description: Bad request
- *      401:
+ *      403:
  *        description: Unauthorized.
  *      500:
  *        description: Internal Server Error.

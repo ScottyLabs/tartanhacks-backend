@@ -57,7 +57,7 @@ const router: Router = express.Router();
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -108,7 +108,7 @@ router.post("/", isAdmin, asyncCatch(addNewScheduleItem));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -134,7 +134,7 @@ router.patch("/:id", isAdmin, asyncCatch(editScheduleItem));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -153,7 +153,7 @@ router.get("/:id", asyncCatch(getScheduleItemByID));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -181,7 +181,7 @@ router.get("/", asyncCatch(getAllScheduleItems));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.

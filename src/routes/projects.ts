@@ -53,7 +53,7 @@ const router: Router = express.Router();
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -86,7 +86,7 @@ router.post("/prizes", isAdmin, asyncCatch(createNewPrize));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -130,7 +130,7 @@ router.put(
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -175,7 +175,7 @@ router.post("/", isAuthenticated, asyncCatch(createNewProject));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -220,7 +220,7 @@ router.patch("/prizes/:id", isAdmin, asyncCatch(editPrize));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -246,7 +246,7 @@ router.patch("/:id", isProjectOwnerOrAdmin, asyncCatch(editProject));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -265,7 +265,7 @@ router.get("/prizes/:id", asyncCatch(getPrizeByID));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -293,7 +293,7 @@ router.get("/prizes", asyncCatch(getAllPrizes));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -314,7 +314,7 @@ router.get("/:id", isProjectOwnerOrAdmin, asyncCatch(getProjectByID));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -342,7 +342,7 @@ router.get("/", isAdmin, asyncCatch(getAllProjects));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.
@@ -370,7 +370,7 @@ router.delete("/prizes/:id", isAdmin, asyncCatch(deletePrize));
  *          description: Success.
  *       400:
  *          description: Bad request
- *       401:
+ *       403:
  *          description: Unauthorized.
  *       500:
  *          description: Internal Server Error.

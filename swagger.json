@@ -45,7 +45,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "404": {
@@ -87,7 +87,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "404": {
@@ -133,7 +133,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -173,7 +173,7 @@
           "200": {
             "description": "Success."
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "404": {
@@ -279,7 +279,7 @@
           "200": {
             "description": "Success."
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "404": {
@@ -320,7 +320,7 @@
           "200": {
             "description": "Success."
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "404": {
@@ -346,7 +346,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -385,7 +385,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -446,7 +446,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -518,7 +518,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -550,7 +550,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -587,7 +587,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -610,7 +610,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -692,7 +692,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -728,7 +728,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -764,7 +764,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -831,7 +831,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -904,7 +904,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -936,7 +936,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -973,7 +973,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -996,7 +996,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -1024,7 +1024,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "404": {
@@ -1098,7 +1098,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -1141,7 +1141,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -1339,7 +1339,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "404": {
@@ -1386,7 +1386,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -1444,7 +1444,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -1472,7 +1472,7 @@
           "400": {
             "description": "Bad request"
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -1497,7 +1497,7 @@
           "200": {
             "description": "Success."
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "500": {
@@ -1530,7 +1530,7 @@
           "200": {
             "description": "Success."
           },
-          "401": {
+          "403": {
             "description": "Unauthorized."
           },
           "403": {

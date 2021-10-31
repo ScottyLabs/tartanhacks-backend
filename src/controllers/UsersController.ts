@@ -53,6 +53,10 @@ export const admitUser = async (req: Request, res: Response): Promise<void> => {
       return bad(res, "User not found");
     }
     const currentUser = res.locals.user;
+    const status = await StatusController.getStatus(user._id);
+    if (!status.completedProfile) {
+      return bad(res, "User has not completed their profile yet!");
+    }
     await StatusController.setAdmitted(user._id, currentUser._id);
     res.json(200);
   } catch (err) {
@@ -71,6 +75,10 @@ export const rejectUser = async (
       return notFound(res, "User not found");
     }
     const currentUser = res.locals.user;
+    const status = await StatusController.getStatus(user._id);
+    if (!status.completedProfile) {
+      return bad(res, "User has not completed their profile yet!");
+    }
     await StatusController.setAdmitted(user._id, currentUser._id, false);
     res.json(200);
   } catch (err) {
