@@ -39,19 +39,17 @@ export const getSponsor = async (
 ): Promise<void> => {
   const { id } = req.params;
 
-  const sponsor = await Sponsor.findById(id);
+  const sponsor = await Sponsor.findById(id).select(["_id", "name"]);
   if (sponsor == null) {
     return notFound(res, "Sponsor not found");
   }
 
-  const event = await getTartanHacks();
   const recruiters = await User.find({
     company: sponsor._id,
-    event: event._id,
-  });
+  }).select("_id email");
 
   res.json({
-    ...sponsor,
+    ...sponsor.toJSON(),
     recruiters,
   });
 };
