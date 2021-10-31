@@ -32,7 +32,7 @@ export const makeRecruiter = async (
   const { id } = req.params;
   const { sponsor } = req.body;
 
-  const user = await User.findOne({ _id: new ObjectId(id), event: event._id });
+  const user = await User.findOne({ _id: new ObjectId(id) });
   if (!user) {
     return notFound(res, "User not found");
   }
@@ -63,7 +63,7 @@ export const removeRecruiter = async (
   const event = await getTartanHacks();
   const { id } = req.params;
 
-  const user = await User.findOne({ _id: new ObjectId(id), event: event._id });
+  const user = await User.findOne({ _id: new ObjectId(id) });
   if (!user) {
     return notFound(res, "User not found");
   }
