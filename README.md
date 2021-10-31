@@ -1,4 +1,4 @@
-# TartanHacks backend
+# TartanHacks Backend
 
 ![TartanHacks Backend](https://github.com/ScottyLabs/tartanhacks-backend/actions/workflows/main.yml/badge.svg)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/c33b0b2952c311738215/test_coverage)](https://codeclimate.com/github/ScottyLabs/tartanhacks-backend/test_coverage)
