@@ -12,7 +12,7 @@ import {
   WorkPermission,
 } from "../_enums/Profile";
 import { IProfile } from "../_types/Profile";
-import { driveIdToUrl } from "src/util/driveIdToUrl";
+import { driveIdToUrl } from "../util/driveIdToUrl";
 
 /**
  * Confirmation signatures after a user is accepted into the event

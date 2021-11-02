@@ -7,7 +7,7 @@ import { IUser } from "../_types/User";
 import { ObjectId } from "bson";
 import User from "../models/User";
 import Project from "../models/Project";
-import { driveIdToUrl } from "src/util/driveIdToUrl";
+import { driveIdToUrl } from "../util/driveIdToUrl";
 
 /**
  * Create a new bookmark
