@@ -118,14 +118,21 @@ router.get("/team", isAuthenticated, asyncCatch(getCurrentUserTeam));
  *           schema:
  *             type: object
  *             properties:
+ *               displayName:
+ *                 type: string
+ *                 required: true
  *               firstName:
  *                 type: string
+ *                 required: true
  *               lastName:
  *                 type: string
+ *                 required: true
  *               age:
  *                 type: integer
+ *                 required: true
  *               school:
  *                 type: string
+ *                 required: true
  *               college:
  *                 type: string
  *                 enum: [SCS, CIT, CFA, Dietrich, MCS, Tepper, Heinz]
@@ -136,9 +143,11 @@ router.get("/team", isAuthenticated, asyncCatch(getCurrentUserTeam));
  *                 type: integer
  *                 minimum: 2022
  *                 maximum: 2027
+ *                 required: true
  *               gender:
  *                 type: string
  *                 enum: [Male, Female, Prefer not to say, Other]
+ *                 required: true
  *               genderOther:
  *                 type: string
  *               ethnicity:
@@ -169,8 +178,11 @@ router.get("/team", isAuthenticated, asyncCatch(getCurrentUserTeam));
  *                 type: array
  *                 items:
  *                   type: string
+ *               resume:
+ *                 type: string
  *               github:
  *                 type: string
+ *                 required: true
  *               design:
  *                 type: string
  *               website:

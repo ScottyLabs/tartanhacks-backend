@@ -80,14 +80,15 @@ export const submitProfile = async (
     const profile = await Profile.findOneAndUpdate(
       { user: user._id, event: tartanhacks._id },
       {
-        ...profileArgs,
         displayName: generateRandomName(),
+        ...profileArgs,
       },
       {
         upsert: true,
         returnOriginal: false,
       }
     );
+    await updateStatus(user._id, StatusField.COMPLETED_PROFILE, true);
     res.json(profile.toJSON());
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
@@ -112,26 +113,9 @@ export const submitResume = async (
     }
     const user = res.locals.user;
     const profile = await getProfile(user._id);
-    if (profile == null) {
-      return bad(res, "User does not have a profile yet. Create one first");
-    }
-
     const { buffer } = req.file;
-    const fileId = await uploadResume(user, profile, buffer);
-    await profile.updateOne(
-      {
-        $set: {
-          resume: fileId,
-          updatedAt: new Date(),
-        },
-      },
-      {
-        returnOriginal: false,
-      }
-    );
-
-    await updateStatus(user._id, StatusField.COMPLETED_PROFILE, true);
-    res.json(profile.toJSON());
+    const fileId = await uploadResume(buffer, user, profile);
+    res.json(fileId);
   } catch (err) {
     console.error(err);
     error(res);

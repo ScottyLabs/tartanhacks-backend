@@ -21,13 +21,14 @@ const redirectUri = "urn:ietf:wg:oauth:2.0:oob";
  * @returns the fileId of the uploaded file
  */
 export const uploadResume = async (
+  fileBuffer: Buffer,
   user: IUser,
-  profile: IProfile,
-  fileBuffer: Buffer
+  profile?: IProfile
 ): Promise<string> => {
   const fileName = `${user._id}.pdf`;
-  const name = `${profile.firstName} ${profile.lastName}`;
-  if (profile.resume) {
+  if (profile && profile.resume) {
+    console.log("Updating resume")
+    const name = `${profile.firstName} ${profile.lastName}`;
     return await updateInDrive(
       profile.resume,
       fileName,
@@ -35,9 +36,9 @@ export const uploadResume = async (
       fileBuffer,
       name
     );
-  } else {
-    return await uploadToDrive(fileName, "application/pdf", fileBuffer, name);
   }
+  console.log("Uploading resume")
+  return await uploadToDrive(fileName, "application/pdf", fileBuffer);
 };
 
 /**
@@ -98,6 +99,7 @@ export const uploadToDrive = async (
   fileBuffer: Buffer,
   fileDescription?: string
 ): Promise<string> => {
+  console.log("Creating auth")
   const auth = await authorize();
 
   // Convert buffer into stream for upload

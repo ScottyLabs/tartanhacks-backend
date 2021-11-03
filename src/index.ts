@@ -20,6 +20,7 @@ mongoose.connect(MONGODB_URI, {
 mongoose.set("useFindAndModify", false);
 
 const app = express();
+app.use(cors());
 app.use(morgan("dev"));
 app.use(
   express.json({
@@ -32,7 +33,6 @@ app.use(
     extended: true,
   })
 );
-app.use(cors());
 app.use("/", router);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
