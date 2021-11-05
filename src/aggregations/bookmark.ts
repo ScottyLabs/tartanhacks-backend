@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { BookmarkType } from "src/_enums/BookmarkType";
+import { BookmarkType } from "../_enums/BookmarkType";
 
 /**
  * Generate the aggregation pipeline for retrieving participant bookmarks of a specific user
@@ -46,6 +46,7 @@ export const getParticipantBookmarksPipeline = (
       $lookup: {
         from: "profiles",
         let: { participantId: "$participant._id" },
+        as: "profile",
         pipeline: [
           {
             $match: {
@@ -63,7 +64,6 @@ export const getParticipantBookmarksPipeline = (
             },
           },
         ],
-        as: "profile",
       },
     },
     {
@@ -71,11 +71,11 @@ export const getParticipantBookmarksPipeline = (
     },
     {
       $project: {
-        _id: 0,
         bookmarkType: 1,
         description: 1,
         createdAt: 1,
         participant: 1,
+        profile: 1,
       },
     },
   ];
@@ -183,7 +183,6 @@ export const getProjectBookmarksPipeline = (
         project: 1,
         description: 1,
         createdAt: 1,
-        _id: 0,
       },
     },
   ];
