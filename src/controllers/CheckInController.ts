@@ -6,6 +6,7 @@ import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";
 import User from "../models/User";
 import { ICheckinItem } from "../_types/CheckinItem";
+import { getProfile } from "./ProfileController";
 
 export const addNewCheckInItem = async (
   req: Request,
@@ -157,20 +158,50 @@ export const getLeaderBoard = async (
   res: Response
 ): Promise<void> => {
   try {
-    const tartanHacks = await getTartanHacks();
-    const result = await Profile.find({ event: tartanHacks._id })
-      .select([
-        "displayName",
-        "totalPoints",
-        "firstName",
-        "lastName",
-        "displayName",
-        "user",
-        "-_id",
-      ])
-      .sort("totalPoints");
+    const tartanhacks = await getTartanHacks();
+    const ranked = await Profile.aggregate([
+      {
+        $match: {
+          event: tartanhacks._id,
+        },
+      },
+      {
+        $sort: {
+          totalPoints: -1,
+          displayName: 1,
+        },
+      },
+      {
+        $group: {
+          _id: {},
+          items: {
+            $push: "$$ROOT",
+          },
+        },
+      },
+      {
+        $unwind: {
+          path: "$items",
+          includeArrayIndex: "items.rank",
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$items",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          user: 1,
+          totalPoints: 1,
+          displayName: 1,
+          rank: 1,
+        },
+      },
+    ]);
 
-    res.status(200).json(result);
+    res.status(200).json(ranked);
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       return bad(res);
@@ -179,6 +210,74 @@ export const getLeaderBoard = async (
       return error(res);
     }
   }
+};
+
+export const getLeaderBoardPosition = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
+  const user = res.locals.user;
+  const profile = await getProfile(user._id);
+
+  if (profile == null) {
+    return bad(res, "User does not have a profile yet!");
+  }
+
+  const matchingProfiles = await Profile.aggregate([
+    {
+      $match: {
+        event: tartanhacks._id,
+      },
+    },
+    {
+      $sort: {
+        totalPoints: -1,
+        displayName: 1,
+      },
+    },
+    {
+      $group: {
+        _id: {},
+        items: {
+          $push: "$$ROOT",
+        },
+      },
+    },
+    {
+      $unwind: {
+        path: "$items",
+        includeArrayIndex: "items.rank",
+      },
+    },
+    {
+      $replaceRoot: {
+        newRoot: "$items",
+      },
+    },
+    {
+      $match: {
+        user: user._id,
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        user: 1,
+        totalPoints: 1,
+        displayName: 1,
+        rank: 1,
+      },
+    },
+  ]);
+
+  if (matchingProfiles.length == 0) {
+    return bad(res, "User is not on the leaderboard!");
+  }
+
+  const userProfile = matchingProfiles[0];
+
+  res.json(userProfile.rank);
 };
 
 export const checkInUser = async (

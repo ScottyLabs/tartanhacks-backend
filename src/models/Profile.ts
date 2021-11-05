@@ -154,7 +154,9 @@ const Profile: Schema<IProfile> = new Schema(
     toJSON: {
       // Remove password field when getting json of user
       transform: (doc, ret, options) => {
-        ret.resume = driveIdToUrl(ret.resume);
+        if (ret.resume) {
+          ret.resume = driveIdToUrl(ret.resume);
+        }
         return ret;
       },
     },

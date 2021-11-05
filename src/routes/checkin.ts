@@ -5,7 +5,6 @@ import {
   getCheckInItemByID,
   getAllCheckInItems,
   deleteCheckInItem,
-  getLeaderBoard,
   checkInUser,
   getCheckInHistory,
 } from "../controllers/CheckInController";
@@ -20,25 +19,6 @@ const router: Router = express.Router();
  *  name: Check In Module
  *  description: Endpoints to manage check in items and histories.
  */
-
-/**
- * @swagger
- * /check-in/leaderboard:
- *   get:
- *     summary: Get Check In leaderboard
- *     tags: [Check In Module]
- *     description: Get check in leader board. Access - Public.
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       403:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.get("/leaderboard", asyncCatch(getLeaderBoard));
 
 /**
  * @swagger

@@ -10,7 +10,7 @@ export interface IBookmark extends Document {
   user: ObjectId;
   participant: ObjectId;
   project: ObjectId;
-  type: ObjectId;
+  bookmarkType: ObjectId;
   description: string;
   createdAt?: Date;
   updatedAt?: Date;

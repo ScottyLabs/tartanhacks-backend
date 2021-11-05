@@ -48,18 +48,18 @@ export enum WorkPermission {
 }
 
 export enum ShirtSize {
-  XS,
-  S,
-  M,
-  L,
-  XL,
-  XXL,
-  WXS,
-  WS,
-  WM,
-  WL,
-  WXL,
-  WXXL,
+  XS = "XS",
+  S = "S",
+  M = "M",
+  L = "L",
+  XL = "XL",
+  XXL = "XXL",
+  WXS = "WXS",
+  WS = "WS",
+  WM = "WM",
+  WL = "WL",
+  WXL = "WXL",
+  WXXL = "WXXL"
 }
 
 export enum Region {

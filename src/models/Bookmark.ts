@@ -26,7 +26,7 @@ const Bookmark: Schema<IBookmark> = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Project",
     },
-    type: {
+    bookmarkType: {
       type: String,
       enum: Object.values(BookmarkType),
       required: true,
