@@ -153,54 +153,72 @@ export const deleteCheckInItem = async (
   }
 };
 
+const getLeaderboardAggregation = async (): Promise<any[]> => {
+  const tartanhacks = await getTartanHacks();
+  return [
+    {
+      $match: {
+        event: tartanhacks._id,
+      },
+    },
+    {
+      $group: {
+        _id: "$totalPoints",
+        ties: {
+          $push: "$$ROOT",
+        },
+      },
+    },
+    {
+      $sort: {
+        _id: -1,
+      },
+    },
+    {
+      $group: {
+        _id: {},
+        items: {
+          $push: "$$ROOT",
+        },
+      },
+    },
+    {
+      $unwind: {
+        path: "$items",
+        includeArrayIndex: "items.rank",
+      },
+    },
+    {
+      $replaceRoot: {
+        newRoot: "$items",
+      },
+    },
+    {
+      $unwind: {
+        path: "$ties",
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        user: "$ties.user",
+        totalPoints: "$ties.totalPoints",
+        displayName: "$ties.displayName",
+        rank: {
+          $add: ["$rank", 1],
+        },
+      },
+    },
+  ];
+};
+
 export const getLeaderBoard = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const tartanhacks = await getTartanHacks();
-    const ranked = await Profile.aggregate([
-      {
-        $match: {
-          event: tartanhacks._id,
-        },
-      },
-      {
-        $sort: {
-          totalPoints: -1,
-          displayName: 1,
-        },
-      },
-      {
-        $group: {
-          _id: {},
-          items: {
-            $push: "$$ROOT",
-          },
-        },
-      },
-      {
-        $unwind: {
-          path: "$items",
-          includeArrayIndex: "items.rank",
-        },
-      },
-      {
-        $replaceRoot: {
-          newRoot: "$items",
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          user: 1,
-          totalPoints: 1,
-          displayName: 1,
-          rank: 1,
-        },
-      },
-    ]);
-
+    const leaderboardAggregation = await getLeaderboardAggregation();
+    const ranked = await Profile.aggregate(leaderboardAggregation);
     res.status(200).json(ranked);
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
@@ -224,52 +242,13 @@ export const getLeaderBoardPosition = async (
     return bad(res, "User does not have a profile yet!");
   }
 
-  const matchingProfiles = await Profile.aggregate([
-    {
-      $match: {
-        event: tartanhacks._id,
-      },
+  const aggregation = await getLeaderboardAggregation();
+  aggregation.push({
+    $match: {
+      user: user._id,
     },
-    {
-      $sort: {
-        totalPoints: -1,
-        displayName: 1,
-      },
-    },
-    {
-      $group: {
-        _id: {},
-        items: {
-          $push: "$$ROOT",
-        },
-      },
-    },
-    {
-      $unwind: {
-        path: "$items",
-        includeArrayIndex: "items.rank",
-      },
-    },
-    {
-      $replaceRoot: {
-        newRoot: "$items",
-      },
-    },
-    {
-      $match: {
-        user: user._id,
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        user: 1,
-        totalPoints: 1,
-        displayName: 1,
-        rank: 1,
-      },
-    },
-  ]);
+  });
+  const matchingProfiles = await Profile.aggregate(aggregation);
 
   if (matchingProfiles.length == 0) {
     return bad(res, "User is not on the leaderboard!");
