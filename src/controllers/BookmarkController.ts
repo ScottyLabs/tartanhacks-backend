@@ -11,7 +11,7 @@ import { driveIdToUrl } from "../util/driveIdToUrl";
 import {
   getParticipantBookmarksPipeline,
   getProjectBookmarksPipeline,
-} from "src/aggregations/bookmark";
+} from "../aggregations/bookmark";
 
 /**
  * Create a new bookmark

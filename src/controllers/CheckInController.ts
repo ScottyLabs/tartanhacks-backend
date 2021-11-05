@@ -10,7 +10,7 @@ import { getProfile } from "./ProfileController";
 import {
   getLeaderboardPipeline,
   getLeaderboardRankPipeline,
-} from "src/aggregations/checkin";
+} from "../aggregations/checkin";
 
 export const addNewCheckInItem = async (
   req: Request,
