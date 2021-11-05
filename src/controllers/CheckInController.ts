@@ -162,16 +162,8 @@ const getLeaderboardAggregation = async (): Promise<any[]> => {
       },
     },
     {
-      $group: {
-        _id: "$totalPoints",
-        ties: {
-          $push: "$$ROOT",
-        },
-      },
-    },
-    {
       $sort: {
-        _id: -1,
+        totalPoints: -1,
       },
     },
     {
@@ -194,8 +186,26 @@ const getLeaderboardAggregation = async (): Promise<any[]> => {
       },
     },
     {
+      $group: {
+        _id: "$totalPoints",
+        ties: {
+          $push: "$$ROOT",
+        },
+        rank: {
+          $first: "$rank",
+        },
+      },
+    },
+    {
       $unwind: {
         path: "$ties",
+      },
+    },
+    {
+      $sort: {
+        rank: 1,
+        "ties.displayName": 1,
+        "ties.user": 1,
       },
     },
     {
