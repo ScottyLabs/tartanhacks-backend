@@ -1,7 +1,7 @@
 import express, { Router } from "express";
-import { createBookmark } from "../controllers/BookmarkController";
+import { createBookmark, deleteBookmark, getBookmark } from "../controllers/BookmarkController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAdmin } from "./middleware";
+import { isRecruiterOrAdmin } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -57,6 +57,68 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/", isAdmin, asyncCatch(createBookmark));
+router.post("/", isRecruiterOrAdmin, asyncCatch(createBookmark));
+
+/**
+ * @swagger
+ * /bookmark/{id}:
+ *   get:
+ *     summary: Get a bookmark by its ID
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Bookmark Module]
+ *     description: |
+ *        Get a bookmark by its ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Bookmark ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       403:
+ *          description: Unauthorized.
+ *       404:
+ *          description: Bookmark not found
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/:id", isRecruiterOrAdmin, asyncCatch(getBookmark));
+
+/**
+ * @swagger
+ * /bookmark/{id}:
+ *   delete:
+ *     summary: Delete a bookmark by its ID
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Bookmark Module]
+ *     description: |
+ *        Delete a bookmark by its ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Bookmark ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       403:
+ *          description: Unauthorized.
+ *       404:
+ *          description: Bookmark not found
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.delete("/:id", isRecruiterOrAdmin, asyncCatch(deleteBookmark));
 
 export default router;

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Bookmark from "../models/Bookmark";
 import { BookmarkType } from "../_enums/BookmarkType";
-import { bad, notFound } from "../util/error";
+import { bad, notFound, unauthorized } from "../util/error";
 import { getTartanHacks } from "./EventController";
 import { IUser } from "../_types/User";
 import { ObjectId } from "bson";
@@ -85,6 +85,57 @@ export const createBookmark = async (
     await bookmark.save();
     res.json(bookmark);
   }
+};
+
+/**
+ * Get a specific bookmark
+ */
+export const getBookmark = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  if (!id) {
+    return bad(res, "Missing bookmark id");
+  }
+
+  const user: IUser = res.locals.user;
+  const bookmark = await Bookmark.findById(id);
+  if (!bookmark) {
+    return notFound(res, "Bookmark does not exist!");
+  }
+
+  if (bookmark.user != user._id && !user.admin) {
+    return unauthorized(res, "You do not have permission to view this!");
+  }
+
+  res.json(bookmark);
+};
+
+/**
+ * Delete a bookmark
+ */
+export const deleteBookmark = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  if (!id) {
+    return bad(res, "Missing bookmark id");
+  }
+
+  const user: IUser = res.locals.user;
+  const bookmark = await Bookmark.findById(id);
+  if (!bookmark) {
+    return notFound(res, "Bookmark does not exist!");
+  }
+
+  if (bookmark.user != user._id && !user.admin) {
+    return unauthorized(res, "You do not have permission to delete this!");
+  }
+
+  bookmark.delete();
+  res.status(200).send();
 };
 
 export const getParticipantBookmarks = async (
