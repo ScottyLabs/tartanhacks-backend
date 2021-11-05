@@ -35,13 +35,13 @@ router.get("/", asyncCatch(getLeaderBoard));
 
 /**
  * @swagger
- * /leaderboard/position:
+ * /leaderboard/rank:
  *   get:
- *     summary: Get the current user's position on the leaderboard
+ *     summary: Get the current user's rank on the leaderboard
  *     security:
  *     - apiKeyAuth: []
  *     tags: [Leaderboard Module]
- *     description: Get the current user's position on the leaderboard. Access - User.
+ *     description: Get the current user's rank on the leaderboard. Access - User.
  *     responses:
  *       200:
  *          description: Success.
@@ -52,6 +52,6 @@ router.get("/", asyncCatch(getLeaderBoard));
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/position", isAuthenticated, asyncCatch(getLeaderBoardPosition));
+router.get("/rank", isAuthenticated, asyncCatch(getLeaderBoardPosition));
 
 export default router;
