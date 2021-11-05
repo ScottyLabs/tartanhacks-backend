@@ -8,6 +8,10 @@ import { ObjectId } from "bson";
 import User from "../models/User";
 import Project from "../models/Project";
 import { driveIdToUrl } from "../util/driveIdToUrl";
+import {
+  getParticipantBookmarksPipeline,
+  getProjectBookmarksPipeline,
+} from "src/aggregations/bookmark";
 
 /**
  * Create a new bookmark
@@ -17,20 +21,20 @@ export const createBookmark = async (
   res: Response
 ): Promise<void> => {
   const event = await getTartanHacks();
-  const { type, participant, project, description } = req.body;
-  if (!type) {
+  const { bookmarkType, participant, project, description } = req.body;
+  if (!bookmarkType) {
     return bad(res, "Missing bookmark type");
   }
 
   const user: IUser = res.locals.user;
-  if (type == BookmarkType.PARTICIPANT) {
+  if (bookmarkType == BookmarkType.PARTICIPANT) {
     if (!participant) {
       return bad(res, "Missing participant");
     }
     const existing = await Bookmark.findOne({
       user: user._id,
       event: event._id,
-      type,
+      type: bookmarkType,
       participant: new ObjectId(participant),
     });
     if (existing) {
@@ -45,20 +49,20 @@ export const createBookmark = async (
     const bookmark = new Bookmark({
       user: user._id,
       event: event._id,
-      type,
+      bookmarkType,
       participant: new ObjectId(participant),
       description,
     });
     await bookmark.save();
     res.json(bookmark);
-  } else if (type == BookmarkType.PROJECT) {
+  } else if (bookmarkType == BookmarkType.PROJECT) {
     if (!project) {
       return bad(res, "Missing project");
     }
     const existing = await Bookmark.findOne({
       user: user._id,
       event: event._id,
-      type,
+      bookmarkType,
       project: new ObjectId(project),
     });
     if (existing) {
@@ -74,7 +78,7 @@ export const createBookmark = async (
     const bookmark = new Bookmark({
       user: user._id,
       event: event._id,
-      type,
+      bookmarkType,
       project: new ObjectId(project),
       description,
     });
@@ -89,75 +93,8 @@ export const getParticipantBookmarks = async (
 ): Promise<void> => {
   const event = await getTartanHacks();
   const user: IUser = res.locals.user;
-  const bookmarks = await Bookmark.aggregate([
-    {
-      $match: {
-        event: event._id,
-        user: user._id,
-        type: BookmarkType.PARTICIPANT,
-      },
-    },
-    {
-      $lookup: {
-        from: "users",
-        let: { participantId: "$participant" },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $eq: ["$_id", "$$participantId"],
-              },
-            },
-          },
-          {
-            $project: {
-              email: 1,
-            },
-          },
-        ],
-        as: "participant",
-      },
-    },
-    {
-      $unwind: "$participant",
-    },
-    {
-      $lookup: {
-        from: "profiles",
-        let: { participantId: "$participant._id" },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $eq: ["$user", "$$participantId"],
-              },
-            },
-          },
-          {
-            $project: {
-              firstName: 1,
-              lastName: 1,
-              resume: 1,
-              _id: 0,
-            },
-          },
-        ],
-        as: "profile",
-      },
-    },
-    {
-      $unwind: "$profile",
-    },
-    {
-      $project: {
-        type: 1,
-        description: 1,
-        createdAt: 1,
-        participant: 1,
-        profile: 1,
-      },
-    },
-  ]);
+  const aggregation = getParticipantBookmarksPipeline(event._id, user._id);
+  const bookmarks = await Bookmark.aggregate(aggregation);
 
   bookmarks.forEach((bookmark) => {
     bookmark.participant = { ...bookmark.participant, ...bookmark.profile };
@@ -173,5 +110,10 @@ export const getProjectBookmarks = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  res.json([]);
+  const event = await getTartanHacks();
+  const user: IUser = res.locals.user;
+  const aggregation = getProjectBookmarksPipeline(event._id, user._id);
+  const bookmarks = await Bookmark.aggregate(aggregation);
+
+  res.json(bookmarks);
 };

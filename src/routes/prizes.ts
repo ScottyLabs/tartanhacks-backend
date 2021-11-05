@@ -20,56 +20,19 @@ const router: Router = express.Router();
 /**
  * @swagger
  * tags:
- *  name: Projects Module
- *  description: Endpoints to manage dynamic projects.
+ *  name: Prizes Module
+ *  description: Endpoints to manage prizes.
  */
 
 /**
  * @swagger
- * /projects/prizes/enter/{id}:
- *   put:
- *     summary: Enter a project for a prize
- *     security:
- *     - apiKeyAuth: []
- *     tags: [Projects Module]
- *     description: Enters project for a prize. Access - User(Own)/Admin.
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Project ID
- *       - in: query
- *         name: prizeID
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       403:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.put(
-  "/prizes/enter/:id",
-  isProjectOwnerOrAdmin,
-  asyncCatch(enterProject)
-);
-
-/**
- * @swagger
- * /projects:
+ * /prizes:
  *   post:
- *     summary: Create new project
+ *     summary: Create new prize
  *     security:
  *     - apiKeyAuth: []
- *     tags: [Projects Module]
- *     description: Creates new project. Access - Authenticated Users.
+ *     tags: [Prizes Module]
+ *     description: Creates new prize. Access - Admin.
  *     requestBody:
  *       required: true
  *       content:
@@ -81,13 +44,9 @@ router.put(
  *                 type: string
  *               description:
  *                 type: string
- *               team:
+ *               eligibility:
  *                 type: string
- *               slides:
- *                 type: string
- *               video:
- *                 type: string
- *               url:
+ *               provider:
  *                 type: string
  *     responses:
  *       200:
@@ -99,24 +58,24 @@ router.put(
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/", isAuthenticated, asyncCatch(createNewProject));
+router.post("/", isAdmin, asyncCatch(createNewPrize));
 
 /**
  * @swagger
- * /projects/{id}:
+ * /prizes/{id}:
  *   patch:
- *     summary: Edit project info
+ *     summary: Edit prize info
  *     security:
  *     - apiKeyAuth: []
- *     tags: [Projects Module]
- *     description: Edit existing project information. All body parameters are optional. If unspecified, the parameters are not updated. Access - User(own)/Admin.
+ *     tags: [Prizes Module]
+ *     description: Edit existing prize information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: Project ID
+ *         description: Prize ID
  *     requestBody:
  *       required: true
  *       content:
@@ -128,11 +87,11 @@ router.post("/", isAuthenticated, asyncCatch(createNewProject));
  *                 type: string
  *               description:
  *                 type: string
- *               slides:
+ *               eligibility:
  *                 type: string
- *               video:
+ *               provider:
  *                 type: string
- *               url:
+ *               winner:
  *                 type: string
  *     responses:
  *       200:
@@ -144,24 +103,22 @@ router.post("/", isAuthenticated, asyncCatch(createNewProject));
  *       500:
  *          description: Internal Server Error.
  */
-router.patch("/:id", isProjectOwnerOrAdmin, asyncCatch(editProject));
+router.patch("/:id", isAdmin, asyncCatch(editPrize));
 
 /**
  * @swagger
- * /projects/{id}:
+ * /prizes/{id}:
  *   get:
- *     summary: Get Project by ID
- *     security:
- *     - apiKeyAuth: []
- *     tags: [Projects Module]
- *     description: Get a single project by iD. Access - User(own)/Admin.
+ *     summary: Get Prize by ID
+ *     tags: [Prizes Module]
+ *     description: Get a single prize by iD. Access - Public.
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: Project ID
+ *         description: Prize ID
  *     responses:
  *       200:
  *          description: Success.
@@ -172,17 +129,15 @@ router.patch("/:id", isProjectOwnerOrAdmin, asyncCatch(editProject));
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/:id", isProjectOwnerOrAdmin, asyncCatch(getProjectByID));
+router.get("/prizes/:id", asyncCatch(getPrizeByID));
 
 /**
  * @swagger
- * /projects:
+ * /prizes:
  *   get:
- *     summary: Get Projects
- *     security:
- *     - apiKeyAuth: []
- *     tags: [Projects Module]
- *     description: Get all Projects. Access - Admin.
+ *     summary: Get Prizes
+ *     tags: [Prizes Module]
+ *     description: Get all Prizes. Access - Public.
  *     responses:
  *       200:
  *          description: Success.
@@ -193,24 +148,24 @@ router.get("/:id", isProjectOwnerOrAdmin, asyncCatch(getProjectByID));
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/", isAdmin, asyncCatch(getAllProjects));
+router.get("/", asyncCatch(getAllPrizes));
 
 /**
  * @swagger
- * /projects/{id}:
+ * /prizes/{id}:
  *   delete:
- *     summary: Delete project by ID
+ *     summary: Delete prize by ID
  *     security:
  *     - apiKeyAuth: []
- *     tags: [Projects Module]
- *     description: Delete project by specifying ID. Access - User(Own)/Admin.
+ *     tags: [Prizes Module]
+ *     description: Delete prize by specifying ID. Access - Admin.
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: Project ID
+ *         description: Prize ID
  *     responses:
  *       200:
  *          description: Success.
@@ -221,6 +176,6 @@ router.get("/", isAdmin, asyncCatch(getAllProjects));
  *       500:
  *          description: Internal Server Error.
  */
-router.delete("/:id", isProjectOwnerOrAdmin, asyncCatch(deleteProject));
+router.delete("/:id", isAdmin, asyncCatch(deletePrize));
 
 export default router;

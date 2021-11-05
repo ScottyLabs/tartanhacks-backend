@@ -7,6 +7,10 @@ import { getTartanHacks } from "./EventController";
 import User from "../models/User";
 import { ICheckinItem } from "../_types/CheckinItem";
 import { getProfile } from "./ProfileController";
+import {
+  getLeaderboardPipeline,
+  getLeaderboardRankPipeline,
+} from "src/aggregations/checkin";
 
 export const addNewCheckInItem = async (
   req: Request,
@@ -153,81 +157,15 @@ export const deleteCheckInItem = async (
   }
 };
 
-const getLeaderboardAggregation = async (): Promise<any[]> => {
-  const tartanhacks = await getTartanHacks();
-  return [
-    {
-      $match: {
-        event: tartanhacks._id,
-      },
-    },
-    {
-      $sort: {
-        totalPoints: -1,
-      },
-    },
-    {
-      $group: {
-        _id: {},
-        items: {
-          $push: "$$ROOT",
-        },
-      },
-    },
-    {
-      $unwind: {
-        path: "$items",
-        includeArrayIndex: "items.rank",
-      },
-    },
-    {
-      $replaceRoot: {
-        newRoot: "$items",
-      },
-    },
-    {
-      $group: {
-        _id: "$totalPoints",
-        ties: {
-          $push: "$$ROOT",
-        },
-        rank: {
-          $first: "$rank",
-        },
-      },
-    },
-    {
-      $unwind: {
-        path: "$ties",
-      },
-    },
-    {
-      $sort: {
-        rank: 1,
-        "ties.displayName": 1,
-        "ties.user": 1,
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        user: "$ties.user",
-        totalPoints: "$ties.totalPoints",
-        displayName: "$ties.displayName",
-        rank: {
-          $add: ["$rank", 1],
-        },
-      },
-    },
-  ];
-};
-
-export const getLeaderBoard = async (
+export const getLeaderboard = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const leaderboardAggregation = await getLeaderboardAggregation();
+    const tartanHacks = await getTartanHacks();
+    const leaderboardAggregation = await getLeaderboardPipeline(
+      tartanHacks._id
+    );
     const ranked = await Profile.aggregate(leaderboardAggregation);
     res.status(200).json(ranked);
   } catch (err) {
@@ -240,7 +178,7 @@ export const getLeaderBoard = async (
   }
 };
 
-export const getLeaderBoardPosition = async (
+export const getLeaderboardPosition = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -252,12 +190,10 @@ export const getLeaderBoardPosition = async (
     return bad(res, "User does not have a profile yet!");
   }
 
-  const aggregation = await getLeaderboardAggregation();
-  aggregation.push({
-    $match: {
-      user: user._id,
-    },
-  });
+  const aggregation = await getLeaderboardRankPipeline(
+    tartanhacks._id,
+    user._id
+  );
   const matchingProfiles = await Profile.aggregate(aggregation);
 
   if (matchingProfiles.length == 0) {

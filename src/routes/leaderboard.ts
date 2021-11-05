@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import {
-  getLeaderBoard, getLeaderBoardPosition
+  getLeaderboard, getLeaderboardPosition
 } from "../controllers/CheckInController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAuthenticated } from "./middleware";
@@ -31,7 +31,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/", asyncCatch(getLeaderBoard));
+router.get("/", asyncCatch(getLeaderboard));
 
 /**
  * @swagger
@@ -52,6 +52,6 @@ router.get("/", asyncCatch(getLeaderBoard));
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/rank", isAuthenticated, asyncCatch(getLeaderBoardPosition));
+router.get("/rank", isAuthenticated, asyncCatch(getLeaderboardPosition));
 
 export default router;

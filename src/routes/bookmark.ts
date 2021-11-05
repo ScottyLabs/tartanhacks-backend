@@ -22,9 +22,13 @@ const router: Router = express.Router();
  *     tags: [Bookmark Module]
  *     description: |
  *        Create a new bookmark for a user.
+ *
  *        `type` should be either "PARTICIPANT" or "PROJECT"
+ *
  *        if `PARTICIPANT`, then the `participant` field is required and should specify a user ID.
+ *
  *        if `PROJECT`, then the `project` field is required and should specify a project ID.
+ *
  *        `description` is an optional field for personal notes
  *     requestBody:
  *       required: true
@@ -33,7 +37,7 @@ const router: Router = express.Router();
  *           schema:
  *             type: object
  *             properties:
- *               type:
+ *               bookmarkType:
  *                 type: string
  *                 enum: [PARTICIPANT, PROJECT]
  *                 required: true

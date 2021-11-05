@@ -6,6 +6,7 @@ import bookmarksRouter from "./bookmarks";
 import checkInRouter from "./checkin";
 import leaderboardRouter from "./leaderboard";
 import projectsRouter from "./projects";
+import prizesRouter from "./prizes";
 import recruiterRouter from "./recruiter";
 import requestsRouter from "./requests";
 import scheduleRouter from "./schedule";
@@ -24,6 +25,7 @@ router.use("/bookmark", bookmarkRouter);
 router.use("/bookmarks", bookmarksRouter);
 router.use("/check-in", checkInRouter);
 router.use("/leaderboard", leaderboardRouter);
+router.use("/prizes", prizesRouter)
 router.use("/projects", projectsRouter);
 router.use("/recruiter", recruiterRouter);
 router.use("/schedule", scheduleRouter);
