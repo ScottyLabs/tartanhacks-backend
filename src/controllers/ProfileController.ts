@@ -68,15 +68,24 @@ export const submitProfile = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const tartanhacks = await EventController.getTartanHacks();
   try {
     const profileArgs = req.body as IProfile;
-    // Prevent user from inserting resume and confirmation here
-    delete profileArgs.resume;
+    // Prevent user from inserting confirmation here
     delete profileArgs.confirmation;
+
+    // Check if display name is taken
+    const { displayName } = profileArgs;
+    const existingProfile = await Profile.findOne({
+      event: tartanhacks._id,
+      displayName,
+    });
+    if (existingProfile) {
+      return bad(res, `Display name ${displayName} is taken!`);
+    }
 
     const user = res.locals.user;
 
-    const tartanhacks = await EventController.getTartanHacks();
     const profile = await Profile.findOneAndUpdate(
       { user: user._id, event: tartanhacks._id },
       {

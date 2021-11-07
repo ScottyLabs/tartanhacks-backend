@@ -15,6 +15,7 @@ import {
   isOwnerRecruiterOrAdmin,
 } from "./middleware";
 import { getCurrentUserTeam } from "../controllers/TeamController";
+import { userExists } from "src/controllers/UserController";
 
 const router: Router = express.Router();
 
@@ -24,6 +25,37 @@ const router: Router = express.Router();
  *  name: User Module
  *  description: Endpoints for personal user control. Access - User only
  */
+
+/**
+ * @swagger
+ * /user/exists:
+ *   post:
+ *     summary: Check if a user exists via their email
+ *     tags: [User Module]
+ *     description: Check if a user exists via their email. Access - Public
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 required: true
+ *     responses:
+ *       200:
+ *           description: User exists.
+ *       400:
+ *           description: Bad request
+ *       403:
+ *           description: Unauthorized.
+ *       404:
+ *           description: User does not exist.
+ *       500:
+ *           description: Internal Server Error.
+ */
+router.post("/exists", asyncCatch(userExists));
 
 /**
  * @swagger
