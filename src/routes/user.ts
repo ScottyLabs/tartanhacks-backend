@@ -45,11 +45,9 @@ const router: Router = express.Router();
  *                 required: true
  *     responses:
  *       200:
- *           description: Display name is available
+ *           description: Success. Returns `true` or `false`
  *       400:
  *           description: Bad request
- *       403:
- *           description: Display name unavailable
  *       500:
  *           description: Internal Server Error.
  */

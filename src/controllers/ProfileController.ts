@@ -233,9 +233,5 @@ export const displayNameAvailable = async (
     displayName: name,
   });
 
-  if (existingProfile) {
-    return bad(res, "Display name is not available!");
-  }
-
-  res.status(200).send("Display name is available");
+  res.status(200).send(existingProfile == null);
 };
