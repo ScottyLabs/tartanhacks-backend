@@ -214,3 +214,28 @@ export const declineAcceptance = async (
     }
   }
 };
+
+/**
+ * Check if display name is availavle
+ */
+export const displayNameAvailable = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { name } = req.body;
+  if (!name) {
+    return bad(res, "Display name must be specified!");
+  }
+
+  const event = await EventController.getTartanHacks();
+  const existingProfile = await Profile.findOne({
+    event: event._id,
+    displayName: name,
+  });
+
+  if (existingProfile) {
+    return bad(res, "Display name is not available!");
+  }
+
+  res.status(200).send("Display name is available");
+};

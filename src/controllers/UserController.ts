@@ -74,22 +74,3 @@ export const removeRecruiter = async (
   await user.save();
   res.json(user.toJSON());
 };
-
-/**
- * Find if a user exists via emial
- */
-export const userExists = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { email } = req.body;
-  if (!email) {
-    return bad(res, "Missing email");
-  }
-
-  const user = await User.findOne({ email });
-  if (!user) {
-    return notFound(res, `There is no registered user with the email ${email}`);
-  }
-  res.status(200).send();
-};

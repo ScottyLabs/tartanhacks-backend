@@ -2,6 +2,7 @@ import express, { Router } from "express";
 import { getUserStatus } from "../controllers/StatusController";
 import {
   declineAcceptance,
+  displayNameAvailable,
   fileMiddleware,
   getUserProfile,
   submitConfirmation,
@@ -15,7 +16,6 @@ import {
   isOwnerRecruiterOrAdmin,
 } from "./middleware";
 import { getCurrentUserTeam } from "../controllers/TeamController";
-import { userExists } from "src/controllers/UserController";
 
 const router: Router = express.Router();
 
@@ -28,11 +28,11 @@ const router: Router = express.Router();
 
 /**
  * @swagger
- * /user/exists:
+ * /user/name/available:
  *   post:
- *     summary: Check if a user exists via their email
+ *     summary: Check if a display name is still available
  *     tags: [User Module]
- *     description: Check if a user exists via their email. Access - Public
+ *     description: Check if a display name is still available. Access - Public
  *     requestBody:
  *       required: true
  *       content:
@@ -40,22 +40,20 @@ const router: Router = express.Router();
  *           schema:
  *             type: object
  *             properties:
- *               email:
+ *               name:
  *                 type: string
  *                 required: true
  *     responses:
  *       200:
- *           description: User exists.
+ *           description: Display name is available
  *       400:
  *           description: Bad request
  *       403:
- *           description: Unauthorized.
- *       404:
- *           description: User does not exist.
+ *           description: Display name unavailable
  *       500:
  *           description: Internal Server Error.
  */
-router.post("/exists", asyncCatch(userExists));
+router.post("/name/available", asyncCatch(displayNameAvailable));
 
 /**
  * @swagger
