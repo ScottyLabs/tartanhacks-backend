@@ -220,9 +220,7 @@ router.get("/team", isAuthenticated, asyncCatch(getCurrentUserTeam));
  *                 items:
  *                   type: string
  *               dietaryRestrictions:
- *                 type: array
- *                 items:
- *                   type: string
+ *                 type: string
  *               shirtSize:
  *                 type: string
  *                 enum: [XS, S, M, L, XL, XXL, WXS, WS, WM, WL, WXL, WXXL]
