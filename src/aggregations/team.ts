@@ -9,7 +9,7 @@ export const getTeamPipeline = (eventId: ObjectId, teamId: ObjectId): any[] => {
     {
       $match: {
         event: eventId,
-        _id: new ObjectId(teamId),
+        _id: teamId,
       },
     },
     {

@@ -1,6 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
-import { getTeamPipeline } from "src/aggregations/team";
+import { getTeamPipeline } from "../aggregations/team";
 import Team from "../models/Team";
 import TeamRequest from "../models/TeamRequest";
 import User from "../models/User";
@@ -165,7 +165,7 @@ export const getTeam = async (req: Request, res: Response): Promise<void> => {
 
   const event = await getTartanHacks();
   const { id } = req.params;
-  const pipeline = getTeamPipeline(event._id, id);
+  const pipeline = getTeamPipeline(event._id, new ObjectId(id));
   const matchingTeams: any[] = await Team.aggregate(pipeline);
   // Email and name are in separate objects of type `MemberName` and `MemberEmail`
   // in an array in `team.info`
