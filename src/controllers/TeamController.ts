@@ -1,5 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
+import { getTeamPipeline } from "src/aggregations/team";
 import Team from "../models/Team";
 import TeamRequest from "../models/TeamRequest";
 import User from "../models/User";
@@ -110,7 +111,7 @@ export const updateTeam = async (
     return bad(res, "You do not belong to a team");
   }
 
-  if (userTeam.admin != user._id) {
+  if (userTeam.admin.toString() != user._id.toString()) {
     return unauthorized(res, "You are not the team admin!");
   }
 
@@ -164,54 +165,8 @@ export const getTeam = async (req: Request, res: Response): Promise<void> => {
 
   const event = await getTartanHacks();
   const { id } = req.params;
-  // Perform an aggregation to get email from User collection and name from Profile collection
-  const matchingTeams: any = await Team.aggregate([
-    {
-      $match: {
-        event: event._id,
-        _id: new ObjectId(id),
-      },
-    },
-    {
-      $limit: 1,
-    },
-    {
-      $lookup: {
-        from: "users",
-        let: { members: "$members" },
-        as: "emails",
-        pipeline: [
-          {
-            $match: { $expr: { $in: ["$_id", "$$members"] } },
-          },
-          {
-            $project: { _id: 1, email: 1 },
-          },
-        ],
-      },
-    },
-    {
-      $lookup: {
-        from: "profiles",
-        let: { members: "$members" },
-        as: "profiles",
-        pipeline: [
-          {
-            $match: { $expr: { $in: ["$user", "$$members"] } },
-          },
-          {
-            $project: { _id: "$user", firstName: 1, lastName: 1 },
-          },
-        ],
-      },
-    },
-    {
-      $addFields: { info: { $concatArrays: ["$emails", "$profiles"] } },
-    },
-    {
-      $project: { profiles: 0, emails: 0 },
-    },
-  ]);
+  const pipeline = getTeamPipeline(event._id, id);
+  const matchingTeams: any[] = await Team.aggregate(pipeline);
   // Email and name are in separate objects of type `MemberName` and `MemberEmail`
   // in an array in `team.info`
 

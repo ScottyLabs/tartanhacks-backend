@@ -88,7 +88,7 @@ router.post("/", isAuthenticated, asyncCatch(createTeam));
  *   patch:
  *     summary: Update a team's information
  *     tags: [Teams Module]
- *     description: Update a team's name, description, or visibility. Access - User, Team Admin
+ *     description: Update a team's name, description, or visibility. All specified fields will be updated. Access - User, Team Admin
  *     security:
  *       - apiKeyAuth: []
  *     requestBody:

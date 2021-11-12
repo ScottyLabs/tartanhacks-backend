@@ -70,6 +70,7 @@ export const submitProfile = async (
 ): Promise<void> => {
   const tartanhacks = await EventController.getTartanHacks();
   try {
+    const user = res.locals.user;
     const profileArgs = req.body as IProfile;
     // Prevent user from inserting confirmation here
     delete profileArgs.confirmation;
@@ -80,16 +81,16 @@ export const submitProfile = async (
       event: tartanhacks._id,
       displayName,
     });
-    if (existingProfile) {
+    if (
+      existingProfile &&
+      existingProfile.user.toString() !== user._id.toString()
+    ) {
       return bad(res, `Display name ${displayName} is taken!`);
     }
-
-    const user = res.locals.user;
 
     const profile = await Profile.findOneAndUpdate(
       { user: user._id, event: tartanhacks._id },
       {
-        displayName: generateRandomName(),
         ...profileArgs,
       },
       {
