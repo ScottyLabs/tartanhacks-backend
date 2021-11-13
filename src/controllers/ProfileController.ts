@@ -74,6 +74,11 @@ export const submitProfile = async (
     const profileArgs = req.body as IProfile;
     // Prevent user from inserting confirmation here
     delete profileArgs.confirmation;
+    if (profileArgs.sponsorRanking) {
+      profileArgs.sponsorRanking = profileArgs.sponsorRanking.filter((id) =>
+        ObjectId.isValid(id)
+      );
+    }
 
     // Check if display name is taken
     const { displayName } = profileArgs;
@@ -102,7 +107,8 @@ export const submitProfile = async (
     res.json(profile.toJSON());
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
-      return bad(res);
+      console.error(err);
+      return bad(res, "Error validating data");
     } else {
       console.error(err);
       return error(res);
