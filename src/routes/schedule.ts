@@ -50,6 +50,7 @@ const router: Router = express.Router();
  *                 type: number
  *               platform:
  *                 type: string
+ *                 enum: ["IN_PERSON", "ZOOM", "HOPIN", "DISCORD", "YOUTUBE", "OTHER"]
  *               platformUrl:
  *                 type: string
  *     responses:

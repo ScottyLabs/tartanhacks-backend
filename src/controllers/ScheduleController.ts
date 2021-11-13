@@ -32,7 +32,7 @@ export const addNewScheduleItem = async (
       lng: lng,
       platform: platform,
       platformUrl: platformUrl,
-      event: event,
+      event: event._id,
     });
 
     await scheduleItem.save();
@@ -43,7 +43,8 @@ export const addNewScheduleItem = async (
     });
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
-      return bad(res);
+      console.error(err);
+      return bad(res, err.message);
     } else {
       console.error(err);
       return error(res);

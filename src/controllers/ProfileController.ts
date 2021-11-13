@@ -108,7 +108,7 @@ export const submitProfile = async (
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       console.error(err);
-      return bad(res, "Error validating data");
+      return bad(res, err.message);
     } else {
       console.error(err);
       return error(res);
