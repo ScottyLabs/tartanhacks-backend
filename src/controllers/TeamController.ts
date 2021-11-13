@@ -334,7 +334,6 @@ export const inviteUser = async (
   }
 
   const user = await User.findOne({
-    event: event._id,
     _id: new ObjectId(id),
   });
   if (!user) {
@@ -385,7 +384,6 @@ export const inviteUserByEmail = async (
   }
 
   const user = await User.findOne({
-    event: event._id,
     email,
   });
 
