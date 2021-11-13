@@ -116,9 +116,11 @@ export const updateTeam = async (
   }
 
   const { name, description, visible } = req.body;
-  const existingTeam = await findTeamByName(name);
-  if (existingTeam) {
-    return bad(res, "That team name is already taken!");
+  if (name) {
+    const existingTeam = await findTeamByName(name);
+    if (existingTeam) {
+      return bad(res, "That team name is already taken!");
+    }
   }
 
   const update: { name?: string; description?: string; visible?: boolean } = {};
@@ -136,7 +138,9 @@ export const updateTeam = async (
     $set: update,
   });
 
-  res.json(userTeam.toJSON());
+  const updatedTeam = await findUserTeam(user._id);
+
+  res.json(updatedTeam.toJSON());
 };
 
 /**
