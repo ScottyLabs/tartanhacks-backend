@@ -7,7 +7,7 @@ import {
   rejectUser,
 } from "../controllers/UsersController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAdmin, isOwnerOrAdmin } from "./middleware";
+import { isAdmin, isOwnerOrAdmin, isRecruiterOrAdmin } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -26,7 +26,7 @@ const router: Router = express.Router();
  *    security:
  *    - apiKeyAuth: []
  *    tags: [Users Module]
- *    description: Retrieves list of all users in the database. Access - Admin
+ *    description: Retrieves list of all users in the database. Access - Recruiter or Admin
  *    responses:
  *      200:
  *        description: Success.
@@ -35,7 +35,7 @@ const router: Router = express.Router();
  *      500:
  *        description: Internal Server Error.
  */
-router.get("/", isAdmin, asyncCatch(getUsers));
+router.get("/", isRecruiterOrAdmin, asyncCatch(getUsers));
 
 /**
  * @swagger
