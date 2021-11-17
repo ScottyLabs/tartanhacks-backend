@@ -12,7 +12,7 @@ import {
   WorkPermission,
 } from "../_enums/Profile";
 import { IProfile } from "../_types/Profile";
-import { driveIdToUrl } from "../util/driveIdToUrl";
+import { getResumeUrl } from "../services/storage";
 
 /**
  * Confirmation signatures after a user is accepted into the event
@@ -125,11 +125,11 @@ const Profile: Schema<IProfile> = new Schema(
       type: [Schema.Types.ObjectId],
       ref: "Sponsor",
     },
-    resume: String,
     github: {
       type: String,
       required: true,
     },
+    resume: String,
     design: String,
     website: String,
     essays: [String],
@@ -151,16 +151,13 @@ const Profile: Schema<IProfile> = new Schema(
       createdAt: "createdAt",
       updatedAt: "updatedAt",
     },
-    toJSON: {
-      // Remove password field when getting json of user
-      transform: (doc, ret, options) => {
-        if (ret.resume) {
-          ret.resume = driveIdToUrl(ret.resume);
-        }
-        return ret;
-      },
-    },
   }
 );
+
+Profile.methods.getResumeUrl = async function (): Promise<string> {
+  const { user } = this;
+  const resumeUrl = await getResumeUrl(user);
+  return resumeUrl;
+};
 
 export default model<IProfile>("Profile", Profile, "profiles", !isProduction);

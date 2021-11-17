@@ -3,7 +3,6 @@
  */
 import { Request, Response } from "express";
 import multer from "multer";
-import { uploadResume } from "../services/drive";
 import { IConfirmation } from "../_types/Confirmation";
 import { StatusField } from "../_enums/Status";
 import Profile from "../models/Profile";
@@ -11,23 +10,10 @@ import { bad, error, notFound, unauthorized } from "../util/error";
 import { IProfile } from "../_types/Profile";
 import * as EventController from "./EventController";
 import { getStatus, updateStatus } from "./StatusController";
-import {
-  uniqueNamesGenerator,
-  adjectives,
-  colors,
-  animals,
-} from "unique-names-generator";
 import { ObjectId } from "bson";
+import { hasResume, uploadResume } from "../services/storage";
 
 const upload = multer({ storage: multer.memoryStorage() });
-
-const generateRandomName = (): string => {
-  return uniqueNamesGenerator({
-    dictionaries: [adjectives, colors, animals],
-    separator: "-",
-    style: "capital",
-  });
-};
 
 /**
  * File parsing middleware
@@ -37,16 +23,25 @@ export const fileMiddleware = upload.single("file");
 /**
  * Submit a user's profile or update it if it already exists
  */
-export const getProfile = async (userId: ObjectId): Promise<IProfile> => {
+export const getProfile = async (
+  userId: ObjectId
+): Promise<Partial<IProfile>> => {
   const tartanhacks = await EventController.getTartanHacks();
-  return await Profile.findOne({
+  const profile = await Profile.findOne({
     user: userId,
     event: tartanhacks._id,
   });
+  if (profile) {
+    const resume = await profile.getResumeUrl();
+    const newProfile = profile.toObject() as IProfile;
+    newProfile.resume = resume;
+    return newProfile;
+  }
+  return profile;
 };
 
 /**
- * Submit a user's profile or update it if it already exists
+ * Get a user's profile if it exists
  */
 export const getUserProfile = async (
   req: Request,
@@ -74,10 +69,19 @@ export const submitProfile = async (
     const profileArgs = req.body as IProfile;
     // Prevent user from inserting confirmation here
     delete profileArgs.confirmation;
+    delete profileArgs.resume;
+
+    // Filter out invalid object IDs in sponsor ranking
     if (profileArgs.sponsorRanking) {
       profileArgs.sponsorRanking = profileArgs.sponsorRanking.filter((id) =>
         ObjectId.isValid(id)
       );
+    }
+
+    // Check if user has uploaded a resume yet
+    const resumeExists = await hasResume(user._id);
+    if (!resumeExists) {
+      return bad(res, "You have not yet uploaded a resume!");
     }
 
     // Check if display name is taken
@@ -117,7 +121,7 @@ export const submitProfile = async (
 };
 
 /**
- * Upload a resume into Google Drive
+ * Upload a resume into the GCP storage bucket
  */
 export const submitResume = async (
   req: Request,
@@ -128,9 +132,8 @@ export const submitResume = async (
       return bad(res, "Missing resume attachment");
     }
     const user = res.locals.user;
-    const profile = await getProfile(user._id);
     const { buffer } = req.file;
-    const fileId = await uploadResume(buffer, user, profile);
+    const fileId = await uploadResume(buffer, user._id);
     res.json(fileId);
   } catch (err) {
     console.error(err);
@@ -230,6 +233,7 @@ export const displayNameAvailable = async (
   res: Response
 ): Promise<void> => {
   const { name } = req.body;
+  const user = res.locals.user;
   if (!name) {
     return bad(res, "Display name must be specified!");
   }
@@ -240,5 +244,10 @@ export const displayNameAvailable = async (
     displayName: name,
   });
 
-  res.status(200).send(existingProfile == null);
+  res
+    .status(200)
+    .send(
+      existingProfile == null ||
+        existingProfile.user.toString() === user._id.toString()
+    );
 };

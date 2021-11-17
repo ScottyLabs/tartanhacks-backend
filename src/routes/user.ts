@@ -32,7 +32,9 @@ const router: Router = express.Router();
  *   post:
  *     summary: Check if a display name is still available
  *     tags: [User Module]
- *     description: Check if a display name is still available. Access - Public
+ *     security:
+ *     - apiKeyAuth: []
+ *     description: Check if a display name is still available. Access - User
  *     requestBody:
  *       required: true
  *       content:
@@ -51,7 +53,11 @@ const router: Router = express.Router();
  *       500:
  *           description: Internal Server Error.
  */
-router.post("/name/available", asyncCatch(displayNameAvailable));
+router.post(
+  "/name/available",
+  isAuthenticated,
+  asyncCatch(displayNameAvailable)
+);
 
 /**
  * @swagger
