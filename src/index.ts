@@ -35,7 +35,13 @@ app.use(
 );
 app.use("/", router);
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecification));
+app.use(
+  "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpecification, {
+    swaggerOptions: { persistAuthorization: true },
+  })
+);
 
 const server = app.listen(PORT, async () => {
   const result = await startup();
