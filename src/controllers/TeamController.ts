@@ -1,5 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
+import { IUser } from "../_types/User";
 import { getTeamPipeline } from "../aggregations/team";
 import Team from "../models/Team";
 import TeamRequest from "../models/TeamRequest";
@@ -10,10 +11,22 @@ import { ITeam } from "../_types/Team";
 import { getTartanHacks } from "./EventController";
 import * as SettingsController from "./SettingsController";
 
+interface PopulatedTeam {
+  _id: ObjectId;
+  event: ObjectId;
+  name: string;
+  description: string;
+  admin: IUser;
+  members: IUser[];
+  visible: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 /**
  * Get a team by ID
  */
-export const getTeamById = async (teamId: ObjectId): Promise<ITeam> => {
+export const getTeamById = async (teamId: ObjectId): Promise<PopulatedTeam> => {
   interface MemberEmail {
     _id: string;
     email: string;
@@ -65,7 +78,7 @@ export const getTeamById = async (teamId: ObjectId): Promise<ITeam> => {
 };
 
 /**
- * Find the team of a user
+ * Find the team of a user with populated members
  * @param userId ID of the user to search
  * @return the Team of the user or null if there is none
  */
@@ -79,11 +92,23 @@ export const findUserTeam = async (userId: ObjectId): Promise<ITeam> => {
       },
     },
   });
+  return team;
+};
+
+/**
+ * Find the team of a user with populated members
+ * @param userId ID of the user to search
+ * @return the Team of the user or null if there is none
+ */
+export const findUserTeamPopulated = async (
+  userId: ObjectId
+): Promise<PopulatedTeam> => {
+  const team = await findUserTeam(userId);
   if (team) {
     const populatedTeam = await getTeamById(team._id);
     return populatedTeam;
   }
-  return team;
+  return null;
 };
 
 /**
@@ -189,7 +214,8 @@ export const createTeam = async (
 
   await team.save();
 
-  res.json(team.toJSON());
+  const populatedTeam = await findUserTeamPopulated(team._id);
+  res.json(populatedTeam);
 };
 
 /**
@@ -206,7 +232,7 @@ export const updateTeam = async (
     return bad(res, "You do not belong to a team");
   }
 
-  if (userTeam.admin._id.toString() != user._id.toString()) {
+  if (userTeam.admin.toString() != user._id.toString()) {
     return unauthorized(res, "You are not the team admin!");
   }
 
@@ -230,9 +256,9 @@ export const updateTeam = async (
   }
 
   await Team.updateOne({ _id: userTeam._id }, { $set: update });
-  const updatedTeam = await findUserTeam(user._id);
+  const updatedTeam = await findUserTeamPopulated(user._id);
 
-  res.json(updatedTeam.toJSON());
+  res.json(updatedTeam);
 };
 
 /**

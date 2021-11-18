@@ -96,7 +96,7 @@ export const getUserTeam = async (
     if (team == null) {
       return bad(res, "User does not have a team!");
     }
-    res.json(team.toJSON());
+    res.json(team);
   } catch (err) {
     res.status(500).json(err);
   }
