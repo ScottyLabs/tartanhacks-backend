@@ -13,6 +13,7 @@ export interface ITeamRequest extends Document {
   team: ObjectId;
   status: TeamRequest.TeamRequestStatus;
   message?: string;
+  seen: boolean;
   createdAt: Date;
   updatedAt?: Date;
 }

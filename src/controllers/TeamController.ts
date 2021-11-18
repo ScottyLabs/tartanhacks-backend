@@ -143,7 +143,7 @@ export const getTeam = async (req: Request, res: Response): Promise<void> => {
  */
 export const getTeams = async (req: Request, res: Response): Promise<void> => {
   const event = await getTartanHacks();
-  const teams = await Team.find({ event: event._id });
+  const teams = await Team.find({ event: event._id, visible: true });
   res.json(teams);
 };
 
@@ -155,7 +155,7 @@ export const getOwnTeam = async (
   res: Response
 ): Promise<void> => {
   const user = res.locals.user;
-  const team = await findUserTeam(user._id);
+  const team = await findUserTeamPopulated(user._id);
   if (!team) {
     return notFound(res, "You are not in a team!");
   }
@@ -214,7 +214,7 @@ export const createTeam = async (
 
   await team.save();
 
-  const populatedTeam = await findUserTeamPopulated(team._id);
+  const populatedTeam = await findUserTeamPopulated(user._id);
   res.json(populatedTeam);
 };
 
@@ -295,6 +295,7 @@ export const joinTeam = async (req: Request, res: Response): Promise<void> => {
     event: event._id,
     user: user._id,
     team: new ObjectId(id),
+    status: TeamRequestStatus.PENDING,
   });
 
   if (existingRequest) {
@@ -529,11 +530,11 @@ export const leaveTeam = async (req: Request, res: Response): Promise<void> => {
     await team.remove();
     res.status(200).send();
   } else {
-    const updatedTeam = await team.updateOne({
+    await team.updateOne({
       $pull: {
         members: user._id,
       },
     });
-    res.json(updatedTeam.toJson());
+    res.status(200).send();
   }
 };

@@ -35,6 +35,10 @@ const TeamRequest: Schema<ITeamRequest> = new Schema(
       required: true,
     },
     message: String,
+    seen: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: {
