@@ -41,6 +41,22 @@ export const getProfile = async (
 };
 
 /**
+ * Get current user's profile if it exists
+ */
+export const getOwnProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = res.locals.user;
+
+  const profile = await getProfile(user._id);
+  if (!profile) {
+    return notFound(res);
+  }
+  res.json(profile);
+};
+
+/**
  * Get a user's profile if it exists
  */
 export const getUserProfile = async (
@@ -97,18 +113,18 @@ export const submitProfile = async (
       return bad(res, `Display name ${displayName} is taken!`);
     }
 
-    const profile = await Profile.findOneAndUpdate(
+    await Profile.findOneAndUpdate(
       { user: user._id, event: tartanhacks._id },
       {
         ...profileArgs,
       },
       {
         upsert: true,
-        returnOriginal: false,
       }
     );
     await updateStatus(user._id, StatusField.COMPLETED_PROFILE, true);
-    res.json(profile.toJSON());
+    const updatedProfile = await getProfile(user._id);
+    res.json(updatedProfile);
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       console.error(err);
@@ -165,7 +181,7 @@ export const submitConfirmation = async (
       return bad(res, "You already declined your attendance for the event");
     }
 
-    const updatedProfile = await Profile.findOneAndUpdate(
+    await Profile.findOneAndUpdate(
       { _id: profile._id },
       {
         $set: {
@@ -174,12 +190,13 @@ export const submitConfirmation = async (
         },
       },
       {
-        returnOriginal: false,
         runValidators: true,
       }
     );
 
     await updateStatus(user._id, StatusField.CONFIRMED, true);
+
+    const updatedProfile = await getProfile(user._id);
     res.json(updatedProfile.toJSON());
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {

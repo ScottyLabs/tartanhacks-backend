@@ -74,7 +74,9 @@ export const getUserRequests = async (
     status: TeamRequestStatus.PENDING,
   }).populate("team");
 
-  res.json(requests);
+  const filtered = requests.filter((team) => team.team != null);
+
+  res.json(filtered);
 };
 
 /**
@@ -109,7 +111,7 @@ export const acceptTeamRequest = async (
 
   const { maxTeamSize } = await SettingsController.getSettings();
 
-  const team = (request.team as unknown) as ITeam;
+  const team = request.team as unknown as ITeam;
   if (!team) {
     return bad(res, "That team no longer exists!");
   }
@@ -213,7 +215,7 @@ export const declineTeamRequest = async (
     );
     res.json(updatedRequest.toJSON());
   } else if (request.type === TeamRequestType.JOIN) {
-    const team = (request.team as unknown) as ITeam;
+    const team = request.team as unknown as ITeam;
     if (!team.admin.equals(user._id)) {
       return unauthorized(res, "You are not a team admin");
     }
@@ -270,7 +272,7 @@ export const cancelTeamRequest = async (
     );
     res.json(updatedRequest.toJSON());
   } else if (request.type === TeamRequestType.INVITE) {
-    const team = (request.team as unknown) as ITeam;
+    const team = request.team as unknown as ITeam;
     if (!team.admin.equals(user._id)) {
       return unauthorized(res, "You are not a team admin");
     }

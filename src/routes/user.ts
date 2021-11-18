@@ -1,21 +1,22 @@
 import express, { Router } from "express";
-import { getUserStatus } from "../controllers/StatusController";
 import {
   declineAcceptance,
   displayNameAvailable,
   fileMiddleware,
+  getOwnProfile,
   getUserProfile,
   submitConfirmation,
   submitProfile,
   submitResume,
 } from "../controllers/ProfileController";
+import { getUserStatus } from "../controllers/StatusController";
+import { getCurrentUserTeam } from "../controllers/TeamController";
 import { asyncCatch } from "../util/asyncCatch";
 import {
   isAuthenticated,
   isOwnerOrAdmin,
   isOwnerRecruiterOrAdmin,
 } from "./middleware";
-import { getCurrentUserTeam } from "../controllers/TeamController";
 
 const router: Router = express.Router();
 
@@ -58,6 +59,29 @@ router.post(
   isAuthenticated,
   asyncCatch(displayNameAvailable)
 );
+
+/**
+ * @swagger
+ * /user/profile:
+ *   get:
+ *     summary: Get current user's application profile
+ *     tags: [User Module]
+ *     description: Get current user's application profile. Access - Owner
+ *     security:
+ *       - apiKeyAuth: []
+ *     responses:
+ *       200:
+ *           description: Success.
+ *       400:
+ *           description: Bad request
+ *       403:
+ *           description: Unauthorized.
+ *       404:
+ *           description: User does not exist.
+ *       500:
+ *           description: Internal Server Error.
+ */
+router.get("/profile", isAuthenticated, asyncCatch(getOwnProfile));
 
 /**
  * @swagger

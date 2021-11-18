@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import {
   createTeam,
+  getOwnTeam,
   getTeam,
   inviteUser,
   inviteUserByEmail,
@@ -21,6 +22,27 @@ const router: Router = express.Router();
  *  name: Teams Module
  *  description: Endpoints for team management. Access - User
  */
+
+/**
+ * @swagger
+ * /team:
+ *   get:
+ *     summary: Get the current user's team
+ *     tags: [Teams Module]
+ *     description: Get the current user's team. Access - User
+ *     security:
+ *       - apiKeyAuth: []
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       403:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/", isAuthenticated, asyncCatch(getOwnTeam));
 
 /**
  * @swagger

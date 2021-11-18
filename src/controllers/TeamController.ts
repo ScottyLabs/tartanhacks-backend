@@ -11,6 +11,60 @@ import { getTartanHacks } from "./EventController";
 import * as SettingsController from "./SettingsController";
 
 /**
+ * Get a team by ID
+ */
+export const getTeamById = async (teamId: ObjectId): Promise<ITeam> => {
+  interface MemberEmail {
+    _id: string;
+    email: string;
+  }
+  interface MemberName {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  }
+  type MemberType = MemberEmail & MemberName;
+
+  const event = await getTartanHacks();
+  const pipeline = getTeamPipeline(event._id, teamId);
+  const matchingTeams: any[] = await Team.aggregate(pipeline);
+  // Email and name are in separate objects of type `MemberName` and `MemberEmail`
+  // in an array in `team.info`
+
+  if (matchingTeams.length == 0) {
+    return null;
+  }
+
+  const team = matchingTeams[0];
+
+  // Merge `MemberName` and `MemberEmail` objects corresponding to the same id
+  const memberMap: { [key: string]: Partial<MemberType> } = {};
+  const memberInfo = team.info as (MemberEmail | MemberName)[];
+  for (const member of memberInfo) {
+    const { _id }: { _id: string } = member;
+    if (memberMap[_id] != null) {
+      memberMap[_id] = { ...memberMap[_id], ...member };
+    } else {
+      memberMap[_id] = {
+        ...member,
+        firstName: null,
+        lastName: null,
+      };
+    }
+  }
+
+  // Map original members field to corresponding objects with name and email information
+  const members = team.members.map((memberId: string) => memberMap[memberId]);
+  team.members = members;
+  team.admin = memberMap[team.admin];
+
+  // Delete intermediate aggregation array
+  delete team.info;
+
+  return team;
+};
+
+/**
  * Find the team of a user
  * @param userId ID of the user to search
  * @return the Team of the user or null if there is none
@@ -25,6 +79,10 @@ export const findUserTeam = async (userId: ObjectId): Promise<ITeam> => {
       },
     },
   });
+  if (team) {
+    const populatedTeam = await getTeamById(team._id);
+    return populatedTeam;
+  }
   return team;
 };
 
@@ -40,6 +98,43 @@ const findTeamByName = async (name: string): Promise<ITeam> => {
     name,
   });
   return team;
+};
+
+/**
+ * Get information about a specific team
+ */
+export const getTeam = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const team = await getTeamById(new ObjectId(id));
+  if (!team) {
+    return notFound(res, "Team not found");
+  }
+
+  res.json(team);
+};
+
+/**
+ * List all teams
+ */
+export const getTeams = async (req: Request, res: Response): Promise<void> => {
+  const event = await getTartanHacks();
+  const teams = await Team.find({ event: event._id });
+  res.json(teams);
+};
+
+/**
+ * Get the current user's team
+ */
+export const getOwnTeam = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const user = res.locals.user;
+  const team = await findUserTeam(user._id);
+  if (!team) {
+    return notFound(res, "You are not in a team!");
+  }
+  res.json(team);
 };
 
 /**
@@ -111,7 +206,7 @@ export const updateTeam = async (
     return bad(res, "You do not belong to a team");
   }
 
-  if (userTeam.admin.toString() != user._id.toString()) {
+  if (userTeam.admin._id.toString() != user._id.toString()) {
     return unauthorized(res, "You are not the team admin!");
   }
 
@@ -134,77 +229,10 @@ export const updateTeam = async (
     update.visible = visible;
   }
 
-  await userTeam.updateOne({
-    $set: update,
-  });
-
+  await Team.updateOne({ _id: userTeam._id }, { $set: update });
   const updatedTeam = await findUserTeam(user._id);
 
   res.json(updatedTeam.toJSON());
-};
-
-/**
- * List all teams
- */
-export const getTeams = async (req: Request, res: Response): Promise<void> => {
-  const event = await getTartanHacks();
-  const teams = await Team.find({ event: event._id });
-  res.json(teams);
-};
-
-/**
- * Get information about a specific team
- */
-export const getTeam = async (req: Request, res: Response): Promise<void> => {
-  interface MemberEmail {
-    _id: string;
-    email: string;
-  }
-  interface MemberName {
-    _id: string;
-    firstName: string;
-    lastName: string;
-  }
-  type MemberType = MemberEmail & MemberName;
-
-  const event = await getTartanHacks();
-  const { id } = req.params;
-  const pipeline = getTeamPipeline(event._id, new ObjectId(id));
-  const matchingTeams: any[] = await Team.aggregate(pipeline);
-  // Email and name are in separate objects of type `MemberName` and `MemberEmail`
-  // in an array in `team.info`
-
-  if (matchingTeams.length == 0) {
-    return notFound(res, "Team not found!");
-  }
-
-  const team = matchingTeams[0];
-
-  // Merge `MemberName` and `MemberEmail` objects corresponding to the same id
-  const memberMap: { [key: string]: Partial<MemberType> } = {};
-  const memberInfo = team.info as (MemberEmail | MemberName)[];
-  for (const member of memberInfo) {
-    const { _id }: { _id: string } = member;
-    if (memberMap[_id] != null) {
-      memberMap[_id] = { ...memberMap[_id], ...member };
-    } else {
-      memberMap[_id] = {
-        ...member,
-        firstName: null,
-        lastName: null,
-      };
-    }
-  }
-
-  // Map original members field to corresponding objects with name and email information
-  const members = team.members.map((memberId: string) => memberMap[memberId]);
-  team.members = members;
-  team.admin = memberMap[team.admin];
-
-  // Delete intermediate aggregation array
-  delete team.info;
-
-  res.json(team);
 };
 
 /**
