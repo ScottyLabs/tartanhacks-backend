@@ -7,6 +7,8 @@ import router from "./routes";
 import swaggerSpecification from "./swagger";
 import { startup } from "./util/startup";
 import cors from "cors";
+import Team from "./models/Team";
+
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
@@ -16,8 +18,12 @@ const MONGODB_URI =
 mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  autoIndex: true,
 });
 mongoose.set("useFindAndModify", false);
+
+// Build indexes
+Team.ensureIndexes();
 
 const app = express();
 app.use(cors());

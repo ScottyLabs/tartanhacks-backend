@@ -179,6 +179,15 @@ export const getCurrentUserTeam = async (
   res.json(team.toJSON());
 };
 
+export const searchTeamByName = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { name } = req.query;
+  const teams = await Team.find({ $text: { $search: name as string } });
+  res.json(teams);
+};
+
 /**
  * Create a new team
  */

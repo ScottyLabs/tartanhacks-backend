@@ -31,7 +31,10 @@ const Team: Schema<ITeam> = new Schema(
       createdAt: "createdAt",
       updatedAt: "updatedAt",
     },
+    autoIndex: true,
   }
 );
+
+Team.index({ name: "text" });
 
 export default model<ITeam>("Team", Team, "teams", !isProduction);
