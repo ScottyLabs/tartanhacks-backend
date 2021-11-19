@@ -118,3 +118,48 @@ export const createSingleton = async (): Promise<ISettings> => {
     return settingsDoc;
   }
 };
+
+/**
+ * Get the time that registration opens
+ */
+export const getOpenTime = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const settings = await getSettings();
+  if (settings && settings.timeOpen) {
+    res.json(settings.timeOpen);
+  } else {
+    res.status(404).send();
+  }
+};
+
+/**
+ * Get the time that registration closes
+ */
+export const getCloseTime = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const settings = await getSettings();
+  if (settings && settings.timeClose) {
+    res.json(settings.timeClose);
+  } else {
+    res.status(404).send();
+  }
+};
+
+/**
+ * Get the confirmation deadline
+ */
+export const getConfirmTime = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const settings = await getSettings();
+  if (settings && settings.timeConfirm) {
+    res.json(settings.timeConfirm);
+  } else {
+    res.status(404).send();
+  }
+};

@@ -1,5 +1,8 @@
 import express, { Router } from "express";
 import {
+  getCloseTime,
+  getConfirmTime,
+  getOpenTime,
   handleGetSettings,
   updateSettings,
 } from "../controllers/SettingsController";
@@ -19,9 +22,9 @@ const router: Router = express.Router();
  * @swagger
  * /settings:
  *   get:
- *     summary: Get the settings
+ *     summary: Get the settings object
  *     tags: [Settings Module]
- *     description: Get the settings. Access - Admin only
+ *     description: Get the settings object. Access - Admin only
  *     security:
  *       - apiKeyAuth: []
  *     responses:
@@ -88,5 +91,62 @@ router.get("/", isAdmin, asyncCatch(handleGetSettings));
  *          description: Internal Server Error.
  */
 router.put("/", isAdmin, asyncCatch(updateSettings));
+
+/**
+ * @swagger
+ * /settings/time/open:
+ *   get:
+ *     summary: Get the time when registration opens
+ *     tags: [Settings Module]
+ *     description: Get the time when registration opens. Access - Public
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       404:
+ *          description: Registration open time is disabled or not set.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/time/open", asyncCatch(getOpenTime));
+
+/**
+ * @swagger
+ * /settings/time/close:
+ *   get:
+ *     summary: Get the time when registration closes
+ *     tags: [Settings Module]
+ *     description: Get the time when registration closes. Access - Public
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       404:
+ *          description: Registration close time is disabled or not set.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/time/close", asyncCatch(getCloseTime));
+
+/**
+ * @swagger
+ * /settings/time/confirm:
+ *   get:
+ *     summary: Get the confirmation deadline
+ *     tags: [Settings Module]
+ *     description: Get the confirmation deadline. Access - Public
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       404:
+ *          description: Confirmation deadline is disabled or not set.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/time/confirm", asyncCatch(getConfirmTime));
 
 export default router;
