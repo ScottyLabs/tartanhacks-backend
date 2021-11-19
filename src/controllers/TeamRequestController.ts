@@ -300,35 +300,26 @@ export const declineTeamRequest = async (
     return bad(res, "Missing request ID");
   }
 
-  const request = await TeamRequest.findOneAndUpdate({
+  const request = await TeamRequest.findOne({
     event: event._id,
     _id: new ObjectId(requestId),
     status: TeamRequestStatus.PENDING,
   }).populate("team");
 
   if (!request) {
-    return notFound(res, "No such request found");
+    return notFound(res, "No such pending request found");
   }
 
   if (request.type === TeamRequestType.INVITE) {
     if (!request.user.equals(user._id)) {
       return unauthorized(res, "You do not own that team request");
     }
-    const updatedRequest = await request.updateOne(
+    await TeamRequest.updateOne(
       {
-        $set: { status: TeamRequestStatus.DECLINED },
+        event: event._id,
+        _id: new ObjectId(requestId),
+        status: TeamRequestStatus.PENDING,
       },
-      {
-        new: true,
-      }
-    );
-    res.json(updatedRequest.toJSON());
-  } else if (request.type === TeamRequestType.JOIN) {
-    const team = request.team as unknown as ITeam;
-    if (!team.admin.equals(user._id)) {
-      return unauthorized(res, "You are not a team admin");
-    }
-    await request.updateOne(
       {
         $set: { status: TeamRequestStatus.DECLINED },
       },
@@ -337,6 +328,24 @@ export const declineTeamRequest = async (
       }
     );
     res.status(200).send();
+    return;
+  } else if (request.type === TeamRequestType.JOIN) {
+    const team = request.team as unknown as ITeam;
+    if (!team.admin.equals(user._id)) {
+      return unauthorized(res, "You are not a team admin");
+    }
+    await TeamRequest.updateOne(
+      {
+        event: event._id,
+        _id: new ObjectId(requestId),
+        status: TeamRequestStatus.PENDING,
+      },
+      {
+        $set: { status: TeamRequestStatus.DECLINED },
+      }
+    );
+    res.status(200).send();
+    return;
   }
 
   return bad(res, "Invalid team request type");
@@ -357,43 +366,49 @@ export const cancelTeamRequest = async (
     return bad(res, "Missing request ID");
   }
 
-  const request = await TeamRequest.findOneAndUpdate({
+  const request = await TeamRequest.findOne({
     event: event._id,
     _id: new ObjectId(requestId),
     status: TeamRequestStatus.PENDING,
   }).populate("team");
 
   if (!request) {
-    return notFound(res, "No such request found");
+    return notFound(res, "No such pending request found");
   }
 
   if (request.type === TeamRequestType.JOIN) {
     if (!request.user.equals(user._id)) {
       return unauthorized(res, "You do not own that team request");
     }
-    const updatedRequest = await request.updateOne(
+    await TeamRequest.updateOne(
       {
-        $set: { status: TeamRequestStatus.CANCELLED },
+        event: event._id,
+        _id: new ObjectId(requestId),
+        status: TeamRequestStatus.PENDING,
       },
       {
-        new: true,
+        $set: { status: TeamRequestStatus.CANCELLED },
       }
     );
-    res.json(updatedRequest.toJSON());
+    res.status(200).send();
+    return;
   } else if (request.type === TeamRequestType.INVITE) {
     const team = request.team as unknown as ITeam;
     if (!team.admin.equals(user._id)) {
       return unauthorized(res, "You are not a team admin");
     }
-    const updatedRequest = await request.updateOne(
+    await TeamRequest.updateOne(
       {
-        $set: { status: TeamRequestStatus.CANCELLED },
+        event: event._id,
+        _id: new ObjectId(requestId),
+        status: TeamRequestStatus.PENDING,
       },
       {
-        new: true,
+        $set: { status: TeamRequestStatus.CANCELLED },
       }
     );
-    res.json(updatedRequest.toJSON());
+    res.status(200).send();
+    return;
   }
 
   return bad(res, "Invalid team request type");
