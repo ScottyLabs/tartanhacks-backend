@@ -7,9 +7,9 @@ import { ObjectId } from "bson";
 export interface ISettings extends Document {
   _id: ObjectId;
   event: ObjectId;
-  timeOpen?: Date;
-  timeClose?: Date;
-  timeConfirm?: Date;
+  timeOpen?: string;
+  timeClose?: string;
+  timeConfirm?: string;
   enableWhitelist?: number;
   whitelistedEmails?: string[];
   waitlistText?: string;

@@ -41,7 +41,8 @@ export const updateSettings = async (
  */
 export const getSettings = async (): Promise<ISettings> => {
   const event = await getTartanHacks();
-  return await Settings.findOne({ event: event._id });
+  const settings = await Settings.findOne({ event: event._id });
+  return settings;
 };
 
 /**
@@ -52,11 +53,12 @@ export const isRegistrationOpen = async (): Promise<boolean> => {
   const { timeOpen, timeClose } = settings;
   const timestamp = DateTime.now();
 
-  const dateOpen = DateTime.fromJSDate(timeOpen);
-  const dateClose = DateTime.fromJSDate(timeClose);
+  const dateOpen = DateTime.fromJSDate(new Date(timeOpen));
+  const dateClose = DateTime.fromJSDate(new Date(timeClose));
 
   const open = timeOpen == null || dateOpen.diff(timestamp).toMillis() <= 0;
-  const closed = timeClose != null || timestamp.diff(dateClose).toMillis() > 0;
+  const closed = timeClose != null && timestamp.diff(dateClose).toMillis() > 0;
+
   return open && !closed;
 };
 
@@ -68,12 +70,12 @@ export const isConfirmationOpen = async (): Promise<boolean> => {
   const { timeOpen, timeConfirm } = settings;
   const timestamp = DateTime.now();
 
-  const dateOpen = DateTime.fromJSDate(timeOpen);
-  const dateConfirm = DateTime.fromJSDate(timeConfirm);
+  const dateOpen = DateTime.fromJSDate(new Date(timeOpen));
+  const dateConfirm = DateTime.fromJSDate(new Date(timeConfirm));
 
   const open = timeOpen == null || dateOpen.diff(timestamp).toMillis() <= 0;
   const closed =
-    timeConfirm != null || timestamp.diff(dateConfirm).toMillis() > 0;
+    timeConfirm != null && timestamp.diff(dateConfirm).toMillis() > 0;
   return open && !closed;
 };
 
