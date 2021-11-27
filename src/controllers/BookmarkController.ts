@@ -149,9 +149,6 @@ export const getParticipantBookmarks = async (
 
   bookmarks.forEach((bookmark) => {
     bookmark.participant = { ...bookmark.participant, ...bookmark.profile };
-    if (bookmark.participant.resume) {
-      bookmark.participant.resume = driveIdToUrl(bookmark.participant.resume);
-    }
     delete bookmark.profile;
   });
   res.json(bookmarks);

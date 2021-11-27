@@ -25,27 +25,6 @@ const router: Router = express.Router();
 
 /**
  * @swagger
- * /team:
- *   get:
- *     summary: Get the current user's team
- *     tags: [Teams Module]
- *     description: Get the current user's team. Access - User
- *     security:
- *       - apiKeyAuth: []
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       403:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.get("/", isAuthenticated, asyncCatch(getOwnTeam));
-
-/**
- * @swagger
  * /team/{teamId}:
  *   get:
  *     summary: Get information about a specific team

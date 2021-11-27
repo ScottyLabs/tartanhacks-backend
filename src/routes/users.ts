@@ -1,4 +1,6 @@
 import express, { Router } from "express";
+import { getUserProfile } from "../controllers/ProfileController";
+import { getUserStatus } from "../controllers/StatusController";
 import {
   admitUser,
   getUserById,
@@ -7,7 +9,12 @@ import {
   rejectUser,
 } from "../controllers/UsersController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAdmin, isOwnerOrAdmin, isRecruiterOrAdmin } from "./middleware";
+import {
+  isAdmin,
+  isOwnerOrAdmin,
+  isOwnerRecruiterOrAdmin,
+  isRecruiterOrAdmin,
+} from "./middleware";
 
 const router: Router = express.Router();
 
@@ -60,6 +67,62 @@ router.get("/", isRecruiterOrAdmin, asyncCatch(getUsers));
  *        description: Internal Server Error.
  */
 router.get("/:id", isOwnerOrAdmin, asyncCatch(getUserById));
+
+/**
+ * @swagger
+ * /users/{userId}/profile:
+ *   get:
+ *     summary: Get a user's application profile
+ *     tags: [Users Module]
+ *     description: Get a user's application profile. Access - Owner, Recruiter, or Admin only
+ *     security:
+ *       - apiKeyAuth: []
+ *     parameters:
+ *     - in: path
+ *       name: userId
+ *       required: true
+ *       type: string
+ *     responses:
+ *       200:
+ *           description: Success.
+ *       400:
+ *           description: Bad request
+ *       403:
+ *           description: Unauthorized.
+ *       404:
+ *           description: User does not exist.
+ *       500:
+ *           description: Internal Server Error.
+ */
+router.get("/:id/profile", isOwnerRecruiterOrAdmin, asyncCatch(getUserProfile));
+
+/**
+ * @swagger
+ * /users/{userId}/status:
+ *   get:
+ *     summary: Get a user's status (application progress)
+ *     tags: [Users Module]
+ *     description: Get a user's status. Access - Owner or Admin only
+ *     security:
+ *       - apiKeyAuth: []
+ *     parameters:
+ *     - in: path
+ *       name: userId
+ *       required: true
+ *       type: string
+ *     responses:
+ *       200:
+ *           description: Success.
+ *       400:
+ *           description: Bad request
+ *       403:
+ *           description: Unauthorized.
+ *       404:
+ *           description: User does not exist.
+ *       500:
+ *           description: Internal Server Error.
+ */
+router.get("/:id/status", isOwnerOrAdmin, asyncCatch(getUserStatus));
 
 /**
  * @swagger

@@ -59,7 +59,6 @@ export const getParticipantBookmarksPipeline = (
             $project: {
               firstName: 1,
               lastName: 1,
-              resume: 1,
               _id: 0,
             },
           },
@@ -67,7 +66,10 @@ export const getParticipantBookmarksPipeline = (
       },
     },
     {
-      $unwind: "$profile",
+      $unwind: {
+        path: "$profile",
+        preserveNullAndEmptyArrays: true,
+      },
     },
     {
       $project: {
@@ -153,7 +155,10 @@ export const getProjectBookmarksPipeline = (
       },
     },
     {
-      $unwind: "$project.team",
+      $unwind: {
+        path: "$project.team",
+        preserveNullAndEmptyArrays: true,
+      },
     },
     {
       $lookup: {

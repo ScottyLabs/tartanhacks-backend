@@ -3,19 +3,14 @@ import {
   declineAcceptance,
   displayNameAvailable,
   fileMiddleware,
-  getOwnProfile,
-  getUserProfile,
-  submitConfirmation,
+  getOwnProfile, submitConfirmation,
   submitProfile,
-  submitResume,
+  submitResume
 } from "../controllers/ProfileController";
-import { getUserStatus } from "../controllers/StatusController";
-import { getCurrentUserTeam } from "../controllers/TeamController";
+import { getOwnTeam } from "../controllers/TeamController";
 import { asyncCatch } from "../util/asyncCatch";
 import {
-  isAuthenticated,
-  isOwnerOrAdmin,
-  isOwnerRecruiterOrAdmin,
+  isAuthenticated
 } from "./middleware";
 
 const router: Router = express.Router();
@@ -85,59 +80,24 @@ router.get("/profile", isAuthenticated, asyncCatch(getOwnProfile));
 
 /**
  * @swagger
- * /user/profile/{userId}:
+ * /user/team:
  *   get:
- *     summary: Get a user's application profile
+ *     summary: Get the current user's team
  *     tags: [User Module]
- *     description: Get a user's application profile. Access - Owner, Recruiter, or Admin only
+ *     description: Get the current user's team. Access - User
  *     security:
  *       - apiKeyAuth: []
- *     parameters:
- *     - in: path
- *       name: userId
- *       required: true
- *       type: string
  *     responses:
  *       200:
- *           description: Success.
+ *          description: Success.
  *       400:
- *           description: Bad request
+ *          description: Bad request
  *       403:
- *           description: Unauthorized.
- *       404:
- *           description: User does not exist.
+ *          description: Unauthorized.
  *       500:
- *           description: Internal Server Error.
+ *          description: Internal Server Error.
  */
-router.get("/profile/:id", isOwnerRecruiterOrAdmin, asyncCatch(getUserProfile));
-
-/**
- * @swagger
- * /user/status/{userId}:
- *   get:
- *     summary: Get a user's status (application progress)
- *     tags: [User Module]
- *     description: Get a user's status. Access - Owner or Admin only
- *     security:
- *       - apiKeyAuth: []
- *     parameters:
- *     - in: path
- *       name: userId
- *       required: true
- *       type: string
- *     responses:
- *       200:
- *           description: Success.
- *       400:
- *           description: Bad request
- *       403:
- *           description: Unauthorized.
- *       404:
- *           description: User does not exist.
- *       500:
- *           description: Internal Server Error.
- */
-router.get("/status/:id", isOwnerOrAdmin, asyncCatch(getUserStatus));
+ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
 
 /**
  * @swagger
