@@ -1,17 +1,16 @@
-import { Request, Response } from "express";
-import Bookmark from "../models/Bookmark";
-import { BookmarkType } from "../_enums/BookmarkType";
-import { bad, notFound, unauthorized } from "../util/error";
-import { getTartanHacks } from "./EventController";
-import { IUser } from "../_types/User";
 import { ObjectId } from "bson";
-import User from "../models/User";
-import Project from "../models/Project";
-import { driveIdToUrl } from "../util/driveIdToUrl";
+import { Request, Response } from "express";
 import {
   getParticipantBookmarksPipeline,
   getProjectBookmarksPipeline,
 } from "../aggregations/bookmark";
+import Bookmark from "../models/Bookmark";
+import Project from "../models/Project";
+import User from "../models/User";
+import { bad, notFound, unauthorized } from "../util/error";
+import { BookmarkType } from "../_enums/BookmarkType";
+import { IUser } from "../_types/User";
+import { getTartanHacks } from "./EventController";
 
 /**
  * Create a new bookmark
@@ -29,12 +28,12 @@ export const createBookmark = async (
   const user: IUser = res.locals.user;
   if (bookmarkType == BookmarkType.PARTICIPANT) {
     if (!participant) {
-      return bad(res, "Missing participant");
+      return bad(res, "Missing participant ID");
     }
     const existing = await Bookmark.findOne({
       user: user._id,
       event: event._id,
-      type: bookmarkType,
+      bookmarkType,
       participant: new ObjectId(participant),
     });
     if (existing) {
@@ -105,7 +104,7 @@ export const getBookmark = async (
     return notFound(res, "Bookmark does not exist!");
   }
 
-  if (bookmark.user != user._id && !user.admin) {
+  if (!bookmark.user.equals(user._id) && !user.admin) {
     return unauthorized(res, "You do not have permission to view this!");
   }
 
@@ -130,11 +129,11 @@ export const deleteBookmark = async (
     return notFound(res, "Bookmark does not exist!");
   }
 
-  if (bookmark.user != user._id && !user.admin) {
+  if (!bookmark.user.equals(user._id) && !user.admin) {
     return unauthorized(res, "You do not have permission to delete this!");
   }
 
-  bookmark.delete();
+  await bookmark.delete();
   res.status(200).send();
 };
 
