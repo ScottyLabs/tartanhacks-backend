@@ -92,11 +92,13 @@ export const getUserTeam = async (
 ): Promise<void> => {
   const { id } = req.params;
   try {
-    const team = await TeamController.findUserTeam(new ObjectId(id));
-    if (team == null) {
+    const populatedTeam = await TeamController.findUserTeamPopulated(
+      new ObjectId(id)
+    );
+    if (populatedTeam == null) {
       return bad(res, "User does not have a team!");
     }
-    res.json(team);
+    res.json(populatedTeam);
   } catch (err) {
     res.status(500).json(err);
   }

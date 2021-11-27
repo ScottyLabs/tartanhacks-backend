@@ -23,7 +23,7 @@ mongoose.connect(MONGODB_URI, {
 mongoose.set("useFindAndModify", false);
 
 // Build indexes
-Team.ensureIndexes();
+// Team.ensureIndexes();
 
 const app = express();
 app.use(cors());

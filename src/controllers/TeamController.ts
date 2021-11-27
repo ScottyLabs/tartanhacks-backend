@@ -1,7 +1,7 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import { IUser } from "../_types/User";
-import { getTeamPipeline } from "../aggregations/team";
+import { getTeamPipeline, getTeamsPipeline } from "../aggregations/team";
 import Team from "../models/Team";
 import TeamRequest from "../models/TeamRequest";
 import User from "../models/User";
@@ -11,7 +11,7 @@ import { ITeam } from "../_types/Team";
 import { getTartanHacks } from "./EventController";
 import * as SettingsController from "./SettingsController";
 
-interface PopulatedTeam {
+export interface PopulatedTeam {
   _id: ObjectId;
   event: ObjectId;
   name: string;
@@ -27,53 +27,14 @@ interface PopulatedTeam {
  * Get a team by ID
  */
 export const getTeamById = async (teamId: ObjectId): Promise<PopulatedTeam> => {
-  interface MemberEmail {
-    _id: string;
-    email: string;
-  }
-  interface MemberName {
-    _id: string;
-    firstName: string;
-    lastName: string;
-  }
-  type MemberType = MemberEmail & MemberName;
-
   const event = await getTartanHacks();
   const pipeline = getTeamPipeline(event._id, teamId);
-  const matchingTeams: any[] = await Team.aggregate(pipeline);
-  // Email and name are in separate objects of type `MemberName` and `MemberEmail`
-  // in an array in `team.info`
-
+  const matchingTeams = await Team.aggregate(pipeline);
   if (matchingTeams.length == 0) {
     return null;
   }
 
   const team = matchingTeams[0];
-
-  // Merge `MemberName` and `MemberEmail` objects corresponding to the same id
-  const memberMap: { [key: string]: Partial<MemberType> } = {};
-  const memberInfo = team.info as (MemberEmail | MemberName)[];
-  for (const member of memberInfo) {
-    const { _id }: { _id: string } = member;
-    if (memberMap[_id] != null) {
-      memberMap[_id] = { ...memberMap[_id], ...member };
-    } else {
-      memberMap[_id] = {
-        ...member,
-        firstName: null,
-        lastName: null,
-      };
-    }
-  }
-
-  // Map original members field to corresponding objects with name and email information
-  const members = team.members.map((memberId: string) => memberMap[memberId]);
-  team.members = members;
-  team.admin = memberMap[team.admin];
-
-  // Delete intermediate aggregation array
-  delete team.info;
-
   return team;
 };
 
@@ -143,7 +104,8 @@ export const getTeam = async (req: Request, res: Response): Promise<void> => {
  */
 export const getTeams = async (req: Request, res: Response): Promise<void> => {
   const event = await getTartanHacks();
-  const teams = await Team.find({ event: event._id, visible: true });
+  const pipeline = getTeamsPipeline(event._id);
+  const teams = await Team.aggregate(pipeline);
   res.json(teams);
 };
 
