@@ -1,0 +1,23 @@
+<mjml>
+  <mj-head>
+    <mj-font name="Poppins" href="https://fonts.googleapis.com/css?family=Poppins" />
+  </mj-head>
+  <mj-body>
+    <mj-section border="solid black 1px" background-color="#fff">
+      <mj-column width="80%">
+        <mj-text align="center" color="#000" font-size="40px" font-family="Poppins">
+          Welcome to TartanHacks!
+        </mj-text>
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+          Hi {{name}},
+        </mj-text>
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+          We're so excited to have you join us this year! To complete your recruiter account setup, please set your password below.
+        </mj-text>
+        <mj-button background-color="#ffe3e3" color="#aa5418" href="{{url}}" font-family="Poppins">
+          Set password
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

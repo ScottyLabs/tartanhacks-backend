@@ -40,3 +40,25 @@ export const sendPasswordResetEmail = async (
     }
   );
 };
+
+/**
+ * Send an email to let recruiter sign up with a new password
+ * @param email recipient email
+ * @param name name of the recruiter
+ * @param passwordResetToken token to reset the password
+ */
+export const sendRecruiterCreationEmail = async (
+  email: string,
+  name: string,
+  passwordResetToken: string
+): Promise<void> => {
+  await sendTemplateEmail(
+    [email],
+    "[TartanHacks] Welcome to TartanHacks!",
+    "recruiter-signup",
+    {
+      url: `${process.env.FRONTEND_URL}/auth/reset/${passwordResetToken}`,
+      name,
+    }
+  );
+};
