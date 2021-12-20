@@ -167,7 +167,7 @@ export const getAllPrizes = async (
   res: Response
 ): Promise<void> => {
   try {
-    const result = await Prize.find();
+    const result = await Prize.find().populate("provider").populate("winner");
 
     res.status(200).json(result);
   } catch (err) {
@@ -187,7 +187,9 @@ export const getPrizeByID = async (
   const { id } = req.params;
 
   try {
-    const result = await Prize.findById(id);
+    const result = await Prize.findById(id)
+      .populate("provider")
+      .populate("winner");
 
     res.json(result);
   } catch (err) {
