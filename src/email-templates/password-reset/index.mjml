@@ -6,7 +6,7 @@
           align="center"
           color="#000"
           font-size="40px"
-          font-family="Roboto"
+          font-family="Poppins"
         >
           Reset your password
         </mj-text>
@@ -14,7 +14,7 @@
           align="center"
           color="#000"
           font-size="12px"
-          font-family="Roboto"
+          font-family="Poppins"
         >
           If you did not request a password reset, please ignore this email.
         </mj-text>
@@ -22,22 +22,13 @@
           align="center"
           color="#000"
           font-size="12px"
-          font-family="Roboto"
+          font-family="Poppins"
         >
           To reset your password, click the button below.
         </mj-text>
-        <mj-button background-color="#F63A4D" href="{{url}}">
+        <mj-button background-color="#F7C062" color="#FFFFFF" href="{{url}}" font-family="Poppins">
           Reset password
         </mj-button>
-        <mj-text
-          align="center"
-          color="#000"
-          font-size="9px"
-          font-family="Roboto"
-        >
-          (This should redirect to a frontend interface for resetting a user's
-          password)
-        </mj-text>
       </mj-column>
     </mj-section>
   </mj-body>

@@ -14,7 +14,7 @@
         <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
           We're so excited to have you join us this year! To complete your recruiter account setup, please set your password below.
         </mj-text>
-        <mj-button background-color="#ffe3e3" color="#aa5418" href="{{url}}" font-family="Poppins">
+        <mj-button background-color="#F7C062" color="#FFFFFF" href="{{url}}" font-family="Poppins">
           Set password
         </mj-button>
       </mj-column>

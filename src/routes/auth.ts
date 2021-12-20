@@ -142,7 +142,7 @@ router.post("/verify/resend", asyncCatch(resendVerificationEmail));
 
 /**
  * @swagger
- * /auth/reset:
+ * /auth/request-reset:
  *   post:
  *     summary: Send a password reset email to a user
  *     tags: [Authentication Module]
@@ -167,7 +167,7 @@ router.post("/verify/resend", asyncCatch(resendVerificationEmail));
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/reset", asyncCatch(sendPasswordResetEmail));
+router.post("/request-reset", asyncCatch(sendPasswordResetEmail));
 
 /**
  * @swagger
