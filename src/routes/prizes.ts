@@ -129,7 +129,7 @@ router.patch("/:id", isAdmin, asyncCatch(editPrize));
  *       500:
  *          description: Internal Server Error.
  */
-router.get("/prizes/:id", asyncCatch(getPrizeByID));
+router.get("/:id", asyncCatch(getPrizeByID));
 
 /**
  * @swagger
