@@ -8,12 +8,14 @@ import {
   getUserTeam,
   rejectUser,
 } from "../controllers/UsersController";
+import { getProjectByUserID } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import {
   isAdmin,
   isOwnerOrAdmin,
   isOwnerRecruiterOrAdmin,
   isRecruiterOrAdmin,
+  isAuthenticated,
 } from "./middleware";
 
 const router: Router = express.Router();
@@ -203,5 +205,33 @@ router.post("/:id/reject", isAdmin, asyncCatch(rejectUser));
  *        description: Internal Server Error.
  */
 router.get("/:id/team", isOwnerOrAdmin, asyncCatch(getUserTeam));
+
+/**
+ * @swagger
+ * /users/{id}/project:
+ *   get:
+ *     summary: Get a user's project
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Users Module]
+ *     description: Get a single project by user ID. Access - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: user ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       403:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/:id/project", isAuthenticated, asyncCatch(getProjectByUserID));
 
 export default router;
