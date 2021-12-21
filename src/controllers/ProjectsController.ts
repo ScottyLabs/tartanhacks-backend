@@ -1,9 +1,10 @@
 import Project from "../models/Project";
 import Prize from "../models/Prize";
-import { bad, error } from "../util/error";
+import { bad, error, notFound } from "../util/error";
 import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
+import { ObjectId } from "bson";
 
 export const createNewProject = async (
   req: Request,
@@ -126,6 +127,52 @@ export const getAllProjects = async (
     const result = await Project.find();
 
     res.status(200).json(result);
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
+
+export const getProjectByTeamID = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  try {
+    const result = await Project.findOne({ team: id });
+    if (result) {
+      res.json(result);
+    } else {
+      return notFound(res);
+    }
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
+
+export const getProjectByUserID = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  try {
+    const populatedTeam = await findUserTeam(new ObjectId(id));
+    if (populatedTeam == null) {
+      return bad(res, "User does not have a team!");
+    } else {
+      req.params.id = populatedTeam._id.toString();
+      return getProjectByTeamID(req, res);
+    }
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       return bad(res);

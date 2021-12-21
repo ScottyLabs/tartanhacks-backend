@@ -11,6 +11,7 @@ import {
   promoteUser,
   updateTeam,
 } from "../controllers/TeamController";
+import { getProjectByTeamID } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAuthenticated } from "./middleware";
 
@@ -272,5 +273,33 @@ router.post("/promote/:id", isAuthenticated, asyncCatch(promoteUser));
  *          description: Internal Server Error.
  */
 router.post("/leave", isAuthenticated, asyncCatch(leaveTeam));
+
+/**
+ * @swagger
+ * /team/{id}/project:
+ *   get:
+ *     summary: Get Project by team ID
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Teams Module]
+ *     description: Get a single project by team ID. Access - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Team ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       403:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/:id/project", isAuthenticated, asyncCatch(getProjectByTeamID));
 
 export default router;
