@@ -1,6 +1,6 @@
 import Project from "../models/Project";
 import Prize from "../models/Prize";
-import { bad, error } from "../util/error";
+import { bad, error, notFound } from "../util/error";
 import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
@@ -126,6 +126,29 @@ export const getAllProjects = async (
     const result = await Project.find();
 
     res.status(200).json(result);
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};
+
+export const getProjectByTeamID = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { teamID } = req.params;
+
+  try {
+    const result = await Project.findOne({ team: teamID });
+    if (result) {
+      res.json(result);
+    } else {
+      return notFound(res);
+    }
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       return bad(res);

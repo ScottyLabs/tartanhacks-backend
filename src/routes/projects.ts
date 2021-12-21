@@ -11,6 +11,7 @@ import {
   deletePrize,
   getPrizeByID,
   enterProject,
+  getProjectByTeamID,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin, isAuthenticated, isProjectOwnerOrAdmin } from "./middleware";
@@ -173,6 +174,34 @@ router.patch("/:id", isProjectOwnerOrAdmin, asyncCatch(editProject));
  *          description: Internal Server Error.
  */
 router.get("/:id", isProjectOwnerOrAdmin, asyncCatch(getProjectByID));
+
+/**
+ * @swagger
+ * /projects/team/{teamID}:
+ *   get:
+ *     summary: Get Project by team ID
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Projects Module]
+ *     description: Get a single project by team ID. Access - User
+ *     parameters:
+ *       - in: path
+ *         name: teamID
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Team ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       403:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/team/:teamID", isAuthenticated, asyncCatch(getProjectByTeamID));
 
 /**
  * @swagger
