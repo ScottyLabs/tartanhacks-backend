@@ -2,6 +2,7 @@
  * Controller for auth routes
  */
 import { Request, Response } from "express";
+import { ObjectId } from "bson";
 import { StatusField } from "../_enums/Status";
 import User from "../models/User";
 import { bad, error, notFound } from "../util/error";
@@ -194,9 +195,9 @@ export const resetPassword = async (
   }
 
   try {
-    let email;
+    let id;
     try {
-      email = User.decryptPasswordResetToken(token);
+      id = User.decryptPasswordResetToken(token);
     } catch (err) {
       if (err.name === "TokenExpiredError") {
         return bad(res, "Expired token!");
@@ -208,23 +209,20 @@ export const resetPassword = async (
     }
 
     const hash = User.generateHash(password);
-    const user = await User.findOneAndUpdate(
-      { email },
-      {
-        $set: {
-          password: hash,
-        },
-      },
-      {
-        returnOriginal: false,
-      }
-    );
+    const user = await User.findOne({ _id: new ObjectId(id) });
     if (user == null) {
       return notFound(res, "User not found");
     }
 
+    await user.updateOne({
+      $set: {
+        password: hash,
+      },
+    });
+    const authToken = user.generateAuthToken();
+
     const json = user.toJSON();
-    res.json({ ...json, token });
+    res.json({ ...json, token: authToken });
   } catch (err) {
     console.error(err);
     error(res, "An error occured");
