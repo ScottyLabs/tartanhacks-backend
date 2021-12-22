@@ -40,7 +40,7 @@ export const createRecruiter = async (
     return notFound(res, "Sponsor company not found");
   }
 
-  const password = generateRandomPassword(16);
+  const password = generateRandomPassword(8);
   const hash = User.generateHash(password);
   const recruiter = new User({
     email,
@@ -56,9 +56,7 @@ export const createRecruiter = async (
     lastName,
   });
   await recruiterProfile.save();
-
-  const passwordResetToken = recruiter.generatePasswordResetToken();
-  await sendRecruiterCreationEmail(email, firstName, passwordResetToken);
+  await sendRecruiterCreationEmail(email, password, firstName);
 
   res.json(recruiter.toJSON());
 };

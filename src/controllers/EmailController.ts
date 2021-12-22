@@ -49,16 +49,17 @@ export const sendPasswordResetEmail = async (
  */
 export const sendRecruiterCreationEmail = async (
   email: string,
-  name: string,
-  passwordResetToken: string
+  password: string,
+  name: string
 ): Promise<void> => {
   await sendTemplateEmail(
     [email],
     "[TartanHacks] Welcome to TartanHacks!",
     "recruiter-signup",
     {
-      url: `${process.env.FRONTEND_URL}/auth/reset/${passwordResetToken}`,
       name,
+      email,
+      password,
     }
   );
 };
