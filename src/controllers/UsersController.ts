@@ -6,7 +6,7 @@ import * as TeamController from "./TeamController";
 import { ObjectId } from "bson";
 import { getParticipantsPipeline } from "../aggregations/participants";
 import { getTartanHacks } from "./EventController";
-import Status from "src/models/Status";
+import Status from "../models/Status";
 
 export const getParticipants = async (
   req: Request,
