@@ -4,6 +4,18 @@ import { bad, notFound } from "../util/error";
 import * as StatusController from "./StatusController";
 import * as TeamController from "./TeamController";
 import { ObjectId } from "bson";
+import { getParticipantsPipeline } from "../aggregations/participants";
+import { getTartanHacks } from "./EventController";
+
+export const getParticipants = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const event = await getTartanHacks();
+  const pipeline = getParticipantsPipeline(event._id);
+  const participants = await User.aggregate(pipeline);
+  res.json(participants);
+};
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
