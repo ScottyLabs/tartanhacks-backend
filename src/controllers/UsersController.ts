@@ -6,6 +6,7 @@ import * as TeamController from "./TeamController";
 import { ObjectId } from "bson";
 import { getParticipantsPipeline } from "../aggregations/participants";
 import { getTartanHacks } from "./EventController";
+import Status from "src/models/Status";
 
 export const getParticipants = async (
   req: Request,
@@ -74,6 +75,28 @@ export const admitUser = async (req: Request, res: Response): Promise<void> => {
   } catch (err) {
     res.status(500).json(err);
   }
+};
+
+export const admitAllUsers = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
+  Status.updateMany(
+    {
+      completedProfile: true,
+      event: tartanhacks._id,
+      admitted: false,
+    },
+    { admitted: true }
+  )
+    .then((result) => {
+      res.json(200);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 };
 
 export const rejectUser = async (
