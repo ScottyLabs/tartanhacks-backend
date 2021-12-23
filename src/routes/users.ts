@@ -7,6 +7,7 @@ import {
   getUsers,
   getUserTeam,
   rejectUser,
+  admitAllUsers,
 } from "../controllers/UsersController";
 import { getProjectByUserID } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
@@ -233,5 +234,26 @@ router.get("/:id/team", isOwnerOrAdmin, asyncCatch(getUserTeam));
  *          description: Internal Server Error.
  */
 router.get("/:id/project", isAuthenticated, asyncCatch(getProjectByUserID));
+
+/**
+ * @swagger
+ * /users/admit/all:
+ *  post:
+ *    summary: Admit all users with completed profiles
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Users Module]
+ *    description: Admit users with completed profiles, Access - Admin
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      403:
+ *        description: Forbidden.
+ *      404:
+ *        description: User not found.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.post("/admit/all", isAdmin, asyncCatch(admitAllUsers));
 
 export default router;

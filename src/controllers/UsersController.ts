@@ -82,13 +82,17 @@ export const admitAllUsers = async (
   res: Response
 ): Promise<void> => {
   const tartanhacks = await getTartanHacks();
+  const currentUser = res.locals.user;
   Status.updateMany(
     {
       completedProfile: true,
       event: tartanhacks._id,
       admitted: false,
     },
-    { admitted: true }
+    {
+      admitted: true,
+      admittedBy: currentUser._id,
+    }
   )
     .then((result) => {
       res.json(200);
