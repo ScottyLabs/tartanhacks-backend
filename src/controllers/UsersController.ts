@@ -87,15 +87,41 @@ export const admitAllUsers = async (
     {
       completedProfile: true,
       event: tartanhacks._id,
-      admitted: false,
+      admitted: null,
     },
     {
       admitted: true,
       admittedBy: currentUser._id,
     }
   )
-    .then((result) => {
-      res.json(200);
+    .then(() => {
+      res.status(200).send();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+};
+
+export const rejectAllUsers = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
+  const currentUser = res.locals.user;
+  Status.updateMany(
+    {
+      completedProfile: true,
+      event: tartanhacks._id,
+      admitted: null,
+    },
+    {
+      admitted: false,
+      admittedBy: currentUser._id,
+    }
+  )
+    .then(() => {
+      res.status(200).send();
     })
     .catch((err) => {
       console.log(err);
