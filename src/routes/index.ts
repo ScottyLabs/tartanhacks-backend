@@ -18,6 +18,7 @@ import teamRouter from "./team";
 import teamsRouter from "./teams";
 import userRouter from "./user";
 import usersRouter from "./users";
+import analyticsRouter from "./analytics";
 
 const router = express.Router();
 router.use("/auth", authRouter);
@@ -39,5 +40,6 @@ router.use("/teams", teamsRouter);
 router.use("/user", userRouter);
 router.use("/users", usersRouter);
 router.use("/requests", requestsRouter);
+router.use("/analytics", analyticsRouter);
 
 export default router;

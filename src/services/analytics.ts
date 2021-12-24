@@ -71,106 +71,118 @@ export const computeAnalytics = async () => {
 
   Profile.find({
     event: tartanhacks._id,
-  }).then(async (profiles) => {
-    stats.total = profiles.length;
+  })
+    .then(async (profiles) => {
+      stats.total = profiles.length;
 
-    for (let i = 0; i < profiles.length; i++) {
-      const profile = profiles[0];
-      const user = await User.findById(profile.user);
-      const status = await Status.findOne({ user: profile.user });
+      for (let i = 0; i < profiles.length; i++) {
+        const profile = profiles[0];
+        const user = await User.findById(profile.user);
+        const status = await Status.findOne({ user: profile.user });
 
-      // Grab the email extension
-      const email = user.email.split("@")[1];
-
-      // Add to the gender
-      stats.demo.gender[profile.gender] += 1;
-
-      // Count verified
-      stats.verified += status.verified ? 1 : 0;
-
-      // Count submitted
-      stats.submitted += status.completedProfile ? 1 : 0;
-
-      // Count accepted
-      stats.admitted += status.admitted ? 1 : 0;
-
-      // Count confirmed
-      stats.confirmed += status.confirmed ? 1 : 0;
-
-      // Count confirmed that are CMU
-      stats.confirmedCmu +=
-        status.confirmed && (email === "andrew.cmu.edu" || email === "cmu.edu")
-          ? 1
-          : 0;
-
-      stats.confirmedFemale +=
-        status.confirmed && profile.gender == "Female" ? 1 : 0;
-      stats.confirmedMale +=
-        status.confirmed && profile.gender == "Male" ? 1 : 0;
-      stats.confirmedOther +=
-        status.confirmed && profile.gender == "Other" ? 1 : 0;
-      stats.confirmedNone +=
-        status.confirmed && profile.gender == "Prefer not to say" ? 1 : 0;
-
-      // Count declined
-      stats.declined += status.declined ? 1 : 0;
-
-      // Count the number of people who want hardware
-      stats.wantsHardware += profile.wantsHardware ? 1 : 0;
-
-      // Count schools
-      // if (!stats.demo.schools[email]) {
-      //   stats.demo.schools[email] = {
-      //     submitted: 0,
-      //     admitted: 0,
-      //     confirmed: 0,
-      //     declined: 0,
-      //   };
-      // }
-
-      // Count graduation years
-      if (profile.graduationYear) {
-        switch (profile.graduationYear) {
-          case 2021:
-            stats.demo.year["2021"] += 1;
-            break;
-          case 2022:
-            stats.demo.year["2022"] += 1;
-            break;
-          case 2023:
-            stats.demo.year["2023"] += 1;
-            break;
-          case 2024:
-            stats.demo.year["2024"] += 1;
-            break;
-          case 2025:
-            stats.demo.year["2025"] += 1;
-            break;
-          case 2026:
-            stats.demo.year["2026"] += 1;
-            break;
+        if (user == null || status == null) {
+          continue;
         }
-      }
 
-      // Count shirt sizes
-      if (profile.shirtSize in stats.shirtSizes) {
-        stats.shirtSizes[profile.shirtSize] += 1;
-      }
+        // Grab the email extension
+        const email = user.email.split("@")[1];
 
-      //count experience
-      if (profile.hackathonExperience in stats.experiences) {
-        stats.experiences[profile.hackathonExperience] += 1;
-      }
+        // Add to the gender
+        stats.demo.gender[profile.gender] += 1;
 
-      // Dietary restrictions
-      // if (profile.dietaryRestrictions) {
-      //   profile.dietaryRestrictions.forEach(function (restriction) {
-      //     if (!stats.dietaryRestrictions[restriction]) {
-      //       stats.dietaryRestrictions[restriction] = 0;
-      //     }
-      //     stats.dietaryRestrictions[restriction] += 1;
-      //   });
-      // }
-    }
-  });
+        // Count verified
+        stats.verified += status.verified ? 1 : 0;
+
+        // Count submitted
+        stats.submitted += status.completedProfile ? 1 : 0;
+
+        // Count accepted
+        stats.admitted += status.admitted ? 1 : 0;
+
+        // Count confirmed
+        stats.confirmed += status.confirmed ? 1 : 0;
+
+        // Count confirmed that are CMU
+        stats.confirmedCmu +=
+          status.confirmed &&
+          (email === "andrew.cmu.edu" || email === "cmu.edu")
+            ? 1
+            : 0;
+
+        stats.confirmedFemale +=
+          status.confirmed && profile.gender == "Female" ? 1 : 0;
+        stats.confirmedMale +=
+          status.confirmed && profile.gender == "Male" ? 1 : 0;
+        stats.confirmedOther +=
+          status.confirmed && profile.gender == "Other" ? 1 : 0;
+        stats.confirmedNone +=
+          status.confirmed && profile.gender == "Prefer not to say" ? 1 : 0;
+
+        // Count declined
+        stats.declined += status.declined ? 1 : 0;
+
+        // Count the number of people who want hardware
+        stats.wantsHardware += profile.wantsHardware ? 1 : 0;
+
+        // Count schools
+        // if (!stats.demo.schools[email]) {
+        //   stats.demo.schools[email] = {
+        //     submitted: 0,
+        //     admitted: 0,
+        //     confirmed: 0,
+        //     declined: 0,
+        //   };
+        // }
+
+        // Count graduation years
+        if (profile.graduationYear) {
+          switch (profile.graduationYear) {
+            case 2021:
+              stats.demo.year["2021"] += 1;
+              break;
+            case 2022:
+              stats.demo.year["2022"] += 1;
+              break;
+            case 2023:
+              stats.demo.year["2023"] += 1;
+              break;
+            case 2024:
+              stats.demo.year["2024"] += 1;
+              break;
+            case 2025:
+              stats.demo.year["2025"] += 1;
+              break;
+            case 2026:
+              stats.demo.year["2026"] += 1;
+              break;
+          }
+        }
+
+        // Count shirt sizes
+        if (profile.shirtSize in stats.shirtSizes) {
+          stats.shirtSizes[profile.shirtSize] += 1;
+        }
+
+        //count experience
+        if (profile.hackathonExperience in stats.experiences) {
+          stats.experiences[profile.hackathonExperience] += 1;
+        }
+
+        // Dietary restrictions
+        // if (profile.dietaryRestrictions) {
+        //   profile.dietaryRestrictions.forEach(function (restriction) {
+        //     if (!stats.dietaryRestrictions[restriction]) {
+        //       stats.dietaryRestrictions[restriction] = 0;
+        //     }
+        //     stats.dietaryRestrictions[restriction] += 1;
+        //   });
+        // }
+      }
+      console.log(stats);
+      return stats;
+    })
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    });
 };
