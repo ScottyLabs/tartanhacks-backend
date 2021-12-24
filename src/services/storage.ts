@@ -86,13 +86,15 @@ const fileExists = async (
  * Upload a resume into the GCP storage bucket
  * @param fileBuffer The file buffer of the resume to upload
  * @param userId The ID of the user who owns the resume
+ * @returns the signed URL of the resume valid for 1 hour
  */
 export const uploadResume = async (
   fileBuffer: Buffer,
   userId: ObjectId
-): Promise<void> => {
+): Promise<string> => {
   const fileName = `${userId.toString()}.pdf`;
   await uploadFile(StorageBuckets.RESUME, fileBuffer, fileName);
+  return await getResumeUrl(userId);
 };
 
 /**
