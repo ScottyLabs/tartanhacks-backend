@@ -41,6 +41,12 @@ export const getParticipantsPipeline = (eventId: ObjectId): any[] => {
       },
     },
     {
+      $sort: {
+        "status.completedProfile": -1,
+        "status.admittedBy": 1,
+      },
+    },
+    {
       $project: {
         event: 0,
         createdAt: 0,
