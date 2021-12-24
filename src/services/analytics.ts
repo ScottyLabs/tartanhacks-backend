@@ -141,6 +141,30 @@ export const computeAnalytics = async () => {
       //     declined: 0,
       //   };
       // }
+
+      // Count graduation years
+      if (profile.graduationYear) {
+        switch (profile.graduationYear) {
+          case 2021:
+            stats.demo.year["2021"] += 1;
+            break;
+          case 2022:
+            stats.demo.year["2022"] += 1;
+            break;
+          case 2023:
+            stats.demo.year["2023"] += 1;
+            break;
+          case 2024:
+            stats.demo.year["2024"] += 1;
+            break;
+          case 2025:
+            stats.demo.year["2025"] += 1;
+            break;
+          case 2026:
+            stats.demo.year["2026"] += 1;
+            break;
+        }
+      }
     }
   });
 };
