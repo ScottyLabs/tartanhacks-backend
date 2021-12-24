@@ -6,6 +6,7 @@ import * as TeamController from "./TeamController";
 import { ObjectId } from "bson";
 import { getParticipantsPipeline } from "../aggregations/participants";
 import { getTartanHacks } from "./EventController";
+import Status from "../models/Status";
 
 export const getParticipants = async (
   req: Request,
@@ -74,6 +75,58 @@ export const admitUser = async (req: Request, res: Response): Promise<void> => {
   } catch (err) {
     res.status(500).json(err);
   }
+};
+
+export const admitAllUsers = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
+  const currentUser = res.locals.user;
+  Status.updateMany(
+    {
+      completedProfile: true,
+      event: tartanhacks._id,
+      admitted: null,
+    },
+    {
+      admitted: true,
+      admittedBy: currentUser._id,
+    }
+  )
+    .then(() => {
+      res.status(200).send();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+};
+
+export const rejectAllUsers = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
+  const currentUser = res.locals.user;
+  Status.updateMany(
+    {
+      completedProfile: true,
+      event: tartanhacks._id,
+      admitted: null,
+    },
+    {
+      admitted: false,
+      admittedBy: currentUser._id,
+    }
+  )
+    .then(() => {
+      res.status(200).send();
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 };
 
 export const rejectUser = async (
