@@ -2,7 +2,9 @@
  * Service for computing user analytics
  */
 
+import Status from "src/models/Status";
 import { getTartanHacks } from "../controllers/EventController";
+import Profile from "../models/Profile";
 import User from "../models/User";
 
 export const computeAnalytics = async () => {
@@ -14,10 +16,10 @@ export const computeAnalytics = async () => {
     total: 0,
     demo: {
       gender: {
-        M: 0,
-        F: 0,
-        O: 0,
-        N: 0,
+        Male: 0,
+        Female: 0,
+        "Prefer not to say": 0,
+        Other: 0,
       },
       schools: {},
       year: {
@@ -76,21 +78,69 @@ export const computeAnalytics = async () => {
     hostNeededOther: 0,
     hostNeededNone: 0,
 
-    reimbursementTotal: 0,
-    reimbursementMissing: 0,
-
     wantsHardware: 0,
 
     checkedIn: 0,
   };
 
-  User.find({
+  Profile.find({
     event: tartanhacks._id,
-  }).then((users) => {
-    stats.total = users.length;
+  }).then(async (profiles) => {
+    stats.total = profiles.length;
 
-    for (let i = 0; i < users.length; i++) {
-      const user = users[i];
+    for (let i = 0; i < profiles.length; i++) {
+      const profile = profiles[0];
+      const user = await User.findById(profile.user);
+      const status = await Status.findOne({ user: profile.user });
+
+      // Grab the email extension
+      const email = user.email.split("@")[1];
+
+      // Add to the gender
+      stats.demo.gender[profile.gender] += 1;
+
+      // Count verified
+      stats.verified += status.verified ? 1 : 0;
+
+      // Count submitted
+      stats.submitted += status.completedProfile ? 1 : 0;
+
+      // Count accepted
+      stats.admitted += status.admitted ? 1 : 0;
+
+      // Count confirmed
+      stats.confirmed += status.confirmed ? 1 : 0;
+
+      // Count confirmed that are CMU
+      stats.confirmedCmu +=
+        status.confirmed && (email === "andrew.cmu.edu" || email === "cmu.edu")
+          ? 1
+          : 0;
+
+      stats.confirmedFemale +=
+        status.confirmed && profile.gender == "Female" ? 1 : 0;
+      stats.confirmedMale +=
+        status.confirmed && profile.gender == "Male" ? 1 : 0;
+      stats.confirmedOther +=
+        status.confirmed && profile.gender == "Other" ? 1 : 0;
+      stats.confirmedNone +=
+        status.confirmed && profile.gender == "Prefer not to say" ? 1 : 0;
+
+      // Count declined
+      stats.declined += status.declined ? 1 : 0;
+
+      // Count the number of people who want hardware
+      stats.wantsHardware += profile.wantsHardware ? 1 : 0;
+
+      // Count schools
+      // if (!stats.demo.schools[email]) {
+      //   stats.demo.schools[email] = {
+      //     submitted: 0,
+      //     admitted: 0,
+      //     confirmed: 0,
+      //     declined: 0,
+      //   };
+      // }
     }
   });
 };
