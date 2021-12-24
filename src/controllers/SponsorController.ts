@@ -19,7 +19,7 @@ export const createSponsor = async (
 
   const existing = await Sponsor.findOne({ name, event: event._id });
   if (existing) {
-    return bad(res, "Sponsor with that name already exists!");
+    return bad(res, "Sponsor exists with the same name: " + name);
   }
 
   const sponsor = new Sponsor({
