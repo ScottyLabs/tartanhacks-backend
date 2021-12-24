@@ -11,8 +11,6 @@ export const computeAnalytics = async () => {
   const tartanhacks = await getTartanHacks();
 
   const stats = {
-    lastUpdated: 0,
-
     total: 0,
     demo: {
       gender: {
@@ -65,22 +63,10 @@ export const computeAnalytics = async () => {
 
     experiences: {
       "0": 0,
-      "1~3": 0,
+      "1-3": 0,
       "4+": 0,
     },
-
-    hostNeededFri: 0,
-    hostNeededSat: 0,
-    hostNeededUnique: 0,
-
-    hostNeededFemale: 0,
-    hostNeededMale: 0,
-    hostNeededOther: 0,
-    hostNeededNone: 0,
-
     wantsHardware: 0,
-
-    checkedIn: 0,
   };
 
   Profile.find({
@@ -165,6 +151,26 @@ export const computeAnalytics = async () => {
             break;
         }
       }
+
+      // Count shirt sizes
+      if (profile.shirtSize in stats.shirtSizes) {
+        stats.shirtSizes[profile.shirtSize] += 1;
+      }
+
+      //count experience
+      if (profile.hackathonExperience in stats.experiences) {
+        stats.experiences[profile.hackathonExperience] += 1;
+      }
+
+      // Dietary restrictions
+      // if (profile.dietaryRestrictions) {
+      //   profile.dietaryRestrictions.forEach(function (restriction) {
+      //     if (!stats.dietaryRestrictions[restriction]) {
+      //       stats.dietaryRestrictions[restriction] = 0;
+      //     }
+      //     stats.dietaryRestrictions[restriction] += 1;
+      //   });
+      // }
     }
   });
 };
