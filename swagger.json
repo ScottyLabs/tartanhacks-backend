@@ -18,9 +18,7 @@
     "/admin/new/{id}": {
       "post": {
         "summary": "Make a user an admin",
-        "tags": [
-          "Admin Module"
-        ],
+        "tags": ["Admin Module"],
         "description": "Make a user into an admin. Access - Admin only",
         "security": [
           {
@@ -60,9 +58,7 @@
     "/admin/remove/{id}": {
       "post": {
         "summary": "Demote an admin",
-        "tags": [
-          "Admin Module"
-        ],
+        "tags": ["Admin Module"],
         "description": "Demote an existing admin. Access - Admin only",
         "security": [
           {
@@ -102,9 +98,7 @@
     "/auth/register": {
       "post": {
         "summary": "Register user",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Creates new user account. Access - Open",
         "requestBody": {
           "required": true,
@@ -145,9 +139,7 @@
     "/auth/login": {
       "post": {
         "summary": "Login user",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Verifies user credentials. Access - Open",
         "requestBody": {
           "required": true,
@@ -188,9 +180,7 @@
     "/auth/verify/{token}": {
       "get": {
         "summary": "Verify a user by their token",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Verifies a user. Access - Open",
         "parameters": [
           {
@@ -219,9 +209,7 @@
     "/auth/verify/resend": {
       "post": {
         "summary": "Resend a user verification email",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Resend a user verification email. Access - Open",
         "requestBody": {
           "required": true,
@@ -255,9 +243,7 @@
     "/auth/reset": {
       "post": {
         "summary": "Send a password reset email to a user",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Send a password reset email to a user. Access - Open",
         "requestBody": {
           "required": true,
@@ -294,9 +280,7 @@
     "/auth/reset/password": {
       "post": {
         "summary": "Reset a user's password",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Reset a user's password Access - Open",
         "requestBody": {
           "required": true,
@@ -335,9 +319,7 @@
     "/check-in/leaderboard": {
       "get": {
         "summary": "Get Check In leaderboard",
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Get check in leader board. Access - Public.",
         "responses": {
           "200": {
@@ -363,9 +345,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Get a user's check in history. Access - Admin or User(Own).",
         "parameters": [
           {
@@ -402,9 +382,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Creates new Check in Item. Access - Admin.",
         "requestBody": {
           "required": true,
@@ -463,9 +441,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Edit existing check in item information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.",
         "parameters": [
           {
@@ -528,9 +504,7 @@
       },
       "get": {
         "summary": "Get Check In item by ID",
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Get a single Check In item by iD. Access - Public.",
         "parameters": [
           {
@@ -565,9 +539,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Delete Check In item by specifying ID. Access - Admin.",
         "parameters": [
           {
@@ -599,9 +571,7 @@
     "/check-in/": {
       "get": {
         "summary": "Get Check In items",
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Get all check in items. Access - Public.",
         "responses": {
           "200": {
@@ -627,9 +597,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Checks in a user to a check in item. Access - Admin Users can check in any user for any check in item. Participants can only check themselves in for check-in items that have self check-in enabled.",
         "parameters": [
           {
@@ -668,9 +636,7 @@
     "/requests/team/{teamId}": {
       "get": {
         "summary": "View incoming and outgoing requests for a team",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "View incoming and outgoing requests for a team. Access - User",
         "security": [
           {
@@ -704,9 +670,7 @@
     "/requests/user/{userId}": {
       "get": {
         "summary": "View incoming and outgoing requests for a user",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "View incoming and outgoing requests for a user. Access - User",
         "security": [
           {
@@ -740,9 +704,7 @@
     "/requests/accept/{requestId}": {
       "post": {
         "summary": "Accept a team request",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "Accept a team request.\nIf INVITE request, can only be accessed by team admin.\nIf JOIN request, can only be accessed by owner. Access - User\n",
         "security": [
           {
@@ -781,9 +743,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Schedule Module"
-        ],
+        "tags": ["Schedule Module"],
         "description": "Creates new schedule item. Access - Admin.",
         "requestBody": {
           "required": true,
@@ -843,9 +803,7 @@
     "/schedule/{id}": {
       "patch": {
         "summary": "Edit schedule item",
-        "tags": [
-          "Schedule Module"
-        ],
+        "tags": ["Schedule Module"],
         "description": "Edit existing schedule item information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.",
         "parameters": [
           {
@@ -914,9 +872,7 @@
       },
       "get": {
         "summary": "Get Schedule item by ID",
-        "tags": [
-          "Schedule Module"
-        ],
+        "tags": ["Schedule Module"],
         "description": "Get a single schedule item by iD. Access - Public.",
         "parameters": [
           {
@@ -951,9 +907,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Schedule Module"
-        ],
+        "tags": ["Schedule Module"],
         "description": "Delete schedule item by specifying ID. Access - Admin.",
         "parameters": [
           {
@@ -985,9 +939,7 @@
     "/schedule/": {
       "get": {
         "summary": "Get Schedule items",
-        "tags": [
-          "Schedule Module"
-        ],
+        "tags": ["Schedule Module"],
         "description": "Get all schedule items. Access - Public.",
         "responses": {
           "200": {
@@ -1008,9 +960,7 @@
     "/settings": {
       "get": {
         "summary": "Get the settings",
-        "tags": [
-          "Settings Module"
-        ],
+        "tags": ["Settings Module"],
         "description": "Get the settings. Access - Admin only",
         "security": [
           {
@@ -1037,9 +987,7 @@
       },
       "put": {
         "summary": "Update the settings",
-        "tags": [
-          "Settings Module"
-        ],
+        "tags": ["Settings Module"],
         "description": "Update the settings. Access - Admin only",
         "security": [
           {
@@ -1110,9 +1058,7 @@
     "/teams": {
       "post": {
         "summary": "List all existing teams",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "List all existing teams. Access - Admin",
         "security": [
           {
@@ -1153,9 +1099,7 @@
     "/user/profile": {
       "put": {
         "summary": "Submit a user application",
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Submit a user application. Access - User only",
         "security": [
           {
@@ -1195,12 +1139,7 @@
                   },
                   "level": {
                     "type": "string",
-                    "enum": [
-                      "Undergraduate",
-                      "Masters",
-                      "Doctorate",
-                      "Other"
-                    ]
+                    "enum": ["Undergraduate", "Masters", "Doctorate", "Other"]
                   },
                   "graduationYear": {
                     "type": "integer",
@@ -1209,12 +1148,7 @@
                   },
                   "gender": {
                     "type": "string",
-                    "enum": [
-                      "Male",
-                      "Female",
-                      "Prefer not to say",
-                      "Other"
-                    ]
+                    "enum": ["Male", "Female", "Prefer not to say", "Other"]
                   },
                   "genderOther": {
                     "type": "string"
@@ -1249,19 +1183,11 @@
                   },
                   "hackathonExperience": {
                     "type": "string",
-                    "enum": [
-                      0,
-                      "0-3",
-                      "4+"
-                    ]
+                    "enum": [0, "0-3", "4+"]
                   },
                   "workPermission": {
                     "type": "string",
-                    "enum": [
-                      "Citizen",
-                      "Sponsorship",
-                      "No sponsorship"
-                    ]
+                    "enum": ["Citizen", "Sponsorship", "No sponsorship"]
                   },
                   "workLocation": {
                     "type": "string"
@@ -1321,11 +1247,7 @@
                   },
                   "region": {
                     "type": "string,",
-                    "enum": [
-                      "Rural",
-                      "Suburban",
-                      "Urban"
-                    ]
+                    "enum": ["Rural", "Suburban", "Urban"]
                   }
                 }
               }
@@ -1359,9 +1281,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Submit a user's resume. Must have an associated profile. Access - User",
         "requestBody": {
           "required": true,
@@ -1403,9 +1323,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Submit a user's confirmation. Must have been accepted. Access - User",
         "requestBody": {
           "required": true,
@@ -1461,9 +1379,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Decline a user's acceptance. Must have been accepted. Access - User",
         "responses": {
           "200": {
@@ -1489,9 +1405,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Retrieves list of all users in the database. Access - Admin",
         "responses": {
           "200": {
@@ -1514,9 +1428,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Retrieves user info by user ID, Access - Admin or Owner",
         "parameters": [
           {

@@ -3,7 +3,7 @@
   "description": "Initial setting configuration",
   "parameters": {
     "timeOpen": {
-      "value":  0,
+      "value": 0,
       "description": "Unix timestamp for when registration opens. Set to 0 to disable enforcing open time"
     },
     "timeClose": {

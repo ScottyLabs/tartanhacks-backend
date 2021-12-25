@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import {
   getParticipantBookmarks,
-  getProjectBookmarks
+  getProjectBookmarks,
 } from "../controllers/BookmarkController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAuthenticated } from "./middleware";

@@ -1,5 +1,9 @@
 import express, { Router } from "express";
-import { createBookmark, deleteBookmark, getBookmark } from "../controllers/BookmarkController";
+import {
+  createBookmark,
+  deleteBookmark,
+  getBookmark,
+} from "../controllers/BookmarkController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isRecruiterOrAdmin } from "./middleware";
 

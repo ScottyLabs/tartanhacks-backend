@@ -3,15 +3,14 @@ import {
   declineAcceptance,
   displayNameAvailable,
   fileMiddleware,
-  getOwnProfile, submitConfirmation,
+  getOwnProfile,
+  submitConfirmation,
   submitProfile,
-  submitResume
+  submitResume,
 } from "../controllers/ProfileController";
 import { getOwnTeam } from "../controllers/TeamController";
 import { asyncCatch } from "../util/asyncCatch";
-import {
-  isAuthenticated
-} from "./middleware";
+import { isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -97,7 +96,7 @@ router.get("/profile", isAuthenticated, asyncCatch(getOwnProfile));
  *       500:
  *          description: Internal Server Error.
  */
- router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
+router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
 
 /**
  * @swagger

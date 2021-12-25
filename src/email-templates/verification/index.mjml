@@ -1,10 +1,8 @@
 <mjml>
   <mj-head>
     <mj-style>
-      .rounded-button a {
-        border-radius: 10px;
-        box-shadow: 0 4px 6px hsla(0,0%,46%,0.2), 0 1px 3px hsla(0,0%,46%,0.2);
-      }
+      .rounded-button a { border-radius: 10px; box-shadow: 0 4px 6px
+      hsla(0,0%,46%,0.2), 0 1px 3px hsla(0,0%,46%,0.2); }
     </mj-style>
   </mj-head>
   <mj-body>
@@ -34,7 +32,12 @@
         >
           Verify your email by clicking on the button below.
         </mj-text>
-        <mj-button background-color="#F7C062" href="{{url}}" font-family="Poppins" css-class="rounded-button">
+        <mj-button
+          background-color="#F7C062"
+          href="{{url}}"
+          font-family="Poppins"
+          css-class="rounded-button"
+        >
           Verify Me
         </mj-button>
       </mj-column>

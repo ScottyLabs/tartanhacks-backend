@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import {
-  getLeaderboard, getLeaderboardPosition
+  getLeaderboard,
+  getLeaderboardPosition,
 } from "../controllers/CheckInController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAuthenticated } from "./middleware";

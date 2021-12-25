@@ -1,25 +1,55 @@
 <mjml>
   <mj-head>
-    <mj-font name="Poppins" href="https://fonts.googleapis.com/css?family=Poppins" />
+    <mj-font
+      name="Poppins"
+      href="https://fonts.googleapis.com/css?family=Poppins"
+    />
   </mj-head>
   <mj-body>
     <mj-section border="solid black 1px" background-color="#fff">
       <mj-column width="80%">
-        <mj-text align="center" color="#000" font-size="40px" font-family="Poppins">
+        <mj-text
+          align="center"
+          color="#000"
+          font-size="40px"
+          font-family="Poppins"
+        >
           Welcome to TartanHacks!
         </mj-text>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+        <mj-text
+          align="left"
+          color="#000"
+          font-size="12px"
+          font-family="Poppins"
+        >
           Hi {{name}},
         </mj-text>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
-          We're so excited to have you join us! This year, we're making TartanHacks bigger and better than ever before.
+        <mj-text
+          align="left"
+          color="#000"
+          font-size="12px"
+          font-family="Poppins"
+        >
+          We're so excited to have you join us! This year, we're making
+          TartanHacks bigger and better than ever before.
         </mj-text>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
-          To help you during the event, we've created an app that allows you to bookmark participants
-          and projects that you found interesting during the event. With the app, you can view their resumes and download all your
-          bookmarks at any time.
+        <mj-text
+          align="left"
+          color="#000"
+          font-size="12px"
+          font-family="Poppins"
+        >
+          To help you during the event, we've created an app that allows you to
+          bookmark participants and projects that you found interesting during
+          the event. With the app, you can view their resumes and download all
+          your bookmarks at any time.
         </mj-text>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+        <mj-text
+          align="left"
+          color="#000"
+          font-size="12px"
+          font-family="Poppins"
+        >
           To login to the app, use the following credentials:
         </mj-text>
         <mj-table color="#000" font-size="12px" font-family="Poppins">
@@ -32,19 +62,34 @@
             <td style="font-weight: bold">{{password}}</td>
           </tr>
         </mj-table>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+        <mj-text
+          align="left"
+          color="#000"
+          font-size="12px"
+          font-family="Poppins"
+        >
           Download the app on your device's app store:
         </mj-text>
         <mj-table>
           <tr>
             <td>
-              <a href="https://play.google.com/store/apps/details?id=org.scottylabs.thdappfinal&hl=en_US&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
-                <img width="100px" src="https://tartanhacks-registration.netlify.app/google-play-badge.png" />
+              <a
+                href="https://play.google.com/store/apps/details?id=org.scottylabs.thdappfinal&hl=en_US&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+              >
+                <img
+                  width="100px"
+                  src="https://tartanhacks-registration.netlify.app/google-play-badge.png"
+                />
               </a>
             </td>
             <td>
-              <a href="https://apps.apple.com/us/app/scottylabs-dashboard/id1556362423">
-                <img width="100px" src="https://tartanhacks-registration.netlify.app/ios-app-store-badge.png" />
+              <a
+                href="https://apps.apple.com/us/app/scottylabs-dashboard/id1556362423"
+              >
+                <img
+                  width="100px"
+                  src="https://tartanhacks-registration.netlify.app/ios-app-store-badge.png"
+                />
               </a>
             </td>
           </tr>
