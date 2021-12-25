@@ -17,7 +17,7 @@ export const sendVerificationEmail = async (
     "[TartanHacks] Verify your email",
     "verification",
     {
-      url: `${process.env.BACKEND_URL}/auth/verify/${verificationToken}`,
+      url: `${process.env.FRONTEND_URL}/auth/verify/${verificationToken}`,
     }
   );
 };
