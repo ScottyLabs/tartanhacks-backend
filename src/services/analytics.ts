@@ -2,6 +2,7 @@
  * Service for computing user analytics
  */
 
+import { stat } from "fs";
 import Status from "src/models/Status";
 import { getTartanHacks } from "../controllers/EventController";
 import Profile from "../models/Profile";
@@ -69,20 +70,22 @@ export const computeAnalytics = async () => {
     wantsHardware: 0,
   };
 
-  Profile.find({
-    event: tartanhacks._id,
-  })
-    .then(async (profiles) => {
-      stats.total = profiles.length;
-
-      for (let i = 0; i < profiles.length; i++) {
-        const profile = profiles[0];
-        const user = await User.findById(profile.user);
+  User.find({})
+    .then(async (users) => {
+      for (let i = 0; i < users.length; i++) {
+        const user = users[0];
+        const profile = await Profile.findOne({ user: user._id });
         const status = await Status.findOne({ user: profile.user });
 
-        if (user == null || status == null) {
+        if (profile == null) {
           continue;
         }
+
+        if (profile.event !== tartanhacks._id) {
+          continue;
+        }
+
+        stats.total += 1;
 
         // Grab the email extension
         const email = user.email.split("@")[1];
