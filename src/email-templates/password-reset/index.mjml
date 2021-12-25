@@ -1,4 +1,12 @@
 <mjml>
+  <mj-head>
+    <mj-style>
+      .rounded-button a {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px hsla(0,0%,46%,0.2), 0 1px 3px hsla(0,0%,46%,0.2);
+      }
+    </mj-style>
+  </mj-head>
   <mj-body>
     <mj-section border="solid black 1px" background-color="#fff">
       <mj-column width="80%">
@@ -11,7 +19,7 @@
           Reset your password
         </mj-text>
         <mj-text
-          align="center"
+          align="left"
           color="#000"
           font-size="12px"
           font-family="Poppins"
@@ -19,14 +27,14 @@
           If you did not request a password reset, please ignore this email.
         </mj-text>
         <mj-text
-          align="center"
+          align="left"
           color="#000"
           font-size="12px"
           font-family="Poppins"
         >
           To reset your password, click the button below.
         </mj-text>
-        <mj-button background-color="#F7C062" color="#FFFFFF" href="{{url}}" font-family="Poppins">
+        <mj-button background-color="#F7C062" color="#FFFFFF" href="{{url}}" font-family="Poppins" css-class="rounded-button">
           Reset password
         </mj-button>
       </mj-column>

@@ -1,4 +1,12 @@
 <mjml>
+  <mj-head>
+    <mj-style>
+      .rounded-button a {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px hsla(0,0%,46%,0.2), 0 1px 3px hsla(0,0%,46%,0.2);
+      }
+    </mj-style>
+  </mj-head>
   <mj-body>
     <mj-section border="solid black 1px" background-color="#fff">
       <mj-column width="80%">
@@ -11,22 +19,22 @@
           Verify your email
         </mj-text>
         <mj-text
-          align="center"
+          align="left"
           color="#000"
-          font-size="16px"
+          font-size="12px"
           font-family="Poppins"
         >
           Thanks for signing up for TartanHacks!
         </mj-text>
         <mj-text
-          align="center"
+          align="left"
           color="#000"
           font-size="12px"
           font-family="Poppins"
         >
-          To verify your email, click the button below.
+          Verify your email by clicking on the button below.
         </mj-text>
-        <mj-button background-color="#F7C062" href="{{url}}">
+        <mj-button background-color="#F7C062" href="{{url}}" font-family="Poppins" css-class="rounded-button">
           Verify Me
         </mj-button>
       </mj-column>
