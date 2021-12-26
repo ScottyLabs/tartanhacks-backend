@@ -4,6 +4,10 @@
       .rounded-button a { border-radius: 10px; box-shadow: 0 4px 6px
       hsla(0,0%,46%,0.2), 0 1px 3px hsla(0,0%,46%,0.2); }
     </mj-style>
+    <mj-font
+      name="Poppins"
+      href="https://fonts.googleapis.com/css?family=Poppins"
+    />
   </mj-head>
   <mj-body>
     <mj-section border="solid black 1px" background-color="#fff">
