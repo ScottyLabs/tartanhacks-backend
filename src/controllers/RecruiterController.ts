@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import RecruiterProfile from "../models/RecruiterProfile";
 import Sponsor from "../models/Sponsor";
 import User from "../models/User";
-import { bad, notFound } from "../util/error";
+import { bad, error, notFound } from "../util/error";
 import { sendRecruiterCreationEmail } from "./EmailController";
 import { getTartanHacks } from "./EventController";
 
@@ -56,9 +56,12 @@ export const createRecruiter = async (
     lastName,
   });
   await recruiterProfile.save();
-  await sendRecruiterCreationEmail(email, password, firstName);
-
-  res.json(recruiter.toJSON());
+  try {
+    await sendRecruiterCreationEmail(email, password, firstName);
+    res.json(recruiter.toJSON());
+  } catch (err) {
+    error(res, "Could not send recruiter sign up email");
+  }
 };
 
 /**

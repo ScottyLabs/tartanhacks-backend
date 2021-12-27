@@ -18,7 +18,7 @@ export const sendTemplateEmail = async (
   subject: string,
   templateName: string,
   variables: Record<string, string> = {}
-): Promise<boolean> => {
+): Promise<void> => {
   try {
     const transporter = await getTransporter();
     const html = renderTemplate(templateName, variables);
@@ -30,13 +30,10 @@ export const sendTemplateEmail = async (
       subject,
       html,
     });
-
-    return true;
   } catch (err) {
     console.error("Could not send email");
-    console.error(err);
+    throw err;
   }
-  return false;
 };
 
 /**
@@ -50,7 +47,7 @@ export const sendPlaintextEmail = async (
   recipients: [string],
   subject: string,
   text: string
-): Promise<boolean> => {
+): Promise<void> => {
   try {
     const transporter = await getTransporter();
 
@@ -61,13 +58,10 @@ export const sendPlaintextEmail = async (
       subject,
       text,
     });
-
-    return true;
   } catch (err) {
     console.error("Could not send email");
-    console.error(err);
+    throw err;
   }
-  return false;
 };
 
 /**

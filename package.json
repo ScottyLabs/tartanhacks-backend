@@ -9,6 +9,7 @@
     "start-stg": "doppler setup -p tartanhacks-backend -c stg && doppler run -- node . || echo \"Did you run 'npm run build'?\"",
     "start-dev": "doppler setup -p tartanhacks-backend -c dev && doppler run -- node . || echo \"Did you run 'npm run build'?\"",
     "dev": "doppler setup -p tartanhacks-backend -c dev && doppler run -- nodemon --exec ts-node -r tsconfig-paths/register --files src/index.ts",
+    "stg": "doppler setup -p tartanhacks-backend -c stg && doppler run -- nodemon --exec ts-node -r tsconfig-paths/register --files src/index.ts",
     "lint": "npm run lint:pretty && npm run lint:only",
     "lint:only": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:pretty": "prettier --write .",

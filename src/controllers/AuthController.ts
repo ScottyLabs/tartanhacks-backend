@@ -43,7 +43,12 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   });
 
   const emailToken = await user.generateEmailVerificationToken();
-  await EmailController.sendVerificationEmail(email, emailToken);
+  try {
+    await EmailController.sendVerificationEmail(email, emailToken);
+  } catch (err) {
+    console.error("Could not send verification email for registered user!");
+    console.error(err);
+  }
 };
 
 /**
@@ -174,8 +179,12 @@ export const resendVerificationEmail = async (
     }
 
     const emailToken = await user.generateEmailVerificationToken();
-    await EmailController.sendVerificationEmail(email, emailToken);
-    res.status(200).send();
+    try {
+      await EmailController.sendVerificationEmail(email, emailToken);
+      res.status(200).send();
+    } catch (err) {
+      error(res, "Could not send verification email");
+    }
   } catch (err) {
     console.error(err);
     error(res, "An error occured");
@@ -248,8 +257,12 @@ export const sendPasswordResetEmail = async (
     }
 
     const passwordResetToken = user.generatePasswordResetToken();
-    await EmailController.sendPasswordResetEmail(email, passwordResetToken);
-    res.status(200).send();
+    try {
+      await EmailController.sendPasswordResetEmail(email, passwordResetToken);
+      res.status(200).send();
+    } catch (err) {
+      error(res, "Could not send password reset email");
+    }
   } catch (err) {
     console.error(err);
     return error(res);
