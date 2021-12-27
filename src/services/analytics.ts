@@ -43,7 +43,7 @@ type Stats = {
   dietaryRestrictions: Record<string, number>;
 
   experiences: Record<string, number>;
-  wantsHardware: 0;
+  wantsHardware: number;
 };
 
 export const computeAnalytics = async (): Promise<Stats> => {
