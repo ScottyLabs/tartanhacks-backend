@@ -2,8 +2,6 @@
  * Service for computing user analytics
  */
 
-import { stat } from "fs";
-import { deleteModel } from "mongoose";
 import Status from "../models/Status";
 import { getTartanHacks } from "../controllers/EventController";
 import Profile from "../models/Profile";
@@ -48,7 +46,7 @@ type Stats = {
   wantsHardware: 0;
 };
 
-export const computeAnalytics = async () => {
+export const computeAnalytics = async (): Promise<Stats> => {
   const tartanhacks = await getTartanHacks();
 
   const stats: Stats = {
@@ -120,7 +118,11 @@ export const computeAnalytics = async () => {
       stats.declined += status.declined ? 1 : 0;
 
       /// Add to the gender
-      stats.demo.gender[profile.gender] += 1;
+      if (profile.gender in stats.demo.gender) {
+        stats.demo.gender[profile.gender] += 1;
+      } else {
+        stats.demo.gender[profile.gender] = 1;
+      }
 
       stats.confirmedFemale +=
         status.confirmed && profile.gender == "Female" ? 1 : 0;
