@@ -1,48 +1,32 @@
 <mjml>
   <mj-head>
     <mj-style>
-      .rounded-button a { border-radius: 10px; box-shadow: 0 4px 6px
-      hsla(0,0%,46%,0.2), 0 1px 3px hsla(0,0%,46%,0.2); }
+      .rounded-button a {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px hsla(0, 0%, 46%, 0.2), 0 1px 3px hsla(0, 0%, 46%, 0.2);
+      }
     </mj-style>
-    <mj-font
-      name="Poppins"
-      href="https://fonts.googleapis.com/css?family=Poppins"
-    />
+    <mj-font name="Poppins" href="https://fonts.googleapis.com/css?family=Poppins" />
+    <mj-style>
+      @font-face {
+        font-family: "Poppins";
+        src: url("https://fonts.googleapis.com/css?family=Poppins");
+      }
+    </mj-style>
   </mj-head>
   <mj-body>
     <mj-section border="solid black 1px" background-color="#fff">
       <mj-column width="80%">
-        <mj-text
-          align="center"
-          color="#000"
-          font-size="40px"
-          font-family="Poppins"
-        >
+        <mj-text align="center" color="#000" font-size="40px" font-family="Poppins">
           Reset your password
         </mj-text>
-        <mj-text
-          align="left"
-          color="#000"
-          font-size="12px"
-          font-family="Poppins"
-        >
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
           If you did not request a password reset, please ignore this email.
         </mj-text>
-        <mj-text
-          align="left"
-          color="#000"
-          font-size="12px"
-          font-family="Poppins"
-        >
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
           To reset your password, click the button below.
         </mj-text>
-        <mj-button
-          background-color="#F7C062"
-          color="#FFFFFF"
-          href="{{url}}"
-          font-family="Poppins"
-          css-class="rounded-button"
-        >
+        <mj-button background-color="#F7C062" color="#FFFFFF" href="{{url}}" font-family="Poppins" css-class="rounded-button">
           Reset password
         </mj-button>
       </mj-column>
