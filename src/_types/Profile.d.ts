@@ -36,7 +36,7 @@ export interface IProfile extends Document {
   design?: string;
   website?: string;
   essays?: string[];
-  dietaryRestrictions?: string[];
+  dietaryRestrictions?: string;
   shirtSize?: Profile.ShirtSize;
   wantsHardware?: boolean;
   address?: string;

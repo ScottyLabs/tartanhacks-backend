@@ -2,16 +2,13 @@
  * Service for computing user analytics
  */
 
-import Status from "../models/Status";
+import { getParticipantDataPipeline } from "src/aggregations/analytics";
 import { getTartanHacks } from "../controllers/EventController";
-import Profile from "../models/Profile";
 import User from "../models/User";
-import { findUserTeam } from "../controllers/TeamController";
 
 type Stats = {
   total: number;
-  totalTeams: number;
-  demo: {
+  demographic: {
     gender: Record<string, number>;
     schools: Record<
       string,
@@ -22,10 +19,10 @@ type Stats = {
         declined: number;
       }
     >;
+    colleges: Record<string, number>;
     year: Record<string, number>;
   };
 
-  teams: Record<string, number>;
   verified: number;
   submitted: number;
   admitted: number;
@@ -48,17 +45,16 @@ type Stats = {
 
 export const computeAnalytics = async (): Promise<Stats> => {
   const tartanhacks = await getTartanHacks();
-
+  const pipeline = getParticipantDataPipeline(tartanhacks._id);
   const stats: Stats = {
     total: 0,
-    totalTeams: 0,
-    demo: {
+    demographic: {
       gender: {},
       schools: {},
       year: {},
+      colleges: {},
     },
 
-    teams: {},
     verified: 0,
     submitted: 0,
     admitted: 0,
@@ -80,21 +76,19 @@ export const computeAnalytics = async (): Promise<Stats> => {
   };
 
   try {
-    const profiles = await Profile.find({ event: tartanhacks._id });
-    for (let i = 0; i < profiles.length; i++) {
-      const profile = profiles[i];
-      const user = await User.findById(profile.user);
-      const status = await Status.findOne({ user: profile.user });
-      const team = await findUserTeam(profile.user);
-
-      if (user == null) {
-        continue;
-      }
+    const participants = await User.aggregate(pipeline);
+    for (const user of participants) {
+      const { status, profile } = user;
 
       stats.total += 1;
 
       // Grab the email extension
       const email = user.email.split("@")[1];
+      const isCMU = email === "andrew.cmu.edu" || email === "cmu.edu";
+
+      if (!status) {
+        continue;
+      }
 
       // Count verified
       stats.verified += status.verified ? 1 : 0;
@@ -108,20 +102,21 @@ export const computeAnalytics = async (): Promise<Stats> => {
       // Count confirmed
       stats.confirmed += status.confirmed ? 1 : 0;
 
-      // Count confirmed that are CMU
-      stats.confirmedCmu +=
-        status.confirmed && (email === "andrew.cmu.edu" || email === "cmu.edu")
-          ? 1
-          : 0;
-
       // Count declined
       stats.declined += status.declined ? 1 : 0;
 
+      // Count confirmed that are CMU
+      stats.confirmedCmu += status.confirmed && isCMU ? 1 : 0;
+
+      if (!profile) {
+        continue;
+      }
+
       /// Add to the gender
-      if (profile.gender in stats.demo.gender) {
-        stats.demo.gender[profile.gender] += 1;
+      if (profile.gender in stats.demographic.gender) {
+        stats.demographic.gender[profile.gender] += 1;
       } else {
-        stats.demo.gender[profile.gender] = 1;
+        stats.demographic.gender[profile.gender] = 1;
       }
 
       stats.confirmedFemale +=
@@ -137,34 +132,34 @@ export const computeAnalytics = async (): Promise<Stats> => {
       stats.wantsHardware += profile.wantsHardware ? 1 : 0;
 
       // Count schools
-      if (!stats.demo.schools[email]) {
-        stats.demo.schools[email] = {
+      if (!stats.demographic.schools[email]) {
+        stats.demographic.schools[email] = {
           submitted: 0,
           admitted: 0,
           confirmed: 0,
           declined: 0,
         };
       }
-      stats.demo.schools[email].submitted += status.completedProfile ? 1 : 0;
-      stats.demo.schools[email].admitted += status.admitted ? 1 : 0;
-      stats.demo.schools[email].confirmed += status.confirmed ? 1 : 0;
-      stats.demo.schools[email].declined += status.declined ? 1 : 0;
+      stats.demographic.schools[email].submitted += status.completedProfile
+        ? 1
+        : 0;
+      stats.demographic.schools[email].admitted += status.admitted ? 1 : 0;
+      stats.demographic.schools[email].confirmed += status.confirmed ? 1 : 0;
+      stats.demographic.schools[email].declined += status.declined ? 1 : 0;
 
-      //Count teams
-      if (team) {
-        if (team.name in stats.teams) {
-          stats.teams[team.name] += 1;
-        } else {
-          stats.teams[team.name] = 1;
-          stats.totalTeams += 1;
+      // Count CMU college
+      if (isCMU) {
+        if (!stats.demographic.colleges[profile.college]) {
+          stats.demographic.colleges[profile.college] = 0;
         }
+        stats.demographic.colleges[profile.college] += 1;
       }
 
       // Count graduation years
-      if (profile.graduationYear in stats.demo.year) {
-        stats.demo.year[profile.graduationYear] += 1;
+      if (profile.graduationYear in stats.demographic.year) {
+        stats.demographic.year[profile.graduationYear] += 1;
       } else {
-        stats.demo.year[profile.graduationYear] = 1;
+        stats.demographic.year[profile.graduationYear] = 1;
       }
 
       // Count shirt sizes
@@ -183,19 +178,17 @@ export const computeAnalytics = async (): Promise<Stats> => {
 
       //Dietary restrictions
       if (profile.dietaryRestrictions) {
-        for (let j = 0; j < profile.dietaryRestrictions.length; j++) {
-          const restriction = profile.dietaryRestrictions[j];
-          if (!stats.dietaryRestrictions[restriction]) {
-            stats.dietaryRestrictions[restriction] = 0;
-          }
-          stats.dietaryRestrictions[restriction] += 1;
+        const restriction = profile.dietaryRestriction;
+        if (!stats.dietaryRestrictions[restriction]) {
+          stats.dietaryRestrictions[restriction] = 0;
         }
+        stats.dietaryRestrictions[restriction] += 1;
       }
     }
 
     return stats;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw err;
   }
 };
