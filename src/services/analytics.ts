@@ -2,7 +2,7 @@
  * Service for computing user analytics
  */
 
-import { getParticipantDataPipeline } from "src/aggregations/analytics";
+import { getParticipantDataPipeline } from "../aggregations/analytics";
 import { getTartanHacks } from "../controllers/EventController";
 import User from "../models/User";
 
