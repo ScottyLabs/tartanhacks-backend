@@ -199,6 +199,8 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *               region:
  *                 type: string,
  *                 enum: [Rural, Suburban, Urban]
+ *               attendingPhysically:
+ *                 type: boolean
  *     responses:
  *       200:
  *           description: Success.
