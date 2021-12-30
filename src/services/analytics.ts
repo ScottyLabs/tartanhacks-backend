@@ -41,6 +41,10 @@ type Stats = {
 
   experiences: Record<string, number>;
   wantsHardware: number;
+  attendance: {
+    physical: number;
+    virtual: number;
+  };
 };
 
 export const computeAnalytics = async (): Promise<Stats> => {
@@ -73,6 +77,10 @@ export const computeAnalytics = async (): Promise<Stats> => {
 
     experiences: {},
     wantsHardware: 0,
+    attendance: {
+      physical: 0,
+      virtual: 0,
+    },
   };
 
   try {
@@ -183,6 +191,13 @@ export const computeAnalytics = async (): Promise<Stats> => {
           stats.dietaryRestrictions[restriction] = 0;
         }
         stats.dietaryRestrictions[restriction] += 1;
+      }
+
+      //Count attendance modes
+      if (profile.attendingPhysically) {
+        stats.attendance.physical += 1;
+      } else {
+        stats.attendance.virtual += 1;
       }
     }
 
