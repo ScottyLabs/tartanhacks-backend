@@ -45,6 +45,7 @@ export interface IProfile extends Document {
   createdAt: Date;
   updatedAt?: Date;
   totalPoints: number;
+  attendingPhysically: boolean;
 
   /**
    * Returns a URL that can be used to download the user's resume

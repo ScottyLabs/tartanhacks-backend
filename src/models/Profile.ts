@@ -153,6 +153,11 @@ const Profile: Schema<IProfile> = new Schema(
       enum: Object.values(Region),
     },
     confirmation: Confirmation,
+    attendingPhysically: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: {
