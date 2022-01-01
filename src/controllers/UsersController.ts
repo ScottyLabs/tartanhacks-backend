@@ -8,7 +8,7 @@ import { getParticipantsPipeline } from "../aggregations/participants";
 import { getTartanHacks } from "./EventController";
 import Status from "../models/Status";
 import { sendStatusUpdateEmail } from "./EmailController";
-import Profile from "src/models/Profile";
+import Profile from "../models/Profile";
 
 export const getParticipants = async (
   req: Request,
