@@ -77,11 +77,8 @@ export const admitUser = async (req: Request, res: Response): Promise<void> => {
       event: tartanhacks._id,
       user: user._id,
     });
-    if (profile == null) {
-      return bad(res, "User is missing their profile.");
-    }
     await StatusController.setAdmitted(user._id, currentUser._id);
-    await sendStatusUpdateEmail(user.email, profile.firstName);
+    await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
     res.status(200).send();
   } catch (err) {
     res.status(500).json(err);
@@ -114,7 +111,7 @@ export const admitAllUsers = async (
           user: user._id,
           event: tartanhacks._id,
         });
-        await sendStatusUpdateEmail(user.email, profile.firstName);
+        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
       };
       promises.push(promise);
     }
@@ -152,7 +149,7 @@ export const rejectAllUsers = async (
           user: user._id,
           event: tartanhacks._id,
         });
-        await sendStatusUpdateEmail(user.email, profile.firstName);
+        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
       };
       promises.push(promise);
     }
@@ -184,11 +181,8 @@ export const rejectUser = async (
       event: tartanhacks._id,
       user: user._id,
     });
-    if (profile == null) {
-      return bad(res, "User is missing their profile.");
-    }
     await StatusController.setAdmitted(user._id, currentUser._id, false);
-    await sendStatusUpdateEmail(user.email, profile.firstName);
+    await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
     res.status(200).send();
   } catch (err) {
     res.status(500).json(err);
