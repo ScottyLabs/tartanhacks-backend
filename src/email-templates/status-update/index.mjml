@@ -1,0 +1,32 @@
+<mjml>
+  <mj-head>
+    <mj-style>
+      .rounded-button a {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px hsla(0, 0%, 46%, 0.2), 0 1px 3px hsla(0, 0%, 46%, 0.2);
+      }
+    </mj-style>
+    <mj-style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-section border="solid black 1px" background-color="#fff">
+      <mj-column width="80%">
+        <mj-text align="center" color="#000" font-size="40px" font-family="Poppins, sans-serif">
+          TartanHacks
+        </mj-text>
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins, sans-serif">
+          Hey {{name}},
+        </mj-text>
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins, sans-serif">
+          There has been an important update regarding the status of your application to TartanHacks. 
+          To view the results, visit the registration portal by clicking the button below:
+        </mj-text>
+        <mj-button background-color="#F7C062" href="{{url}}" font-family="Poppins, sans-serif" css-class="rounded-button">
+          View Update
+        </mj-button>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
