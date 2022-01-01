@@ -10,4 +10,5 @@ export interface IConfirmation extends Document {
   mlhCodeOfConduct: boolean;
   mlhEventLogistics: boolean;
   mlhPromotional: boolean;
+  willMentor: boolean;
 }
