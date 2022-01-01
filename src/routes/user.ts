@@ -279,6 +279,8 @@ router.post(
  *                type: boolean
  *              mlhPromotional:
  *                type: boolean
+ *              willConfirm:
+ *                type: boolean
  *    responses:
  *      200:
  *        description: Success.
