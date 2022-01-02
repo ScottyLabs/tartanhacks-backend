@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { model, Schema } from "mongoose";
 import { IUser, IUserModel } from "../_types/User";
@@ -10,6 +11,14 @@ import isProduction from "../util/isProduction";
 const AUTH_TOKEN_EXPIRY = process.env.AUTH_TOKEN_EXPIRY || "30d";
 const PASSWORD_RESET_EXPIRY = process.env.PASSWORD_RESET_EXPIRY || "24h";
 const EMAIL_TOKEN_EXPIRY = process.env.EMAIL_TOKEN_EXPIRY || "24h";
+
+/**
+ * Verification code length and expiry
+ */
+const VERIFICATION_CODE_LENGTH =
+  parseInt(process.env.VERIFICATION_CODE_LENGTH) || 8;
+const VERIFICATION_CODE_EXPIRY =
+  parseInt(process.env.VERIFICATION_CODE_EXPIRY) || 10 * 60 * 1000;
 
 /**
  * Identification information for a user
@@ -26,6 +35,8 @@ const User: Schema<IUser> = new Schema(
       default: null,
     },
     lastLogin: Number,
+    verificationCode: String,
+    verificationExpiry: Schema.Types.Date,
   },
   {
     timestamps: {
@@ -36,6 +47,8 @@ const User: Schema<IUser> = new Schema(
       // Remove password field when getting json of user
       transform: (doc, ret, options) => {
         delete ret.password;
+        delete ret.verificationCode;
+        delete ret.verificationExpiry;
         return ret;
       },
     },
@@ -75,6 +88,21 @@ User.methods.generateEmailVerificationToken = function (): string {
   return jwt.sign({ email: this.email }, process.env.JWT_SECRET, {
     expiresIn: EMAIL_TOKEN_EXPIRY,
   });
+};
+
+/**
+ * Update a user with a new verification code
+ */
+User.methods.updateVerificationCode = function (): Promise<IUser> {
+  const newCode = crypto
+    .randomBytes((VERIFICATION_CODE_LENGTH * 3) / 4)
+    .toString("base64");
+
+  this.verificationCode = newCode;
+  this.verificationExpiry = new Date(
+    Number(new Date()) + VERIFICATION_CODE_EXPIRY
+  );
+  return this.save();
 };
 
 /**

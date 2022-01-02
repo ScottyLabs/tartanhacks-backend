@@ -8,6 +8,7 @@ import {
   verify,
 } from "../controllers/AuthController";
 import { asyncCatch } from "../util/asyncCatch";
+import { getUserByVerificationCode } from "../controllers/AuthController";
 
 const router: Router = express.Router();
 
@@ -198,5 +199,34 @@ router.post("/request-reset", asyncCatch(sendPasswordResetEmail));
  *          description: Internal Server Error.
  */
 router.post("/reset/password", asyncCatch(resetPassword));
+
+/**
+ * @swagger
+ * /auth/discord/verification-code:
+ *   post:
+ *     summary: Get a user and their team using a verification code
+ *     tags: [Authentication Module]
+ *     description: Get a user and their team using a verification code. Access - Open
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               code:
+ *                 type: string
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       404:
+ *          description: Verification code invalid.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.post(
+  "/discord/verification-code",
+  asyncCatch(getUserByVerificationCode)
+);
 
 export default router;
