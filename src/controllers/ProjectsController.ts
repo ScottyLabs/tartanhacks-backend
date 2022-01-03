@@ -30,6 +30,10 @@ export const createNewProject = async (
     if (!res.locals.user.admin) {
       const userTeam = await findUserTeam(res.locals.user._id);
 
+      if (userTeam == null) {
+        return bad(res, "You must be in a team to create a project.");
+      }
+
       if (userTeam?._id.toString() !== team) {
         return bad(res, "You can only create projects for your team.");
       }
