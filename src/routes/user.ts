@@ -313,7 +313,7 @@ router.put("/decline", isAuthenticated, asyncCatch(declineAcceptance));
 
 /**
  * @swagger
- * /user/get-verification-code:
+ * /user/verification:
  *  get:
  *    summary: Get a user's verification code.
  *    security:
@@ -331,7 +331,7 @@ router.put("/decline", isAuthenticated, asyncCatch(declineAcceptance));
  *        description: Internal Server Error.
  */
 router.get(
-  "/get-verification-code",
+  "/verification",
   isAuthenticated,
   asyncCatch(getOwnVerificationCode)
 );

@@ -202,7 +202,7 @@ router.post("/reset/password", asyncCatch(resetPassword));
 
 /**
  * @swagger
- * /auth/discord/verification-code:
+ * /auth/discord/verify:
  *   post:
  *     summary: Get a user and their team using a verification code
  *     tags: [Authentication Module]
@@ -225,7 +225,7 @@ router.post("/reset/password", asyncCatch(resetPassword));
  *          description: Internal Server Error.
  */
 router.post(
-  "/discord/verification-code",
+  "/discord/verify",
   asyncCatch(getUserByVerificationCode)
 );
 
