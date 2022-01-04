@@ -33,6 +33,7 @@
     "@zerollup/ts-transform-paths": "^1.7.18",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^10.0.0",
     "email-templates": "^8.0.7",
     "express": "^4.17.1",

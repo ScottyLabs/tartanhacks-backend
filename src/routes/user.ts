@@ -1,4 +1,5 @@
 import express, { Router } from "express";
+import { getOwnVerificationCode } from "src/controllers/UserController";
 import {
   declineAcceptance,
   displayNameAvailable,
@@ -313,5 +314,30 @@ router.put("/confirmation", isAuthenticated, asyncCatch(submitConfirmation));
  *        description: Internal Server Error.
  */
 router.put("/decline", isAuthenticated, asyncCatch(declineAcceptance));
+
+/**
+ * @swagger
+ * /user/verification:
+ *  get:
+ *    summary: Get a user's verification code.
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [User Module]
+ *    description: Get a user's verification code. If it does not exist or is expired, generate a new one. Access - User
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      400:
+ *        description: Bad request
+ *      403:
+ *        description: Unauthorized.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.get(
+  "/verification",
+  isAuthenticated,
+  asyncCatch(getOwnVerificationCode)
+);
 
 export default router;

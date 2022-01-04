@@ -14,6 +14,8 @@ export interface IUser extends Document {
   lastLogin?: Date;
   createdAt: Date;
   updatedAt: Date;
+  verificationCode?: string;
+  verificationExpiry?: Date;
   /**
    * Check if a password matches the stored hash
    * @param password password to verify
@@ -31,6 +33,10 @@ export interface IUser extends Document {
    * Generate an email verification token for this account
    */
   generateEmailVerificationToken: () => string;
+  /**
+   * Generate a new verification code and update the user
+   */
+  updateVerificationCode: () => Promise<IUser>;
 }
 
 export interface IUserModel extends Model<IUser> {
