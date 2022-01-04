@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { getOwnVerificationCode } from "src/controllers/UserController";
+import { getOwnVerificationCode } from "../controllers/UserController";
 import {
   declineAcceptance,
   displayNameAvailable,
