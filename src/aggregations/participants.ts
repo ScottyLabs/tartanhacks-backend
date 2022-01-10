@@ -85,6 +85,7 @@ export const getParticipantsPipeline = (eventId: ObjectId): any[] => {
         password: 0,
         verificationCode: 0,
         verificationExpiry: 0,
+        company: 0,
         "status._id": 0,
         "status.event": 0,
         "status.user": 0,
