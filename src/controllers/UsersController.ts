@@ -1,6 +1,6 @@
 import User from "../models/User";
 import { Request, Response } from "express";
-import { bad, notFound } from "../util/error";
+import { bad } from "../util/error";
 import * as StatusController from "./StatusController";
 import * as TeamController from "./TeamController";
 import { ObjectId } from "bson";
