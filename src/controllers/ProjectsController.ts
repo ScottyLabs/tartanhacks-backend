@@ -361,24 +361,35 @@ export const enterProject = async (
     return bad(res, "Missing Prize ID");
   }
 
+  console.log(id);
+  console.log(prizeID);
+
   try {
     const project = await Project.findById(id);
-    const prize = await Prize.findById(prizeID);
 
-    if (!project || !prize) {
-      return bad(res, "Invalid Project or Prize ID");
+    if (!project) {
+      return bad(res, "Invalid Project ID");
     }
 
-    project.prizes.push(prize._id);
+    const prize = await Prize.findById(prizeID);
+    if (!prize) {
+      return bad(res, "Invalid Prize ID");
+    }
 
-    await project.save();
-    const json = project.toJSON();
+    await project.updateOne({
+      $addToSet: {
+        prizes: [prize._id],
+      },
+    });
+
+    const updatedProject = await Project.findById(id);
+    const json = updatedProject.toJSON();
     res.json({
       ...json,
     });
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
-      return bad(res);
+      return bad(res, err.message);
     } else {
       console.error(err);
       return error(res);
