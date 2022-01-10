@@ -4,6 +4,8 @@ import { bad, error, unauthorized } from "../util/error";
 import CheckinItem from "../models/CheckinItem";
 import { findUserTeam } from "../controllers/TeamController";
 import Project from "../models/Project";
+import Checkin from "../models/Checkin";
+import User from "../models/User";
 
 /**
  * Middleware to check if a user is logged in and authenticated.
@@ -198,11 +200,21 @@ export const canCheckIn = async (
   try {
     const user = await getByToken(token);
     const checkInItem = await CheckinItem.findById(checkInItemID);
+    const checkInUser = await User.findById(userID);
 
     if (
       user?.admin ||
       (checkInItem?.enableSelfCheckin && user._id.toString() === userID)
     ) {
+      //Check if user has already been checked in for this item
+      const prevCheckIn = await Checkin.findOne({
+        user: checkInUser._id,
+        item: checkInItem._id,
+      });
+      if (prevCheckIn) {
+        return bad(res, "This user has already been checked in for this item.");
+      }
+
       res.locals.user = user;
       return next();
     } else {
