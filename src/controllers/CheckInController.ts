@@ -218,19 +218,11 @@ export const checkInUser = async (
     const profile = await Profile.findOne({ user: user._id });
     const item = await CheckinItem.findById(checkInItemID);
 
-    const data = {
+    const checkIn = new Checkin({
       user: user._id,
       item: item._id,
       event: event._id,
-    };
-
-    //check if user has already been checked in
-    const prevCheckIn = await Checkin.findOne(data);
-    if (prevCheckIn) {
-      return bad(res, "This user has already been checked in for this item.");
-    }
-
-    const checkIn = new Checkin(data);
+    });
 
     profile.totalPoints += item.points;
 
