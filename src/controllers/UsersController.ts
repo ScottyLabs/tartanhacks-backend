@@ -1,6 +1,6 @@
 import User from "../models/User";
 import { Request, Response } from "express";
-import { bad, notFound } from "../util/error";
+import { bad } from "../util/error";
 import * as StatusController from "./StatusController";
 import * as TeamController from "./TeamController";
 import { ObjectId } from "bson";
@@ -17,7 +17,7 @@ export const getParticipants = async (
   const event = await getTartanHacks();
   const pipeline = getParticipantsPipeline(event._id);
   const participants = await User.aggregate(pipeline);
-  res.json(participants);
+  res.status(200).json(participants);
 };
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
