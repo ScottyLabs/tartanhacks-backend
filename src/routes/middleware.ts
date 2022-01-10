@@ -5,7 +5,7 @@ import CheckinItem from "../models/CheckinItem";
 import { findUserTeam } from "../controllers/TeamController";
 import Project from "../models/Project";
 import Checkin from "../models/Checkin";
-import User from "src/models/User";
+import User from "../models/User";
 
 /**
  * Middleware to check if a user is logged in and authenticated.
