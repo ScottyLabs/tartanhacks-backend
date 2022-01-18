@@ -231,7 +231,7 @@ export const declineAcceptance = async (
     }
 
     await updateStatus(user._id, StatusField.DECLINED, true);
-    res.json(profile.toJSON());
+    res.json(profile);
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       bad(res);

@@ -9,7 +9,8 @@ import { bad, error, notFound } from "../util/error";
 import * as EmailController from "./EmailController";
 import { isRegistrationOpen } from "./SettingsController";
 import * as StatusController from "./StatusController";
-import { getByToken } from "./UserController";
+import { getByCode, getByToken } from "./UserController";
+import { findUserTeam } from "./TeamController";
 
 /**
  * Register a user
@@ -263,6 +264,32 @@ export const sendPasswordResetEmail = async (
     } catch (err) {
       error(res, "Could not send password reset email");
     }
+  } catch (err) {
+    console.error(err);
+    return error(res);
+  }
+};
+
+export const getUserByVerificationCode = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { code } = req.body;
+
+  if (code == null) {
+    return bad(res, "Missing verification code");
+  }
+
+  try {
+    const user = await getByCode(code);
+    if (user === null) {
+      return notFound(res, "Invalid verification code");
+    }
+
+    const team = await findUserTeam(user.id);
+    res.status(200).json({
+      user, team
+    });
   } catch (err) {
     console.error(err);
     return error(res);

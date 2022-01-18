@@ -35,8 +35,38 @@ export const getParticipantsPipeline = (eventId: ObjectId): any[] => {
       },
     },
     {
+      $lookup: {
+        from: "teams",
+        let: { userId: "$_id", eventId },
+        as: "team",
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ["$event", "$$eventId"],
+              },
+            },
+          },
+
+          {
+            $match: {
+              $expr: {
+                $in: ["$$userId", "$members"],
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
       $unwind: {
         path: "$status",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $unwind: {
+        path: "$team",
         preserveNullAndEmptyArrays: true,
       },
     },
@@ -52,12 +82,20 @@ export const getParticipantsPipeline = (eventId: ObjectId): any[] => {
         createdAt: 0,
         updatedAt: 0,
         __v: 0,
+        password: 0,
+        verificationCode: 0,
+        verificationExpiry: 0,
+        company: 0,
         "status._id": 0,
         "status.event": 0,
         "status.user": 0,
         "status.__v": 0,
         "status.createdAt": 0,
         "status.updatedAt": 0,
+        "team.event": 0,
+        "team.__v": 0,
+        "team.createdAt": 0,
+        "team.updatedAt": 0,
       },
     },
   ];

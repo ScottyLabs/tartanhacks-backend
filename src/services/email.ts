@@ -19,6 +19,9 @@ export const sendTemplateEmail = async (
   templateName: string,
   variables: Record<string, string> = {}
 ): Promise<void> => {
+  if ((process.env.NODE_ENV as string) === "test") {
+    return;
+  }
   try {
     const transporter = await getTransporter();
     const html = renderTemplate(templateName, variables);

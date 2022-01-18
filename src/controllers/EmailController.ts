@@ -63,3 +63,18 @@ export const sendRecruiterCreationEmail = async (
     }
   );
 };
+
+export const sendStatusUpdateEmail = async (
+  email: string,
+  name: string
+): Promise<void> => {
+  await sendTemplateEmail(
+    [email],
+    "[TartanHacks] Update regarding your application",
+    "status-update",
+    {
+      name,
+      url: process.env.FRONTEND_URL,
+    }
+  );
+};

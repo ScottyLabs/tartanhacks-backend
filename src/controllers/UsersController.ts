@@ -1,12 +1,14 @@
 import User from "../models/User";
 import { Request, Response } from "express";
-import { bad, notFound } from "../util/error";
+import { bad } from "../util/error";
 import * as StatusController from "./StatusController";
 import * as TeamController from "./TeamController";
 import { ObjectId } from "bson";
 import { getParticipantsPipeline } from "../aggregations/participants";
 import { getTartanHacks } from "./EventController";
 import Status from "../models/Status";
+import { sendStatusUpdateEmail } from "./EmailController";
+import Profile from "../models/Profile";
 
 export const getParticipants = async (
   req: Request,
@@ -15,7 +17,7 @@ export const getParticipants = async (
   const event = await getTartanHacks();
   const pipeline = getParticipantsPipeline(event._id);
   const participants = await User.aggregate(pipeline);
-  res.json(participants);
+  res.status(200).json(participants);
 };
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
@@ -59,6 +61,7 @@ export const getUserById = async (
 };
 
 export const admitUser = async (req: Request, res: Response): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
   const { id } = req.params;
   try {
     const user = await User.findById(new ObjectId(id));
@@ -70,8 +73,13 @@ export const admitUser = async (req: Request, res: Response): Promise<void> => {
     if (!status.completedProfile) {
       return bad(res, "User has not completed their profile yet!");
     }
+    const profile = await Profile.findOne({
+      event: tartanhacks._id,
+      user: user._id,
+    });
     await StatusController.setAdmitted(user._id, currentUser._id);
-    res.json(200);
+    await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
+    res.status(200).send();
   } catch (err) {
     res.status(500).json(err);
   }
@@ -81,71 +89,101 @@ export const admitAllUsers = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const tartanhacks = await getTartanHacks();
-  const currentUser = res.locals.user;
-  Status.updateMany(
-    {
+  try {
+    const tartanhacks = await getTartanHacks();
+    const currentUser = res.locals.user;
+
+    const toUpdate = await Status.find({
       completedProfile: true,
       event: tartanhacks._id,
       admitted: null,
-    },
-    {
-      admitted: true,
-      admittedBy: currentUser._id,
-    }
-  )
-    .then(() => {
-      res.status(200).send();
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
     });
+
+    const promises = [];
+    for (const status of toUpdate) {
+      const promise = async () => {
+        await Status.updateOne(
+          { _id: status._id },
+          { admitted: true, admittedBy: currentUser._id }
+        );
+        const user = await User.findById(status.user);
+        const profile = await Profile.findOne({
+          user: user._id,
+          event: tartanhacks._id,
+        });
+        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
+      };
+      promises.push(promise);
+    }
+    Promise.all(promises);
+
+    res.status(200).send();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 };
 
 export const rejectAllUsers = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const tartanhacks = await getTartanHacks();
-  const currentUser = res.locals.user;
-  Status.updateMany(
-    {
+  try {
+    const tartanhacks = await getTartanHacks();
+    const currentUser = res.locals.user;
+
+    const toUpdate = await Status.find({
       completedProfile: true,
       event: tartanhacks._id,
       admitted: null,
-    },
-    {
-      admitted: false,
-      admittedBy: currentUser._id,
-    }
-  )
-    .then(() => {
-      res.status(200).send();
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
     });
+
+    const promises = [];
+    for (const status of toUpdate) {
+      const promise = async () => {
+        await Status.updateOne(
+          { _id: status._id },
+          { admitted: false, admittedBy: currentUser._id }
+        );
+        const user = await User.findById(status.user);
+        const profile = await Profile.findOne({
+          user: user._id,
+          event: tartanhacks._id,
+        });
+        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
+      };
+      promises.push(promise);
+    }
+    Promise.all(promises);
+
+    res.status(200).send();
+  } catch (err) {
+    res.status(500).send(err);
+  }
 };
 
 export const rejectUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
   const { id } = req.params;
   try {
     const user = await User.findById(new ObjectId(id));
     if (user == null) {
-      return notFound(res, "User not found");
+      return bad(res, "User not found");
     }
     const currentUser = res.locals.user;
     const status = await StatusController.getStatus(user._id);
     if (!status.completedProfile) {
       return bad(res, "User has not completed their profile yet!");
     }
+    const profile = await Profile.findOne({
+      event: tartanhacks._id,
+      user: user._id,
+    });
     await StatusController.setAdmitted(user._id, currentUser._id, false);
-    res.json(200);
+    await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
+    res.status(200).send();
   } catch (err) {
     res.status(500).json(err);
   }

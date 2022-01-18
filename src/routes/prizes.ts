@@ -1,19 +1,9 @@
 import express, { Router } from "express";
 import {
-  createNewProject,
-  editProject,
-  getProjectByID,
-  getAllProjects,
-  deleteProject,
-  getAllPrizes,
-  createNewPrize,
-  editPrize,
-  deletePrize,
-  getPrizeByID,
-  enterProject,
+  createNewPrize, deletePrize, editPrize, getAllPrizes, getPrizeByID
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAdmin, isAuthenticated, isProjectOwnerOrAdmin } from "./middleware";
+import { isAdmin } from "./middleware";
 
 const router: Router = express.Router();
 

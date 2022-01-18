@@ -42,6 +42,11 @@ const Confirmation: Schema<IConfirmation> = new Schema({
     type: Boolean,
     required: true,
   },
+  willMentor: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 /**
