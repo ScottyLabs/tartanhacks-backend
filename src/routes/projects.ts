@@ -84,6 +84,8 @@ router.put(
  *                 type: string
  *               url:
  *                 type: string
+ *               presentingVirtually:
+ *                 type: boolean
  *     responses:
  *       200:
  *          description: Success.
@@ -129,6 +131,8 @@ router.post("/", isAuthenticated, asyncCatch(createNewProject));
  *                 type: string
  *               url:
  *                 type: string
+ *               presentingVirtually:
+ *                 type: boolean
  *     responses:
  *       200:
  *          description: Success.
