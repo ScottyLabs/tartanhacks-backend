@@ -1,5 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
+import User from "../models/User";
 import Team from "../models/Team";
 import TeamRequest from "../models/TeamRequest";
 import { bad, notFound, unauthorized } from "../util/error";
@@ -256,6 +257,12 @@ export const acceptTeamRequest = async (
     if (!team.admin.equals(user._id)) {
       return unauthorized(res, "You are not a team admin");
     }
+    const joiningUser = await User.findById(request.user);
+    const joiningUserTeam = await findUserTeam(joiningUser._id);
+    if (joiningUserTeam) {
+      return bad(res, "That user is already in a team!");
+    }
+
     const senderId = request.user;
     await Team.findOneAndUpdate(
       {

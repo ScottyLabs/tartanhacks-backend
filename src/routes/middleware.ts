@@ -169,7 +169,9 @@ export const isProjectOwnerOrAdmin = async (
     const team = await findUserTeam(user._id);
     const project = await Project.findById(id);
 
-    if (user?.admin || team._id === project.team) {
+    const teamOwnsProject = project?.team.toString() === team?._id.toString();
+
+    if (user?.admin || teamOwnsProject) {
       res.locals.user = user;
       return next();
     } else {
