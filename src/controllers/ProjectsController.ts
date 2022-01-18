@@ -361,9 +361,6 @@ export const enterProject = async (
     return bad(res, "Missing Prize ID");
   }
 
-  console.log(id);
-  console.log(prizeID);
-
   try {
     const project = await Project.findById(id);
 
