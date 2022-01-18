@@ -16,4 +16,5 @@ export interface IProject extends Document {
   prizes: ObjectId[];
   createdAt: Date;
   updatedAt?: Date;
+  presentingVirtually: boolean;
 }

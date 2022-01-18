@@ -11,7 +11,8 @@ export const createNewProject = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { name, description, url, slides, video, team } = req.body;
+    const { name, description, url, slides, video, team, presentingVirtually } =
+      req.body;
 
     const event = await getTartanHacks();
 
@@ -44,6 +45,7 @@ export const createNewProject = async (
       video: video,
       team: team,
       prizes: [],
+      presentingVirtually: presentingVirtually,
     });
 
     await project.save();
