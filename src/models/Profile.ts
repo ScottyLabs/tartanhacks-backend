@@ -178,4 +178,6 @@ Profile.methods.getResumeUrl = async function (): Promise<string> {
   return resumeUrl;
 };
 
+Profile.index({ firstName: "text", lastName: "text", displayName: "text" });
+
 export default model<IProfile>("Profile", Profile, "profiles", !isProduction);

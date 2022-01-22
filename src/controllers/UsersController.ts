@@ -1,21 +1,22 @@
-import User from "../models/User";
+import { ObjectId } from "bson";
 import { Request, Response } from "express";
-import { bad, notFound } from "../util/error";
+import { getParticipantsPipeline } from "../aggregations/participants";
+import Profile from "../models/Profile";
+import Status from "../models/Status";
+import User from "../models/User";
+import { bad } from "../util/error";
+import { sendStatusUpdateEmail } from "./EmailController";
+import { getTartanHacks } from "./EventController";
 import * as StatusController from "./StatusController";
 import * as TeamController from "./TeamController";
-import { ObjectId } from "bson";
-import { getParticipantsPipeline } from "../aggregations/participants";
-import { getTartanHacks } from "./EventController";
-import Status from "../models/Status";
-import { sendStatusUpdateEmail } from "./EmailController";
-import Profile from "../models/Profile";
 
 export const getParticipants = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  const { name } = req.query;
   const event = await getTartanHacks();
-  const pipeline = getParticipantsPipeline(event._id);
+  const pipeline = getParticipantsPipeline(event._id, name);
   const participants = await User.aggregate(pipeline);
   res.json(participants);
 };

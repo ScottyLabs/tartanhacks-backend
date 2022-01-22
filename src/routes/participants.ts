@@ -16,11 +16,17 @@ const router: Router = express.Router();
  * @swagger
  * /participants:
  *  get:
- *    summary: Query list of participants
+ *    summary: Search for participants or return the list of all participants
  *    security:
  *    - apiKeyAuth: []
  *    tags: [Participants Module]
- *    description: Retrieves list of all participants in the database. Access - Recruiter or Admin
+ *    description: Retrieves list of participants in the database. Access - Recruiter or Admin
+ *    parameters:
+ *      - in: query
+ *        name: name
+ *        schema:
+ *          type: string
+ *        description: The name of a participant to search for.
  *    responses:
  *      200:
  *        description: Success.
