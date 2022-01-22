@@ -286,7 +286,7 @@ export const getUserByVerificationCode = async (
       return notFound(res, "Invalid verification code");
     }
 
-    const team = findUserTeam(user.id);
+    const team = await findUserTeam(user.id);
     res.status(200).json({
       user, team
     });

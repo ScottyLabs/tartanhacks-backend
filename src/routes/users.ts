@@ -188,7 +188,7 @@ router.post("/:id/reject", isAdmin, asyncCatch(rejectUser));
  *    security:
  *    - apiKeyAuth: []
  *    tags: [Users Module]
- *    description: Get a user's team, Access - Admin or Owner
+ *    description: Get a user's team, Access - Admin, Recruiter or Owner
  *    parameters:
  *    - in: path
  *      name: id
@@ -206,7 +206,7 @@ router.post("/:id/reject", isAdmin, asyncCatch(rejectUser));
  *      500:
  *        description: Internal Server Error.
  */
-router.get("/:id/team", isOwnerOrAdmin, asyncCatch(getUserTeam));
+router.get("/:id/team", isOwnerRecruiterOrAdmin, asyncCatch(getUserTeam));
 
 /**
  * @swagger

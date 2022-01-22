@@ -27,6 +27,11 @@ const Project: Schema<IProject> = new Schema(
       ref: "Prize",
       required: true,
     },
+    presentingVirtually: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
   },
   {
     timestamps: {

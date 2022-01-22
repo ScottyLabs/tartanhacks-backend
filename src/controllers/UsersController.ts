@@ -18,7 +18,7 @@ export const getParticipants = async (
   const event = await getTartanHacks();
   const pipeline = getParticipantsPipeline(event._id, name);
   const participants = await User.aggregate(pipeline);
-  res.json(participants);
+  res.status(200).json(participants);
 };
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
