@@ -37,7 +37,7 @@ const router: Router = express.Router();
  *    security:
  *    - apiKeyAuth: []
  *    tags: [Users Module]
- *    description: Retrieves list of all users in the database. Access - Recruiter or Admin
+ *    description: Retrieves list of all users in the database. Access - Admin
  *    responses:
  *      200:
  *        description: Success.
@@ -46,7 +46,7 @@ const router: Router = express.Router();
  *      500:
  *        description: Internal Server Error.
  */
-router.get("/", isRecruiterOrAdmin, asyncCatch(getUsers));
+router.get("/", isAdmin, asyncCatch(getUsers));
 
 /**
  * @swagger

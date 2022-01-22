@@ -8,6 +8,7 @@ import swaggerSpecification from "./swagger";
 import { startup } from "./util/startup";
 import cors from "cors";
 import Team from "./models/Team";
+import Profile from "./models/Profile";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ mongoose.set("useFindAndModify", false);
 
 // Build indexes
 // Team.ensureIndexes();
+// Profile.ensureIndexes();
 
 const app = express();
 app.use(cors());

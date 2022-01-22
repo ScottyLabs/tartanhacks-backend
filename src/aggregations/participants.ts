@@ -4,11 +4,82 @@ import { ObjectId } from "mongodb";
  * Generate the aggregation pipeline for getting participants of a particular event
  * @param eventId the ID of the event whose participants to lookup
  */
-export const getParticipantsPipeline = (eventId: ObjectId): any[] => {
+export const getParticipantsPipeline = (
+  eventId: ObjectId,
+  name?: string
+): any[] => {
+  const fuzzyFilter: any = {};
+  if (name) {
+    fuzzyFilter["$text"] = { $search: name };
+  }
   return [
     {
+      $lookup: {
+        from: "profiles",
+        let: { userId: "$_id", eventId },
+        as: "profile",
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ["$event", "$$eventId"],
+              },
+              ...fuzzyFilter,
+            },
+          },
+          {
+            $match: {
+              $expr: {
+                $eq: ["$user", "$$userId"],
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: {
+        path: "$profile",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
       $match: {
-        company: null,
+        $expr: { company: null },
+      },
+    },
+    {
+      $match: {
+        profile: { $exists: true },
+      },
+    },
+    {
+      $lookup: {
+        from: "teams",
+        let: { userId: "$_id", eventId },
+        as: "team",
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ["$event", "$$eventId"],
+              },
+            },
+          },
+          {
+            $match: {
+              $expr: {
+                $in: ["$$userId", "$members"],
+              },
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: {
+        path: "$team",
+        preserveNullAndEmptyArrays: true,
       },
     },
     {
