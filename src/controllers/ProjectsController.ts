@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
 import { ObjectId } from "bson";
+import Team from "../models/Team";
 
 export const createNewProject = async (
   req: Request,
@@ -30,7 +31,6 @@ export const createNewProject = async (
 
     if (!res.locals.user.admin) {
       const userTeam = await findUserTeam(res.locals.user._id);
-
 
       if (userTeam == null) {
         return bad(res, "You must be in a team to create a project.");
@@ -394,5 +394,28 @@ export const enterProject = async (
       console.error(err);
       return error(res);
     }
+  }
+};
+
+export const getPresentingTeams = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const tartanhacks = await getTartanHacks();
+    const presentingProjects = await Project.find({
+      event: tartanhacks._id,
+      presentingVirtually: true,
+    });
+    const teams: string[] = [];
+    for (let i = 0; i < presentingProjects.length; i++) {
+      const presentingProject = presentingProjects[i];
+      const team = await Team.findById(presentingProject.team);
+      teams.push(team.name);
+    }
+    res.status(200).json(teams);
+  } catch (err) {
+    console.error(err);
+    return error(res);
   }
 };
