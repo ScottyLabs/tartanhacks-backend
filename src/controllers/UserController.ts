@@ -52,7 +52,11 @@ export const getOwnVerificationCode = async (
 
     res
       .status(200)
-      .json({ code: user.verificationCode, expiry: user.verificationExpiry });
+      .json({
+        code: user.verificationCode,
+        expiry: user.verificationExpiry,
+        link: process.env.DISCORD_URL,
+      });
   } catch (err) {
     console.log(err);
     error(res);
