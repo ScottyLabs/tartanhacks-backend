@@ -1,5 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
+import { IStatus } from "src/_types/Status";
 import { getParticipantsPipeline } from "../aggregations/participants";
 import Profile from "../models/Profile";
 import Status from "../models/Status";
@@ -16,7 +17,7 @@ export const getParticipants = async (
 ): Promise<void> => {
   const { name } = req.query;
   const event = await getTartanHacks();
-  const pipeline = getParticipantsPipeline(event._id, name);
+  const pipeline = getParticipantsPipeline(event._id, name as string);
   const participants = await User.aggregate(pipeline);
   res.status(200).json(participants);
 };
@@ -203,6 +204,31 @@ export const getUserTeam = async (
       return bad(res, "User does not have a team!");
     }
     res.json(populatedTeam);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+export const getAdmittedUserEmails = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
+  try {
+    const admittedStatuses = await Status.find(
+      { admitted: true, event: tartanhacks._id },
+      { user: 1 }
+    );
+
+    const emails: string[] = [];
+
+    for (let i = 0; i < admittedStatuses.length; i++) {
+      const admittedStatus = admittedStatuses[i];
+      const user = await User.findById(admittedStatus.user);
+      emails.push(user.email);
+    }
+
+    res.status(200).json(emails);
   } catch (err) {
     res.status(500).json(err);
   }
