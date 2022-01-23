@@ -407,11 +407,11 @@ export const getPresentingTeams = async (
       event: tartanhacks._id,
       presentingVirtually: true,
     });
-    const teams = [];
+    const teams: string[] = [];
     for (let i = 0; i < presentingProjects.length; i++) {
       const presentingProject = presentingProjects[i];
       const team = await Team.findById(presentingProject.team);
-      teams.push(team);
+      teams.push(team.name);
     }
     res.status(200).json(teams);
   } catch (err) {
