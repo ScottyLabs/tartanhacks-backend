@@ -1,6 +1,5 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
-import { IStatus } from "src/_types/Status";
 import { getParticipantsPipeline } from "../aggregations/participants";
 import Profile from "../models/Profile";
 import Status from "../models/Status";
