@@ -5,10 +5,6 @@ import { Document } from "mongoose";
  */
 export interface IConfirmation extends Document {
   signatureLiability: boolean;
-  signaturePhotoRelease: boolean;
   signatureCodeOfConduct: boolean;
-  mlhCodeOfConduct: boolean;
-  mlhEventLogistics: boolean;
-  mlhPromotional: boolean;
   willMentor: boolean;
 }

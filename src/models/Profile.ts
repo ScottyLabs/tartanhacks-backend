@@ -22,23 +22,7 @@ const Confirmation: Schema<IConfirmation> = new Schema({
     type: Boolean,
     required: true,
   },
-  signaturePhotoRelease: {
-    type: Boolean,
-    required: true,
-  },
   signatureCodeOfConduct: {
-    type: Boolean,
-    required: true,
-  },
-  mlhCodeOfConduct: {
-    type: Boolean,
-    required: true,
-  },
-  mlhEventLogistics: {
-    type: Boolean,
-    required: true,
-  },
-  mlhPromotional: {
     type: Boolean,
     required: true,
   },

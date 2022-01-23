@@ -270,17 +270,9 @@ router.post(
  *            properties:
  *              signatureLiability:
  *                type: boolean
- *              signaturePhotoRelease:
- *                type: boolean
  *              signatureCodeOfConduct:
  *                type: boolean
- *              mlhCodeOfConduct:
- *                type: boolean
- *              mlhEventLogistics:
- *                type: boolean
- *              mlhPromotional:
- *                type: boolean
- *              willConfirm:
+ *              willMentor:
  *                type: boolean
  *    responses:
  *      200:
