@@ -1,7 +1,8 @@
 import express, { Router } from "express";
 import { getTeams, searchTeamByName } from "../controllers/TeamController";
+import { getPresentingTeams } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAuthenticated } from "./middleware";
+import { isAdmin, isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -58,5 +59,26 @@ router.get("/", isAuthenticated, asyncCatch(getTeams));
  *          description: Internal Server Error.
  */
 router.get("/search", isAuthenticated, asyncCatch(searchTeamByName));
+
+/**
+ * @swagger
+ * /teams/presenting-live:
+ *   get:
+ *     summary: Get teams that will be presenting live
+ *     tags: [Teams Module]
+ *     description: Get list of teams that will be presenting their projects live. Access - Admin
+ *     security:
+ *       - apiKeyAuth: []
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       403:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/presenting-live", isAdmin, asyncCatch(getPresentingTeams));
 
 export default router;
