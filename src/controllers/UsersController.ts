@@ -207,3 +207,28 @@ export const getUserTeam = async (
     res.status(500).json(err);
   }
 };
+
+export const getAdmittedUserEmails = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
+  try {
+    const admittedStatuses = await Status.find(
+      { admitted: true, event: tartanhacks._id },
+      { user: 1 }
+    );
+
+    const emails: string[] = [];
+
+    for (let i = 0; i < admittedStatuses.length; i++) {
+      const admittedStatus = admittedStatuses[i];
+      const user = await User.findById(admittedStatus.user);
+      emails.push(user.email);
+    }
+
+    res.status(200).json(emails);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};

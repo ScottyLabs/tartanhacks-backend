@@ -9,6 +9,7 @@ import {
   rejectUser,
   admitAllUsers,
   rejectAllUsers,
+  getAdmittedUserEmails,
 } from "../controllers/UsersController";
 import { getProjectByUserID } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
@@ -277,5 +278,24 @@ router.post("/admit/all", isAdmin, asyncCatch(admitAllUsers));
  *        description: Internal Server Error.
  */
 router.post("/reject/all", isAdmin, asyncCatch(rejectAllUsers));
+
+/**
+ * @swagger
+ * /users/admitted/emails:
+ *  get:
+ *    summary: Get list of admitted user emails
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Users Module]
+ *    description: Retrieves list of emails associated with admited users. Access - Admin
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      403:
+ *        description: Forbidden.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.get("/admitted/emails", isAdmin, asyncCatch(getAdmittedUserEmails));
 
 export default router;
