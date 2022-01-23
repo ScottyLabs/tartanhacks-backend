@@ -196,8 +196,7 @@ export const submitConfirmation = async (
 
     await updateStatus(user._id, StatusField.CONFIRMED, true);
 
-    const updatedProfile = await getProfile(user._id);
-    res.json(updatedProfile.toJSON());
+    res.status(200).send();
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
       bad(res);
