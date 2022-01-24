@@ -171,3 +171,45 @@ export const getParticipantsPipeline = (
     },
   ];
 };
+
+/**
+ * Generate the aggregation pipeline for getting CMU applicants
+ * @param eventId the ID of the event whose participants to lookup
+ */
+export const getCMUApplicantsPipeline = (eventID: ObjectId): any[] => {
+  return [
+    {
+      $match: {
+        completedProfile: true,
+        event: eventID,
+        admitted: null as string,
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $unwind: "$user",
+    },
+    {
+      $addFields: {
+        isCMU: {
+          $regexMatch: {
+            input: "$user.email",
+            regex: /.+@(andrew\.)?cmu\.edu/,
+          },
+        },
+      },
+    },
+    {
+      $match: {
+        isCMU: true,
+      },
+    },
+  ];
+};

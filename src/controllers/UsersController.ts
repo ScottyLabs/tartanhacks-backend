@@ -1,6 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
-import { getParticipantsPipeline } from "../aggregations/participants";
+import { getCMUApplicantsPipeline, getParticipantsPipeline } from "../aggregations/participants";
 import Profile from "../models/Profile";
 import Status from "../models/Status";
 import User from "../models/User";
@@ -86,6 +86,41 @@ export const admitUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+export const admitAllCMU = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const tartanhacks = await getTartanHacks();
+    const currentUser = res.locals.user;
+
+    const pipeline = getCMUApplicantsPipeline(tartanhacks._id);
+    const toUpdate = await Status.aggregate(pipeline);
+
+    const promises = [];
+    for (const status of toUpdate) {
+      const promise = async () => {
+        await Status.updateOne(
+          { _id: status._id },
+          { admitted: true, admittedBy: currentUser._id }
+        );
+        const user = await User.findById(status.user);
+        const profile = await Profile.findOne({
+          user: user._id,
+          event: tartanhacks._id,
+        });
+        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
+      };
+      promises.push(promise());
+    }
+    await Promise.all(promises);
+
+    res.status(200).send();
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
 export const admitAllUsers = async (
   req: Request,
   res: Response
@@ -114,7 +149,7 @@ export const admitAllUsers = async (
         });
         await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
       };
-      promises.push(promise);
+      promises.push(promise());
     }
     Promise.all(promises);
 

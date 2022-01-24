@@ -10,6 +10,7 @@ import {
   admitAllUsers,
   rejectAllUsers,
   getAdmittedUserEmails,
+  admitAllCMU,
 } from "../controllers/UsersController";
 import { getProjectByUserID } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
@@ -257,6 +258,27 @@ router.get("/:id/project", isAuthenticated, asyncCatch(getProjectByUserID));
  *        description: Internal Server Error.
  */
 router.post("/admit/all", isAdmin, asyncCatch(admitAllUsers));
+
+/**
+ * @swagger
+ * /users/admit/cmu:
+ *  post:
+ *    summary: Admit all users from CMU with completed profiles that have not been accepted/rejected yet
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Users Module]
+ *    description: Admit users from CMU with completed profiles that have not been accepted/rejected yet, Access - Admin
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      403:
+ *        description: Forbidden.
+ *      404:
+ *        description: User not found.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.post("/admit/cmu", isAdmin, asyncCatch(admitAllCMU));
 
 /**
  * @swagger
