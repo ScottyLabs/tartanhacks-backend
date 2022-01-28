@@ -25,7 +25,10 @@ export const getByToken = async (token: string): Promise<IUser> => {
  */
 export const getByCode = async (code: string): Promise<IUser> => {
   try {
-    const user = await User.findOne({ verificationCode: code });
+    const user = await User.findOne({ verificationCode: code }).populate(
+      "company"
+    );
+
     if (new Date() <= user.verificationExpiry) {
       return user;
     } else {
