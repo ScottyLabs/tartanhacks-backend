@@ -1,6 +1,9 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
-import { getCMUApplicantsPipeline, getParticipantsPipeline } from "../aggregations/participants";
+import {
+  getCMUApplicantsPipeline,
+  getParticipantsPipeline,
+} from "../aggregations/participants";
 import Profile from "../models/Profile";
 import Status from "../models/Status";
 import User from "../models/User";
@@ -243,14 +246,14 @@ export const getUserTeam = async (
   }
 };
 
-export const getAdmittedUserEmails = async (
+export const getConfirmedUserEmails = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   const tartanhacks = await getTartanHacks();
   try {
     const admittedStatuses = await Status.find(
-      { admitted: true, event: tartanhacks._id },
+      { confirmed: true, event: tartanhacks._id },
       { user: 1 }
     );
 
