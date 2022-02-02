@@ -118,7 +118,10 @@ export const getAllCheckInItems = async (
   res: Response
 ): Promise<void> => {
   try {
-    const result = await CheckinItem.find();
+    const tartanhacks = await getTartanHacks();
+    const result = await CheckinItem.find({ event: tartanhacks._id }).sort({
+      startTime: 1,
+    });
 
     res.status(200).json(result);
   } catch (err) {
