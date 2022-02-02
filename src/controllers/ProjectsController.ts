@@ -41,6 +41,14 @@ export const createNewProject = async (
       }
     }
 
+    const grandPrize = await Prize.findOne({
+      name: "Scott Krulcik Grand Prize",
+    });
+    const prizes = [];
+    if (grandPrize != null) {
+      prizes.push(grandPrize._id);
+    }
+
     const project = new Project({
       name: name,
       description: description,
@@ -49,7 +57,7 @@ export const createNewProject = async (
       slides: slides,
       video: video,
       team: team,
-      prizes: [],
+      prizes,
       presentingVirtually: presentingVirtually,
     });
 
