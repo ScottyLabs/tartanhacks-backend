@@ -230,14 +230,12 @@ export const checkInUser = async (
     await profile.save();
 
     const json = checkIn.toJSON();
-    res.json({
-      ...json,
-    });
+    res.json(json);
   } catch (err) {
+    console.error(err);
     if (err.name === "CastError" || err.name === "ValidationError") {
       return bad(res);
     } else {
-      console.error(err);
       return error(res);
     }
   }

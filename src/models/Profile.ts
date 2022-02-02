@@ -51,7 +51,7 @@ const Profile: Schema<IProfile> = new Schema(
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     displayName: { type: String, required: true },
-    age: { type: Number, required: true },
+    age: { type: Number },
     school: { type: String, required: true },
     college: {
       type: String,
