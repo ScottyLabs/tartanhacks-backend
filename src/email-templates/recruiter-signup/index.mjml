@@ -41,12 +41,16 @@
           </tr>
         </mj-table>
         <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+          We have also prepared a walkthrough guide for how to make the most out of the app. You can check it out
+          <a href="https://go.scottylabs.org/sponsor-instructions" target="_blank"> here</a>.
+        </mj-text>
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
           Download the app on your device's app store:
         </mj-text>
         <mj-table>
           <tr>
             <td>
-              <a href="https://play.google.com/store/apps/details?id=org.scottylabs.thdappfinal&hl=en_US&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
+              <a href="https://play.google.com/store/apps/details?id=org.scottylabs.thdapp&hl=en_US&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
                 <img width="100px" src="https://tartanhacks-registration.netlify.app/google-play-badge.png" />
               </a>
             </td>
