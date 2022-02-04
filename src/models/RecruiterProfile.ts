@@ -19,7 +19,7 @@ const RecruiterProfile: Schema<IRecruiterProfile> = new Schema(
       required: true,
     },
     firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    lastName: { type: String },
   },
   {
     timestamps: {
