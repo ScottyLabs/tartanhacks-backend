@@ -61,6 +61,9 @@
             </td>
           </tr>
         </mj-table>
+        <mj-button background-color="#F7C062" color="#FFFFFF" href="https://dashboard.tartanhacks.com/" font-family="Poppins" css-class="rounded-button">
+          Web
+        </mj-button>
       </mj-column>
     </mj-section>
   </mj-body>
