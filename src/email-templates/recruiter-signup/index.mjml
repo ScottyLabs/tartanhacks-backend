@@ -3,7 +3,7 @@
     <mj-font name="Poppins" href="https://fonts.googleapis.com/css?family=Poppins" />
     <mj-style>
       @font-face {
-        font-family: "Poppins";
+        font-family: "Poppins,sans-serif";
         src: url("https://fonts.googleapis.com/css?family=Poppins");
       }
     </mj-style>
@@ -11,26 +11,26 @@
   <mj-body>
     <mj-section border="solid black 1px" background-color="#fff">
       <mj-column width="80%">
-        <mj-text align="center" color="#000" font-size="40px" font-family="Poppins">
+        <mj-text align="center" color="#000" font-size="40px" font-family="Poppins,sans-serif">
           Welcome to TartanHacks!
         </mj-text>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins,sans-serif">
           Hi {{name}},
         </mj-text>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins,sans-serif">
           We're so excited to have you join us! This year, we're making
           TartanHacks bigger and better than ever before.
         </mj-text>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins,sans-serif">
           To help you during the event, we've created an app that allows you to
           bookmark participants and projects that you found interesting during
           the event. With the app, you can view their resumes and download all
           your bookmarks at any time.
         </mj-text>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins,sans-serif">
           To login to the app, use the following credentials:
         </mj-text>
-        <mj-table color="#000" font-size="12px" font-family="Poppins">
+        <mj-table color="#000" font-size="12px" font-family="Poppins,sans-serif">
           <tr>
             <td>Email:</td>
             <td style="font-weight: bold">{{email}}</td>
@@ -40,11 +40,11 @@
             <td style="font-weight: bold">{{password}}</td>
           </tr>
         </mj-table>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins,sans-serif">
           We have also prepared a walkthrough guide for how to make the most out of the app. You can check it out
           <a href="https://go.scottylabs.org/sponsor-instructions" target="_blank"> here</a>.
         </mj-text>
-        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins">
+        <mj-text align="left" color="#000" font-size="12px" font-family="Poppins,sans-serif">
           Download the app on your device's app store:
         </mj-text>
         <mj-table>
@@ -61,7 +61,7 @@
             </td>
           </tr>
         </mj-table>
-        <mj-button background-color="#F7C062" color="#FFFFFF" href="https://dashboard.tartanhacks.com/" font-family="Poppins" css-class="rounded-button">
+        <mj-button background-color="#F7C062" color="#FFFFFF" href="https://dashboard.tartanhacks.com/" font-family="Poppins,sans-serif" css-class="rounded-button">
           Web
         </mj-button>
       </mj-column>
