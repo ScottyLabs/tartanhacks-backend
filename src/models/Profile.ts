@@ -55,11 +55,11 @@ const Profile: Schema<IProfile> = new Schema(
     school: { type: String, required: true },
     college: {
       type: String,
-      enum: Object.values(CMUCollege),
+      enum: Object.values(CMUCollege).concat([null]),
     },
     level: {
       type: String,
-      enum: Object.values(CollegeLevel),
+      enum: Object.values(CollegeLevel).concat([null]),
     },
     graduationYear: {
       type: Number,
@@ -110,11 +110,11 @@ const Profile: Schema<IProfile> = new Schema(
     languages: String,
     hackathonExperience: {
       type: String,
-      enum: Object.values(HackathonExperience),
+      enum: Object.values(HackathonExperience).concat([null]),
     },
     workPermission: {
       type: String,
-      enum: Object.values(WorkPermission),
+      enum: Object.values(WorkPermission).concat([null]),
     },
     workLocation: String,
     workStrengths: String,
@@ -133,13 +133,13 @@ const Profile: Schema<IProfile> = new Schema(
     dietaryRestrictions: String,
     shirtSize: {
       type: String,
-      enum: Object.values(ShirtSize),
+      enum: Object.values(ShirtSize).concat([null]),
     },
     wantsHardware: Boolean,
     address: String,
     region: {
       type: String,
-      enum: Object.values(Region),
+      enum: Object.values(Region).concat([null]),
     },
     confirmation: Confirmation,
     attendingPhysically: {
