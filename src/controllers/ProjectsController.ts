@@ -140,7 +140,8 @@ export const getAllProjects = async (
   res: Response
 ): Promise<void> => {
   try {
-    const pipeline = getProjectsPipeline();
+    const tartanhacks = await getTartanHacks();
+    const pipeline = getProjectsPipeline(tartanhacks._id);
     const result = await Project.aggregate(pipeline);
 
     res.status(200).json(result);
