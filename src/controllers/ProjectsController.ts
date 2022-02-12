@@ -6,6 +6,7 @@ import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
 import { ObjectId } from "bson";
 import Team from "../models/Team";
+import { getProjectsPipeline } from "../aggregations/projects";
 
 export const createNewProject = async (
   req: Request,
@@ -139,7 +140,8 @@ export const getAllProjects = async (
   res: Response
 ): Promise<void> => {
   try {
-    const result = await Project.find();
+    const pipeline = getProjectsPipeline();
+    const result = await Project.aggregate(pipeline);
 
     res.status(200).json(result);
   } catch (err) {
