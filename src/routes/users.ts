@@ -76,7 +76,7 @@ router.get("/:id", isOwnerOrAdmin, asyncCatch(getUserById));
 
 /**
  * @swagger
- * /users/{userId}/profile:
+ * /users/{id}/profile:
  *   get:
  *     summary: Get a user's application profile
  *     tags: [Users Module]
@@ -85,7 +85,7 @@ router.get("/:id", isOwnerOrAdmin, asyncCatch(getUserById));
  *       - apiKeyAuth: []
  *     parameters:
  *     - in: path
- *       name: userId
+ *       name: id
  *       required: true
  *       type: string
  *     responses:
