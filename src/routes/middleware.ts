@@ -110,7 +110,7 @@ export const isOwnerRecruiterOrAdmin = async (
 
   try {
     const user = await getByToken(token);
-    if (user?.admin || user?.company || user._id.toString() === id) {
+    if (user?.admin || user?.company || user?._id.toString() === id) {
       res.locals.user = user;
       return next();
     } else {
