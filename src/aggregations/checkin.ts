@@ -73,7 +73,7 @@ export const getLeaderboardPipeline = (eventId: ObjectId): any[] => {
 };
 
 /**
- * Generate the aggregation pipeline for getting theleaderboard rank of the current user
+ * Generate the aggregation pipeline for getting the leaderboard rank of the current user
  * @param eventId the ID of the event whose leaderboard to lookup
  * @param userId the ID of the user whose position to lookup
  */
@@ -88,4 +88,62 @@ export const getLeaderboardRankPipeline = (
     },
   });
   return aggregation;
+};
+
+/**
+ * Generate the aggregation pipeline for computing total points of all users from check-in history
+ * @param eventId the ID of the event whose leaderboard to lookup
+ */
+export const getPointsPipeline = (eventId: ObjectId): any[] => {
+  return [
+    {
+      $lookup: {
+        from: "checkins",
+        localField: "user",
+        foreignField: "user",
+        as: "checkins",
+      },
+    },
+    {
+      $unwind: {
+        path: "$checkins",
+      },
+    },
+    {
+      $match: {
+        "checkins.event": eventId,
+      },
+    },
+    {
+      $lookup: {
+        from: "checkin-items",
+        localField: "checkins.item",
+        foreignField: "_id",
+        as: "checkins.item",
+      },
+    },
+    {
+      $unwind: {
+        path: "$checkins.item",
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        totalPointsNew: {
+          $sum: "$checkins.item.points",
+        },
+        totalPoints: {
+          $first: "$totalPoints",
+        },
+      },
+    },
+    {
+      $match: {
+        $expr: {
+          $ne: ["$totalPoints", "$totalPointsNew"],
+        },
+      },
+    },
+  ];
 };

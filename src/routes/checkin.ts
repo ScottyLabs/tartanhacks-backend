@@ -7,6 +7,7 @@ import {
   deleteCheckInItem,
   checkInUser,
   getCheckInHistory,
+  recalculatePoints,
 } from "../controllers/CheckInController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin, canCheckIn, isOwnerOrAdmin } from "./middleware";
@@ -244,5 +245,27 @@ router.delete("/:id", isAdmin, asyncCatch(deleteCheckInItem));
  */
 
 router.put("/user", canCheckIn, asyncCatch(checkInUser));
+
+/**
+ * @swagger
+ * /check-in/recalculate:
+ *   put:
+ *     summary: Recalculate user points
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Check In Module]
+ *     description: Recalculate user points. Access - Admin
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       404:
+ *          description: check in item or user not found.
+ *       400:
+ *          description: Bad Request.
+ *       500:
+ *          description: Internal Server Error.
+ */
+
+router.put("/recalculate", isAdmin, asyncCatch(recalculatePoints));
 
 export default router;

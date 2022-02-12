@@ -10,7 +10,33 @@ import { getProfile } from "./ProfileController";
 import {
   getLeaderboardPipeline,
   getLeaderboardRankPipeline,
+  getPointsPipeline,
 } from "../aggregations/checkin";
+
+export const recalculatePoints = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const tartanhacks = await getTartanHacks();
+  const pipeline = getPointsPipeline(tartanhacks._id);
+  const updates = await Profile.aggregate(pipeline);
+
+  const promises = [];
+  for (const { _id, totalPointsNew } of updates) {
+    promises.push(
+      new Promise<void>((resolve) => {
+        Profile.findByIdAndUpdate(_id, {
+          $set: {
+            totalPoints: totalPointsNew,
+          },
+        }).then(() => resolve());
+      })
+    );
+  }
+  await Promise.all(promises);
+
+  res.json(updates);
+};
 
 export const addNewCheckInItem = async (
   req: Request,
