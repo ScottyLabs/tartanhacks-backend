@@ -59,11 +59,27 @@ export const getLeaderboardPipeline = (eventId: ObjectId): any[] => {
       },
     },
     {
+      $lookup: {
+        from: "users",
+        localField: "ties.user",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $unwind: {
+        path: "$user",
+      },
+    },
+    {
       $project: {
         _id: 0,
-        user: "$ties.user",
+        email: "$user.email",
         totalPoints: "$ties.totalPoints",
         displayName: "$ties.displayName",
+        isCMU: {
+          $eq: ["$ties.school", "Carnegie Mellon University"],
+        },
         rank: {
           $add: ["$rank", 1],
         },

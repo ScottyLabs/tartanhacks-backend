@@ -12,6 +12,7 @@ import * as EventController from "./EventController";
 import { getStatus, updateStatus } from "./StatusController";
 import { ObjectId } from "bson";
 import { hasResume, uploadResume } from "../services/storage";
+import User from "../models/User";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -151,6 +152,30 @@ export const submitResume = async (
     const { buffer } = req.file;
     const fileId = await uploadResume(buffer, user._id);
     res.json(fileId);
+  } catch (err) {
+    console.error(err);
+    error(res);
+  }
+};
+
+/**
+ * Get a resume from the GCP storage bucket
+ */
+export const getResume = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const profile = await Profile.findOne({
+      user: new ObjectId(id),
+    });
+    if (!profile) {
+      return notFound(res, "User has not yet created a profile");
+    }
+
+    const resume = await profile.getResumeUrl();
+    if (!resume) {
+      return notFound(res, "User has not yet submitted a resume");
+    }
+    res.redirect(resume);
   } catch (err) {
     console.error(err);
     error(res);

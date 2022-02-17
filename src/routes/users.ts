@@ -1,25 +1,24 @@
 import express, { Router } from "express";
-import { getUserProfile } from "../controllers/ProfileController";
+import { getResume, getUserProfile } from "../controllers/ProfileController";
+import { getProjectByUserID } from "../controllers/ProjectsController";
 import { getUserStatus } from "../controllers/StatusController";
 import {
+  admitAllCMU,
+  admitAllUsers,
   admitUser,
+  getConfirmedUserEmails,
   getUserById,
   getUsers,
   getUserTeam,
-  rejectUser,
-  admitAllUsers,
   rejectAllUsers,
-  admitAllCMU,
-  getConfirmedUserEmails,
+  rejectUser,
 } from "../controllers/UsersController";
-import { getProjectByUserID } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import {
   isAdmin,
+  isAuthenticated,
   isOwnerOrAdmin,
   isOwnerRecruiterOrAdmin,
-  isRecruiterOrAdmin,
-  isAuthenticated,
 } from "./middleware";
 
 const router: Router = express.Router();
@@ -73,6 +72,32 @@ router.get("/", isAdmin, asyncCatch(getUsers));
  *        description: Internal Server Error.
  */
 router.get("/:id", isOwnerOrAdmin, asyncCatch(getUserById));
+
+/**
+ * @swagger
+ * /users/{id}/resume:
+ *  get:
+ *    summary: Get a user's resume
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Users Module]
+ *    description: Get a user's resume. Must have an associated profile. Access - User
+ *    parameters:
+ *    - in: path
+ *      name: id
+ *      required: true
+ *      type: string
+ *    responses:
+ *      302:
+ *        description: Redirect.
+ *      400:
+ *        description: Bad request
+ *      403:
+ *        description: Unauthorized.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.get("/:id/resume", asyncCatch(getResume));
 
 /**
  * @swagger

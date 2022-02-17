@@ -1,12 +1,11 @@
-import Project from "../models/Project";
-import Prize from "../models/Prize";
-import { bad, error, notFound } from "../util/error";
+import { ObjectId } from "bson";
 import { Request, Response } from "express";
+import Prize from "../models/Prize";
+import Project from "../models/Project";
+import Team from "../models/Team";
+import { bad, error, notFound } from "../util/error";
 import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
-import { ObjectId } from "bson";
-import Team from "../models/Team";
-import { getProjectsPipeline } from "../aggregations/projects";
 
 export const createNewProject = async (
   req: Request,
@@ -140,9 +139,13 @@ export const getAllProjects = async (
   res: Response
 ): Promise<void> => {
   try {
-    const tartanhacks = await getTartanHacks();
-    const pipeline = getProjectsPipeline(tartanhacks._id);
-    const result = await Project.aggregate(pipeline);
+    const result = await Project.find({}).populate({
+      path: "team",
+      populate: {
+        path: "members",
+        model: "User",
+      },
+    });
 
     res.status(200).json(result);
   } catch (err) {

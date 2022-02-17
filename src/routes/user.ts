@@ -1,5 +1,4 @@
 import express, { Router } from "express";
-import { getOwnVerificationCode } from "../controllers/UserController";
 import {
   declineAcceptance,
   displayNameAvailable,
@@ -7,9 +6,10 @@ import {
   getOwnProfile,
   submitConfirmation,
   submitProfile,
-  submitResume,
+  submitResume
 } from "../controllers/ProfileController";
 import { getOwnTeam } from "../controllers/TeamController";
+import { getOwnVerificationCode } from "../controllers/UserController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAuthenticated } from "./middleware";
 
