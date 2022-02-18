@@ -7,11 +7,11 @@
       "description": "Unix timestamp for when registration opens. Set to 0 to disable enforcing open time"
     },
     "timeClose": {
-      "value": 1644296400000,
+      "value": 1654296400000,
       "description": "Unix timestamp for when registration closes. Set to 0 to disable enforcing close of registration"
     },
     "timeConfirm": {
-      "value": 1643950800000,
+      "value": 1653950800000,
       "description": "Unix timestamp for when confirmation closes. Set to 0 to disable enforcing close of confirmation"
     },
     "enableWhitelist": {
