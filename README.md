@@ -17,6 +17,20 @@ This is the backend system for the TartanHacks software suite.
 ## Database Model
 ![](database-model.png)
 
+## Environment
+If you need to create any new environment variables, add an example to `.env.template`
+and make sure to add it as well to `.github/workflows/main.yml` so that CI
+passes
+
+## Emails
+In order to configure a new email template, create a folder under `email-templates`.
+In that folder, create your [mjml](https://documentation.mjml.io/) templates. Also,
+create a file called `index.ts` which exports the rendered html by calling
+[mjml2html](https://documentation.mjml.io/#inside-node-js) on your template file
+and indexing on the `html` field. See `email-templates/verification` for an example.
+In `email-templates/index.ts`, make sure to include your folder in the default
+export so that the email service can detect your newly added template.
+
 ## Style
 Please install [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 in your VS Code workspace. The workspace has configuration files for helping
@@ -33,19 +47,5 @@ pass.
 We also have CI configured through GitHub actions. These will show you if your
 commit builds and passes all tests.
 
-## Environment
-If you need to create any new environment variables, add an example to `.env.template`
-and make sure to add it as well to `.github/workflows/main.yml` so that CI
-passes
-
 ## Code coverage
 To view code coverage, run `npm run coverage`
-
-## Emails
-In order to configure a new email template, create a folder under `email-templates`.
-In that folder, create your [mjml](https://documentation.mjml.io/) templates. Also,
-create a file called `index.ts` which exports the rendered html by calling
-[mjml2html](https://documentation.mjml.io/#inside-node-js) on your template file
-and indexing on the `html` field. See `email-templates/verification` for an example.
-In `email-templates/index.ts`, make sure to include your folder in the default
-export so that the email service can detect your newly added template.
