@@ -7,17 +7,15 @@ This is the backend system for the TartanHacks software suite.
 
 ## Getting Started
 
-1. Create a Doppler Account [here.](https://www.doppler.com/)
-2. Get an invite to the ScottyLabs Doppler workspace by reaching out to David Hwang
-3. Install the Doppler CLI by following the installation instructions [here.](https://docs.doppler.com/docs/enclave-installation)
-4. Login to doppler with the CLI by running `doppler login --scope ~/project-dir`
-5. Run `npm install` to install packages
-6. Run `npm run build`
-7. Run `npm run dev` to run the project in dev mode.
-8. See the swagger endpoint documentation by visiting `/docs`
+1. Copy `template.env` as a separate file called `.env`
+2. Fill in the environment secrets as needed in that file
+3. Run `npm install` to install packages
+4. Run `npm run build`
+5. Run `npm run dev` to run the project in dev mode.
+6. See the swagger endpoint documentation by visiting `/docs`
 
 ## Database Model
-https://www.figma.com/file/TXPqZa0vUg3BNw9fHGn9vT/TartanHacks-Model?node-id=1%3A6
+![](database-model.png)
 
 ## Style
 Please install [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
