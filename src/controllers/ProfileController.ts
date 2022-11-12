@@ -1,18 +1,19 @@
 /**
  * Controller for admin routes
  */
+import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import multer from "multer";
-import { IConfirmation } from "../_types/Confirmation";
-import { StatusField } from "../_enums/Status";
 import Profile from "../models/Profile";
+import { hasResume, uploadResume } from "../services/storage";
 import { bad, error, notFound, unauthorized } from "../util/error";
+import { StatusField } from "../_enums/Status";
+import { IConfirmation } from "../_types/Confirmation";
 import { IProfile } from "../_types/Profile";
+import { ITeam } from "../_types/Team";
 import * as EventController from "./EventController";
 import { getStatus, updateStatus } from "./StatusController";
-import { ObjectId } from "bson";
-import { hasResume, uploadResume } from "../services/storage";
-import User from "../models/User";
+import { findUserTeam } from "./TeamController";
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -22,20 +23,28 @@ const upload = multer({ storage: multer.memoryStorage() });
 export const fileMiddleware = upload.single("file");
 
 /**
- * Submit a user's profile or update it if it already exists
+ * Get a user profile from their userId
  */
 export const getProfile = async (
   userId: ObjectId
 ): Promise<Partial<IProfile>> => {
   const tartanhacks = await EventController.getTartanHacks();
-  const profile = await Profile.findOne({
-    user: userId,
-    event: tartanhacks._id,
-  });
+  const [profile, team] = await Promise.all([
+    Profile.findOne({
+      user: userId,
+      event: tartanhacks._id,
+    }),
+    findUserTeam(userId),
+  ]);
+
   if (profile) {
     const resume = await profile.getResumeUrl();
     const newProfile = profile.toObject() as IProfile;
     newProfile.resume = resume;
+    if (team) {
+      newProfile.team = team.toObject() as ITeam;
+    }
+
     return newProfile;
   }
   return profile;
