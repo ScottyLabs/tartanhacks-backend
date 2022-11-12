@@ -2,6 +2,7 @@ import { Document } from "mongoose";
 import { ObjectId } from "bson";
 import { IConfirmation } from "./Confirmation";
 import * as Profile from "../_enums/Profile";
+import { ITeam } from "./Team";
 
 /**
  * Type for the profile model
@@ -46,6 +47,8 @@ export interface IProfile extends Document {
   updatedAt?: Date;
   totalPoints: number;
   attendingPhysically: boolean;
+
+  team?: ITeam;
 
   /**
    * Returns a URL that can be used to download the user's resume
