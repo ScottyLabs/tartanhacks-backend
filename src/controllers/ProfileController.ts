@@ -1,20 +1,18 @@
 /**
  * Controller for admin routes
  */
+import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import multer from "multer";
-import { IConfirmation } from "../_types/Confirmation";
-import { StatusField } from "../_enums/Status";
 import Profile from "../models/Profile";
+import { hasResume, uploadResume } from "../services/storage";
 import { bad, error, notFound, unauthorized } from "../util/error";
+import { StatusField } from "../_enums/Status";
+import { IConfirmation } from "../_types/Confirmation";
 import { IProfile } from "../_types/Profile";
 import { ITeam } from "../_types/Team";
 import * as EventController from "./EventController";
 import { getStatus, updateStatus } from "./StatusController";
-import { ObjectId } from "bson";
-import { hasResume, uploadResume } from "../services/storage";
-import User from "../models/User";
-import Team from "src/models/Team";
 import { findUserTeam } from "./TeamController";
 
 const upload = multer({ storage: multer.memoryStorage() });
