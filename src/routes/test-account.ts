@@ -3,7 +3,7 @@ import {
   createNewTestAccount,
   deleteAllTestAccounts,
   deleteTestAccount,
-} from "src/controllers/TestController";
+} from "src/controllers/TestAccountController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin, isAuthenticated } from "./middleware";
 
