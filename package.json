@@ -39,6 +39,7 @@
     "express": "^4.17.1",
     "googleapis": "^77.0.0",
     "jest-coverage-badges": "^1.1.2",
+    "jimp": "^0.16.2",
     "jsonwebtoken": "^8.5.1",
     "luxon": "^1.27.0",
     "mjml": "^4.9.3",
@@ -55,9 +56,9 @@
   "devDependencies": {
     "@jest/types": "^27.0.2",
     "@shelf/jest-mongodb": "^1.2.5",
-    "@swc/cli": "^0.1.51",
-    "@swc/core": "^1.2.106",
-    "@swc/helpers": "^0.2.13",
+    "@swc/cli": "^0.1.57",
+    "@swc/core": "^1.3.19",
+    "@swc/helpers": "^0.4.14",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.11",
     "@types/jest": "^27.0.2",
@@ -86,10 +87,10 @@
     "prettier": "^2.2.1",
     "supertest": "^6.1.3",
     "ts-jest": "^27.0.3",
-    "ts-node": "^9.1.1",
+    "ts-node": "^10.9.1",
     "tsconfig-paths": "^3.9.0",
     "ttypescript": "^1.5.12",
-    "typescript": "^4.2.4"
+    "typescript": "^4.9.3"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"

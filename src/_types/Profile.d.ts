@@ -33,6 +33,7 @@ export interface IProfile extends Document {
   workStrengths?: string;
   sponsorRanking?: ObjectId[];
   resume?: string;
+  profilePicture?: string;
   github: string;
   design?: string;
   website?: string;
@@ -51,7 +52,11 @@ export interface IProfile extends Document {
   team?: ITeam;
 
   /**
-   * Returns a URL that can be used to download the user's resume
+   * Returns a URL that can be used to download the user's resume, if it exists
    */
   getResumeUrl?: () => Promise<string>;
+  /**
+   * Returns a URL that can be used to download the user's profile picture, if it exists
+   */
+  getProfilePictureUrl?: () => Promise<string>;
 }

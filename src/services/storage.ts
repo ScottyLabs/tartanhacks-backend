@@ -14,6 +14,18 @@ const storage = new Storage({
 });
 
 const ONE_HOUR = 1000 * 60 * 60;
+const HALF_HOUR = 1000 * 60 * 30;
+
+/**
+ * Delete a file stored on the specified storage bucket
+ * @param bucketName The name of the bucket to upload the file to
+ * @param fileName The name of the file to upload
+ * @returns
+ */
+async function deleteFile(bucketName: string, fileName: string): Promise<void> {
+  const bucket = storage.bucket(bucketName);
+  await bucket.file(fileName).delete();
+}
 
 /**
  * Upload a file into the specified GCP storage bucket
@@ -83,6 +95,57 @@ const fileExists = async (
 };
 
 /**
+ * Upload a profile picture into the GCP storage bucket
+ * @param fileBuffer The file buffer of the profile picture to upload
+ * @param userId The ID of the user who owns the profile picture
+ * @returns the signed URL of the profile picture valid for 1 hour
+ */
+export async function uploadProfilePicture(
+  fileBuffer: Buffer,
+  userId: ObjectId
+): Promise<string> {
+  const fileName = `${userId.toString()}.png`;
+  await uploadFile(StorageBuckets.PROFILE_PICTURES, fileBuffer, fileName);
+  return getProfilePictureUrl(userId);
+}
+
+/**
+ * Delete a profile picture stored in the storage bucket
+ * @param userId The ID of the user who owns the profile picture
+ */
+export async function deleteProfilePicture(userId: ObjectId): Promise<void> {
+  const fileName = `${userId.toString()}.png`;
+  await deleteFile(StorageBuckets.PROFILE_PICTURES, fileName);
+}
+
+/**
+ * Returns true if the specified user has a profile picture and false otherwise
+ */
+export async function hasProfilePicture(userId: ObjectId): Promise<boolean> {
+  const fileName = `${userId.toString()}.png`;
+  return fileExists(StorageBuckets.PROFILE_PICTURES, fileName);
+}
+
+/**
+ * Get a signed URL for a profile picture in the GCP storage bucket
+ * @param userId The ID of the user who owns the resume
+ * @returns The signed URL for the profile picture valid for 1 hour
+ * @throws If there is no stored profile picture for the user
+ */
+export async function getProfilePictureUrl(userId: ObjectId): Promise<string> {
+  const fileName = `${userId.toString()}.png`;
+  assert(
+    fileExists(StorageBuckets.PROFILE_PICTURES, fileName),
+    "Profile picture does not exist for user: " + userId.toString()
+  );
+  return await downloadFile(
+    StorageBuckets.PROFILE_PICTURES,
+    fileName,
+    HALF_HOUR
+  );
+}
+
+/**
  * Upload a resume into the GCP storage bucket
  * @param fileBuffer The file buffer of the resume to upload
  * @param userId The ID of the user who owns the resume
@@ -94,7 +157,7 @@ export const uploadResume = async (
 ): Promise<string> => {
   const fileName = `${userId.toString()}.pdf`;
   await uploadFile(StorageBuckets.RESUME, fileBuffer, fileName);
-  return await getResumeUrl(userId);
+  return getResumeUrl(userId);
 };
 
 /**
@@ -109,7 +172,7 @@ export const getResumeUrl = async (userId: ObjectId): Promise<string> => {
     fileExists(StorageBuckets.RESUME, fileName),
     "Resume does not exist for user: " + userId.toString()
   );
-  return await downloadFile(StorageBuckets.RESUME, fileName, ONE_HOUR);
+  return downloadFile(StorageBuckets.RESUME, fileName, ONE_HOUR);
 };
 
 /**
@@ -119,5 +182,5 @@ export const getResumeUrl = async (userId: ObjectId): Promise<string> => {
  */
 export const hasResume = async (userId: ObjectId): Promise<boolean> => {
   const fileName = `${userId.toString()}.pdf`;
-  return await fileExists(StorageBuckets.RESUME, fileName);
+  return fileExists(StorageBuckets.RESUME, fileName);
 };

@@ -4,8 +4,10 @@ import {
   displayNameAvailable,
   fileMiddleware,
   getOwnProfile,
+  removeProfilePicture,
   submitConfirmation,
   submitProfile,
+  submitProfilePicture,
   submitResume,
 } from "../controllers/ProfileController";
 import { getOwnTeam } from "../controllers/TeamController";
@@ -175,8 +177,6 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *                 type: array
  *                 items:
  *                   type: string
- *               resume:
- *                 type: string
  *               github:
  *                 type: string
  *                 required: true
@@ -250,6 +250,68 @@ router.post(
   isAuthenticated,
   fileMiddleware,
   asyncCatch(submitResume)
+);
+
+/**
+ * @swagger
+ * /user/profile-picture:
+ *  post:
+ *    summary: Submit a profile picture
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [User Module]
+ *    description: Submit a profile picture for the current user. Must have an associated profile. Access - User
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        multipart/form-data:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              file:
+ *                type: string
+ *                format: binary
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      400:
+ *        description: Bad request
+ *      403:
+ *        description: Unauthorized.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.post(
+  "/profile-picture",
+  isAuthenticated,
+  fileMiddleware,
+  asyncCatch(submitProfilePicture)
+);
+
+/**
+ * @swagger
+ * /user/profile-picture:
+ *  delete:
+ *    summary: Clear the user's profile picture
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [User Module]
+ *    description: Clear the profile picture for the current user. Must have an associated profile. Access - User
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      400:
+ *        description: Bad request
+ *      403:
+ *        description: Unauthorized.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.delete(
+  "/profile-picture",
+  isAuthenticated,
+  fileMiddleware,
+  asyncCatch(removeProfilePicture)
 );
 
 /**
