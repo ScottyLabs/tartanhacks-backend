@@ -24,18 +24,15 @@ const router: Router = express.Router();
  *     tags: [Test Account Module]
  *     security:
  *     - apiKeyAuth: []
- *     description: Create a new test account. Access - Admin\
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               status:
- *                 type: string
- *                 required: true
- *                 enum: [UNVERIFIED, VERIFIED, COMPLETED_PROFILE, ADMITTED, REJECTED, CONFIRMED, DECLINED]
+ *     description: Create a new test account. Access - Admin
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         description: The status of the test account to create
+ *         schema:
+ *           type: string
+ *           required: true
+ *           enum: [UNVERIFIED, VERIFIED, COMPLETED_PROFILE, ADMITTED, REJECTED, CONFIRMED, DECLINED]
  *     responses:
  *       200:
  *           description: Success. Returns the login information for a new test account

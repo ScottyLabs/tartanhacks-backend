@@ -12,7 +12,7 @@ export async function createNewTestAccount(
   req: Request,
   res: Response
 ): Promise<void> {
-  const status = req.body.status as Status;
+  const status = req.query.status as Status;
 
   const account = await createTestAccountWithStatus(status);
 
