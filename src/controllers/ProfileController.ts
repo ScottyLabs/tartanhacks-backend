@@ -4,15 +4,15 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import multer from "multer";
+import { Status } from "src/_enums/Status";
+import { IUser } from "src/_types/User";
 import Profile from "../models/Profile";
 import { hasResume, uploadResume } from "../services/storage";
 import { bad, error, notFound, unauthorized } from "../util/error";
-import { StatusField } from "../_enums/Status";
 import { IConfirmation } from "../_types/Confirmation";
 import { IProfile } from "../_types/Profile";
 import { ITeam } from "../_types/Team";
 import * as EventController from "./EventController";
-import { getStatus, updateStatus } from "./StatusController";
 import { findUserTeam } from "./TeamController";
 
 const upload = multer({ storage: multer.memoryStorage() });
@@ -91,7 +91,7 @@ export const submitProfile = async (
 ): Promise<void> => {
   const tartanhacks = await EventController.getTartanHacks();
   try {
-    const user = res.locals.user;
+    const user = res.locals.user as IUser;
     const profileArgs = req.body as IProfile;
     // Prevent user from inserting confirmation here
     delete profileArgs.confirmation;
@@ -132,7 +132,11 @@ export const submitProfile = async (
         upsert: true,
       }
     );
-    await updateStatus(user._id, StatusField.COMPLETED_PROFILE, true);
+
+    if (!user.hasStatus(Status.COMPLETED_PROFILE)) {
+      await user.setStatus(Status.COMPLETED_PROFILE);
+    }
+    await user.setStatus(Status.COMPLETED_PROFILE);
     const updatedProfile = await getProfile(user._id);
     res.json(updatedProfile);
   } catch (err) {
@@ -207,12 +211,10 @@ export const submitConfirmation = async (
       return bad(res, "User does not have a profile yet. Create one first");
     }
 
-    const status = await getStatus(user._id);
-    if (!status.admitted) {
-      return unauthorized(res, "You have not been admitted to the event!");
-    }
-    if (status.declined) {
+    if (user.status === Status.DECLINED) {
       return bad(res, "You already declined your attendance for the event");
+    } else if (!user.hasStatus(Status.ADMITTED)) {
+      return unauthorized(res, "You have not been admitted to the event!");
     }
 
     await Profile.findOneAndUpdate(
@@ -228,7 +230,7 @@ export const submitConfirmation = async (
       }
     );
 
-    await updateStatus(user._id, StatusField.CONFIRMED, true);
+    await user.setStatus(Status.CONFIRMED);
 
     res.status(200).send();
   } catch (err) {
@@ -255,15 +257,13 @@ export const declineAcceptance = async (
       return bad(res, "User does not have a profile yet. Create one first");
     }
 
-    const status = await getStatus(user._id);
-    if (!status.admitted) {
+    if (user.hasStatus(Status.CONFIRMED)) {
+      return bad(res, "You already confirmed your attendance for the event!");
+    } else if (!user.hasStatus(Status.ADMITTED)) {
       return unauthorized(res, "You have not been admitted to the event!");
     }
-    if (status.confirmed) {
-      return bad(res, "You already confirmed your attendance for the event!");
-    }
 
-    await updateStatus(user._id, StatusField.DECLINED, true);
+    await user.setStatus(Status.DECLINED);
     res.json(profile);
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {

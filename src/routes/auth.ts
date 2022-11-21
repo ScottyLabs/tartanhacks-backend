@@ -224,9 +224,6 @@ router.post("/reset/password", asyncCatch(resetPassword));
  *       500:
  *          description: Internal Server Error.
  */
-router.post(
-  "/discord/verify",
-  asyncCatch(getUserByVerificationCode)
-);
+router.post("/discord/verify", asyncCatch(getUserByVerificationCode));
 
 export default router;

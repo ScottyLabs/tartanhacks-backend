@@ -1,5 +1,6 @@
 import { Document, Model } from "mongoose";
 import { ObjectId } from "bson";
+import { Status } from "src/_enums/Status";
 
 /**
  * Type of User model
@@ -14,6 +15,7 @@ export interface IUser extends Document {
   lastLogin?: Date;
   createdAt: Date;
   updatedAt: Date;
+  status: Status;
   verificationCode?: string;
   verificationExpiry?: Date;
   /**
@@ -37,6 +39,17 @@ export interface IUser extends Document {
    * Generate a new verification code and update the user
    */
   updateVerificationCode: () => Promise<IUser>;
+  /**
+   * Returns true if the user has the specified status or a status with a greater level
+   * @see getStatusLevel
+   */
+  hasStatus: (status: Status) => boolean;
+  /**
+   * Updates the User's status as specified
+   * @throws {Error} if the specified status level is less than or equal to the current status level
+   * @see getStatusLevel
+   */
+  setStatus: (status: Status) => Promise<void>;
 }
 
 export interface IUserModel extends Model<IUser> {

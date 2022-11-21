@@ -2,6 +2,7 @@
  * Service for computing user analytics
  */
 
+import { doesStatusImply, Status } from "src/_enums/Status";
 import { getParticipantDataPipeline } from "../aggregations/analytics";
 import { getTartanHacks } from "../controllers/EventController";
 import User from "../models/User";
@@ -99,22 +100,30 @@ export const computeAnalytics = async (): Promise<Stats> => {
       }
 
       // Count verified
-      stats.verified += status.verified ? 1 : 0;
+      const isVerified = doesStatusImply(status, Status.VERIFIED);
+      stats.verified += isVerified ? 1 : 0;
 
       // Count submitted
-      stats.submitted += status.completedProfile ? 1 : 0;
+      const isProfileComplete = doesStatusImply(
+        status,
+        Status.COMPLETED_PROFILE
+      );
+      stats.submitted += isProfileComplete ? 1 : 0;
 
       // Count accepted
-      stats.admitted += status.admitted ? 1 : 0;
+      const isAdmitted = doesStatusImply(status, Status.ADMITTED);
+      stats.admitted += isAdmitted ? 1 : 0;
 
       // Count confirmed
-      stats.confirmed += status.confirmed ? 1 : 0;
+      const isConfirmed = doesStatusImply(status, Status.CONFIRMED);
+      stats.confirmed += isConfirmed ? 1 : 0;
 
       // Count declined
-      stats.declined += status.declined ? 1 : 0;
+      const isDeclined = doesStatusImply(status, Status.DECLINED);
+      stats.declined += isDeclined ? 1 : 0;
 
       // Count confirmed that are CMU
-      stats.confirmedCmu += status.confirmed && isCMU ? 1 : 0;
+      stats.confirmedCmu += isConfirmed && isCMU ? 1 : 0;
 
       if (!profile) {
         continue;
@@ -128,13 +137,11 @@ export const computeAnalytics = async (): Promise<Stats> => {
       }
 
       stats.confirmedFemale +=
-        status.confirmed && profile.gender == "Female" ? 1 : 0;
-      stats.confirmedMale +=
-        status.confirmed && profile.gender == "Male" ? 1 : 0;
-      stats.confirmedOther +=
-        status.confirmed && profile.gender == "Other" ? 1 : 0;
+        isConfirmed && profile.gender == "Female" ? 1 : 0;
+      stats.confirmedMale += isConfirmed && profile.gender == "Male" ? 1 : 0;
+      stats.confirmedOther += isConfirmed && profile.gender == "Other" ? 1 : 0;
       stats.confirmedNone +=
-        status.confirmed && profile.gender == "Prefer not to say" ? 1 : 0;
+        isConfirmed && profile.gender == "Prefer not to say" ? 1 : 0;
 
       // Count the number of people who want hardware
       stats.wantsHardware += profile.wantsHardware ? 1 : 0;
@@ -148,12 +155,10 @@ export const computeAnalytics = async (): Promise<Stats> => {
           declined: 0,
         };
       }
-      stats.demographic.schools[email].submitted += status.completedProfile
-        ? 1
-        : 0;
-      stats.demographic.schools[email].admitted += status.admitted ? 1 : 0;
-      stats.demographic.schools[email].confirmed += status.confirmed ? 1 : 0;
-      stats.demographic.schools[email].declined += status.declined ? 1 : 0;
+      stats.demographic.schools[email].submitted += isProfileComplete ? 1 : 0;
+      stats.demographic.schools[email].admitted += isAdmitted ? 1 : 0;
+      stats.demographic.schools[email].confirmed += isConfirmed ? 1 : 0;
+      stats.demographic.schools[email].declined += isDeclined ? 1 : 0;
 
       // Count CMU college
       if (isCMU) {
