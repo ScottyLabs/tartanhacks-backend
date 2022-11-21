@@ -60,5 +60,6 @@ const server = app.listen(PORT, async () => {
     server.close();
     return;
   }
+
   console.log(`Running on port ${PORT}`);
 });

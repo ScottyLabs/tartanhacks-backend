@@ -41,7 +41,7 @@ const User: Schema<IUser> = new Schema(
     status: {
       type: String,
       enum: Object.values(Status),
-      default: Status.UNVERIFIED,
+      // default: Status.UNVERIFIED,
       required: true,
     },
   },
