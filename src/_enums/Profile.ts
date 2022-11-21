@@ -11,13 +11,6 @@ export enum CMUCollege {
   HEINZ = "Heinz",
 }
 
-export enum CollegeLevel {
-  UNDERGRADUATE = "Undergraduate",
-  MASTERS = "Masters",
-  DOCTORATE = "Doctorate",
-  OTHER = "Other",
-}
-
 export enum Gender {
   MALE = "Male",
   FEMALE = "Female",
@@ -32,6 +25,7 @@ export enum Ethnicity {
   PACIFIC_ISLANDER = "Pacific Islander",
   WHITE = "White",
   HISPANIC = "Hispanic",
+  PREFER_NOT_TO_SAY = "Prefer not to say",
   OTHER = "Other",
 }
 

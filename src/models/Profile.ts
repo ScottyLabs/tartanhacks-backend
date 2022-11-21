@@ -57,10 +57,6 @@ const Profile: Schema<IProfile> = new Schema(
       type: String,
       enum: Object.values(CMUCollege).concat([null]),
     },
-    level: {
-      type: String,
-      enum: Object.values(CollegeLevel).concat([null]),
-    },
     graduationYear: {
       type: Number,
       minimum: 2022,
@@ -82,8 +78,10 @@ const Profile: Schema<IProfile> = new Schema(
     ethnicityOther: String,
     phoneNumber: {
       type: String,
-      required: function () {
-        /*
+      required: true,
+      validate: {
+        validator: function (v: string) {
+          /*
          18005551234
          1 800 555 1234
          +1 800 555-1234
@@ -100,9 +98,10 @@ const Profile: Schema<IProfile> = new Schema(
          1    800    555-1234
          1----800----555-1234
         */
-        return this.phoneNumber.match(
-          /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
-        );
+          return /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/.test(
+            v
+          );
+        },
       },
     },
     major: String,

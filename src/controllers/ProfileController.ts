@@ -129,6 +129,7 @@ export const submitProfile = async (
         ...profileArgs,
       },
       {
+        runValidators: true,
         upsert: true,
       }
     );
@@ -136,7 +137,6 @@ export const submitProfile = async (
     if (!user.hasStatus(Status.COMPLETED_PROFILE)) {
       await user.setStatus(Status.COMPLETED_PROFILE);
     }
-    await user.setStatus(Status.COMPLETED_PROFILE);
     const updatedProfile = await getProfile(user._id);
     res.json(updatedProfile);
   } catch (err) {
