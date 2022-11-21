@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { model, Schema } from "mongoose";
 import { IUser, IUserModel } from "../_types/User";
 import isProduction from "../util/isProduction";
-import { doesStatusImply, getStatusLevel, Status } from "src/_enums/Status";
+import { doesStatusImply, getStatusLevel, Status } from "../_enums/Status";
 
 /**
  * Time before the generated JWT tokens expire

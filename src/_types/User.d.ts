@@ -1,6 +1,6 @@
 import { Document, Model } from "mongoose";
 import { ObjectId } from "bson";
-import { Status } from "src/_enums/Status";
+import { Status } from "../_enums/Status";
 
 /**
  * Type of User model

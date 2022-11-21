@@ -2,7 +2,7 @@
  * Service for computing user analytics
  */
 
-import { doesStatusImply, Status } from "src/_enums/Status";
+import { doesStatusImply, Status } from "../_enums/Status";
 import { getParticipantDataPipeline } from "../aggregations/analytics";
 import { getTartanHacks } from "../controllers/EventController";
 import User from "../models/User";

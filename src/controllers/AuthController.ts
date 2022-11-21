@@ -9,7 +9,7 @@ import * as EmailController from "./EmailController";
 import { isRegistrationOpen } from "./SettingsController";
 import { getByCode, getByToken } from "./UserController";
 import { findUserTeam } from "./TeamController";
-import { Status } from "src/_enums/Status";
+import { Status } from "../_enums/Status";
 
 /**
  * Register a user

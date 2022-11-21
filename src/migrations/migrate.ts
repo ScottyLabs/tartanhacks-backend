@@ -1,5 +1,5 @@
-import User from "src/models/User";
-import { Status } from "src/_enums/Status";
+import User from "../models/User";
+import { Status } from "../_enums/Status";
 
 interface StatusObject {
   verified: boolean;

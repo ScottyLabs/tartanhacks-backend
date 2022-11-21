@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { Status } from "src/_enums/Status";
+import { Status } from "../_enums/Status";
 
 /**
  * Generate the aggregation pipeline for getting participants of a particular event

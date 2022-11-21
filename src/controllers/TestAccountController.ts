@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import User from "src/models/User";
-import { bad, notFound } from "src/util/error";
+import User from "../models/User";
+import { bad, notFound } from "../util/error";
 import { animals, colors, uniqueNamesGenerator } from "unique-names-generator";
 
 /**

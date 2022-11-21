@@ -4,8 +4,8 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
 import multer from "multer";
-import { Status } from "src/_enums/Status";
-import { IUser } from "src/_types/User";
+import { Status } from "../_enums/Status";
+import { IUser } from "../_types/User";
 import Profile from "../models/Profile";
 import { hasResume, uploadResume } from "../services/storage";
 import { bad, error, notFound, unauthorized } from "../util/error";
