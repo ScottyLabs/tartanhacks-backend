@@ -19,7 +19,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     email: string;
     password: string;
   };
-  const email = emailRaw.trim().toLowerCase();
+  const email = emailRaw?.trim()?.toLowerCase();
 
   const registrationOpen = await isRegistrationOpen();
   if (!registrationOpen) {
@@ -99,7 +99,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     email: string;
     password: string;
   };
-  const email = emailRaw.trim().toLowerCase();
+  const email = emailRaw?.trim()?.toLowerCase();
 
   if (token) {
     // Login with token
@@ -173,7 +173,7 @@ export const resendVerificationEmail = async (
   if (emailRaw == null) {
     return bad(res, "Missing email");
   }
-  const email = emailRaw.trim().toLowerCase();
+  const email = emailRaw?.trim()?.toLowerCase();
 
   try {
     const user = await User.findOne({ email });
@@ -256,7 +256,7 @@ export const sendPasswordResetEmail = async (
   if (emailRaw == null) {
     return bad(res, "Missing email");
   }
-  const email = emailRaw.trim().toLowerCase();
+  const email = emailRaw?.trim()?.toLowerCase();
 
   try {
     const user = await User.findOne({ email });
