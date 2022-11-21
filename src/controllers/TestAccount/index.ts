@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
-import User from "../models/User";
-import { bad, notFound } from "../util/error";
-import { animals, colors, uniqueNamesGenerator } from "unique-names-generator";
+import Profile from "src/models/Profile";
+import { Status } from "src/_enums/Status";
+import User from "../../models/User";
+import { bad, notFound } from "../../util/error";
+import { createTestAccountWithStatus } from "./accountCreator";
 
 /**
  * Create a new test account
@@ -10,23 +12,11 @@ export async function createNewTestAccount(
   req: Request,
   res: Response
 ): Promise<void> {
-  const prefix = uniqueNamesGenerator({
-    dictionaries: [animals, colors],
-    separator: "-",
-    length: 2,
-  });
-  const email = `${prefix}@tartanhacks.com`;
-  const password = uniqueNamesGenerator({
-    dictionaries: [animals, colors],
-    length: 1,
-  });
-  const hash = User.generateHash(password);
+  const status = req.body.status as Status;
 
-  const user = new User({ email, password: hash });
-  await user.save();
+  const account = await createTestAccountWithStatus(status);
 
-  const token = await user.generateAuthToken();
-  res.json({ ...user.toJSON(), password, token });
+  res.json(account);
 }
 
 /**
@@ -47,6 +37,7 @@ export async function deleteTestAccount(
     return bad(res, "User is not a test account!");
   }
 
+  await Profile.findByIdAndDelete(id);
   await user.delete();
   res.status(200).send();
 }
@@ -58,9 +49,17 @@ export async function deleteAllTestAccounts(
   req: Request,
   res: Response
 ): Promise<void> {
-  await User.deleteMany({
-    email: /[a-zA-Z0-9-]+@tartanhacks\.com/,
+  const testAccountFilter = { email: /[a-zA-Z0-9-]+@tartanhacks\.com/ };
+
+  const users = await User.find(testAccountFilter);
+  const deleteIds = users.map((user) => user._id);
+
+  await Profile.deleteMany({
+    user: {
+      $in: deleteIds,
+    },
   });
+  await User.deleteMany(testAccountFilter);
 
   res.status(200).send();
 }

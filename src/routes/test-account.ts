@@ -3,7 +3,7 @@ import {
   createNewTestAccount,
   deleteAllTestAccounts,
   deleteTestAccount,
-} from "../controllers/TestAccountController";
+} from "../controllers/TestAccount";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin, isAuthenticated } from "./middleware";
 
@@ -21,10 +21,21 @@ const router: Router = express.Router();
  * /test-account:
  *   post:
  *     summary: Create a new short-lived test account
- *     tags: [Test Module]
+ *     tags: [Test Account Module]
  *     security:
  *     - apiKeyAuth: []
- *     description: Create a new test account. Access - Admin
+ *     description: Create a new test account. Access - Admin\
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 required: true
+ *                 enum: [UNVERIFIED, VERIFIED, COMPLETED_PROFILE, ADMITTED, REJECTED, CONFIRMED, DECLINED]
  *     responses:
  *       200:
  *           description: Success. Returns the login information for a new test account
@@ -40,7 +51,7 @@ router.post("/", isAuthenticated, isAdmin, asyncCatch(createNewTestAccount));
  * /test-account/all:
  *   delete:
  *     summary: Delete all test accounts
- *     tags: [Test Module]
+ *     tags: [Test Account Module]
  *     security:
  *     - apiKeyAuth: []
  *     description: Delete all test account. Access - Admin
@@ -64,7 +75,7 @@ router.delete(
  * /test-account/{id}:
  *   delete:
  *     summary: Delete a test account
- *     tags: [Test Module]
+ *     tags: [Test Account Module]
  *     security:
  *     - apiKeyAuth: []
  *     description: Delete a test account. Access - Admin
