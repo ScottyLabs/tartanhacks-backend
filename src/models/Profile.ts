@@ -1,9 +1,12 @@
 import { model, Schema } from "mongoose";
+import {
+  getProfilePictureUrl,
+  getResumeUrl,
+  hasProfilePicture,
+} from "../services/storage";
 import isProduction from "../util/isProduction";
-import { IConfirmation } from "../_types/Confirmation";
 import {
   CMUCollege,
-  CollegeLevel,
   Ethnicity,
   Gender,
   HackathonExperience,
@@ -11,8 +14,8 @@ import {
   ShirtSize,
   WorkPermission,
 } from "../_enums/Profile";
+import { IConfirmation } from "../_types/Confirmation";
 import { IProfile } from "../_types/Profile";
-import { getResumeUrl } from "../services/storage";
 
 /**
  * Confirmation signatures after a user is accepted into the event
@@ -121,11 +124,12 @@ const Profile: Schema<IProfile> = new Schema(
       type: [Schema.Types.ObjectId],
       ref: "Sponsor",
     },
+    profilePicture: String,
+    resume: String,
     github: {
       type: String,
       required: true,
     },
-    resume: String,
     design: String,
     website: String,
     essays: [String],
@@ -159,6 +163,15 @@ Profile.methods.getResumeUrl = async function (): Promise<string> {
   const { user } = this;
   const resumeUrl = await getResumeUrl(user);
   return resumeUrl;
+};
+
+Profile.methods.getProfilePictureUrl = async function (): Promise<string> {
+  const { user } = this;
+  if (!hasProfilePicture(user)) {
+    return null;
+  }
+  const profilePictureUrl = await getProfilePictureUrl(user);
+  return profilePictureUrl;
 };
 
 Profile.index({ firstName: "text", lastName: "text", displayName: "text" });

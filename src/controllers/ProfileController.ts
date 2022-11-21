@@ -7,15 +7,23 @@ import multer from "multer";
 import { Status } from "../_enums/Status";
 import { IUser } from "../_types/User";
 import Profile from "../models/Profile";
-import { hasResume, uploadResume } from "../services/storage";
+import {
+  deleteProfilePicture,
+  hasProfilePicture,
+  hasResume,
+  uploadProfilePicture,
+  uploadResume,
+} from "../services/storage";
 import { bad, error, notFound, unauthorized } from "../util/error";
 import { IConfirmation } from "../_types/Confirmation";
 import { IProfile } from "../_types/Profile";
 import { ITeam } from "../_types/Team";
 import * as EventController from "./EventController";
 import { findUserTeam } from "./TeamController";
+import Jimp from "jimp";
 
 const upload = multer({ storage: multer.memoryStorage() });
+const MAX_IMAGE_WIDTH = 250;
 
 /**
  * File parsing middleware
@@ -38,9 +46,17 @@ export const getProfile = async (
   ]);
 
   if (profile) {
-    const resume = await profile.getResumeUrl();
     const newProfile = profile.toObject() as IProfile;
-    newProfile.resume = resume;
+
+    // Add profile picture, if it exists
+    if (hasProfilePicture(userId)) {
+      newProfile.profilePicture = await profile.getProfilePictureUrl();
+    }
+
+    // Add resume url
+    newProfile.resume = await profile.getResumeUrl();
+
+    // Add team, if it exists
     if (team) {
       newProfile.team = team.toObject() as ITeam;
     }
@@ -149,6 +165,66 @@ export const submitProfile = async (
     }
   }
 };
+
+/**
+ * Upload a profile picture into the GCP storage bucket
+ */
+export async function submitProfilePicture(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    if (!req.file) {
+      return bad(res, "Missing profile picture attachment");
+    }
+    const user = res.locals.user;
+    const profile = await Profile.findOne({ user: user._id });
+
+    if (profile === null) {
+      return bad(res, "Profile does not exist! Create one first");
+    }
+
+    const { buffer } = req.file;
+
+    let image;
+    try {
+      image = await Jimp.read(buffer);
+    } catch (err) {
+      return bad(
+        res,
+        "Could not read image! Make sure it is in a valid jpeg/png format!"
+      );
+    }
+
+    // Resize to fit within dimensions
+    image.contain(MAX_IMAGE_WIDTH, MAX_IMAGE_WIDTH);
+
+    // Convert to PNG format
+    const imageBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
+
+    // Upload to GCP
+    const fileId = await uploadProfilePicture(imageBuffer, user._id);
+
+    res.json(fileId);
+  } catch (err) {
+    console.error(err);
+    error(res);
+  }
+}
+
+export async function removeProfilePicture(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const user = res.locals.user;
+    await deleteProfilePicture(user._id);
+    res.status(200).send();
+  } catch (err) {
+    console.error(err);
+    error(res);
+  }
+}
 
 /**
  * Upload a resume into the GCP storage bucket
