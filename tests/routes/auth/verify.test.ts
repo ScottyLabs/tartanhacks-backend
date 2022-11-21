@@ -5,7 +5,7 @@ import { Express } from "express";
 import request from "supertest";
 import { setup, getApp, shutdown } from "../../index";
 import User from "src/models/User";
-import Status from "src/models/Status";
+import { Status } from "src/_enums/Status";
 import { ObjectId } from "bson";
 
 let app: Express = null;
@@ -34,9 +34,9 @@ describe("verify", () => {
       .send();
     expect(verifyResponse.status).toEqual(200);
 
-    const status = await Status.findOne({ user: new ObjectId(_id) });
-    expect(status).not.toBeNull();
-    expect(status.verified).toBe(true);
+    const updatedUser = await User.findById(_id);
+    expect(updatedUser).not.toBeNull();
+    expect(updatedUser.status).toBe(Status.VERIFIED);
   });
 
   // Verification should not occur for invalid tokens
@@ -49,7 +49,8 @@ describe("verify", () => {
     const verifyResponse = await request(app).get(`/auth/verify/abc`).send();
     expect(verifyResponse.status).toEqual(400);
 
-    const status = await Status.findOne({ user: new ObjectId(_id) });
-    expect(status).toBeNull();
+    const user = await User.findById(_id);
+    expect(user).not.toBeNull();
+    expect(user.status).toBe(Status.UNVERIFIED);
   });
 });

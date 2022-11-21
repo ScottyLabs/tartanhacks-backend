@@ -71,8 +71,7 @@ export const admitUser = async (req: Request, res: Response): Promise<void> => {
     if (user == null) {
       return bad(res, "User not found");
     }
-    const currentUser = res.locals.user;
-    if (!currentUser.hasStatus(Status.COMPLETED_PROFILE)) {
+    if (!user.hasStatus(Status.COMPLETED_PROFILE)) {
       return bad(res, "User has not completed their profile yet!");
     }
 
@@ -125,7 +124,6 @@ export const admitAllUsers = async (
 ): Promise<void> => {
   try {
     const tartanhacks = await getTartanHacks();
-    const currentUser = res.locals.user;
 
     const users = await User.find({
       status: Status.COMPLETED_PROFILE,
@@ -157,7 +155,6 @@ export const rejectAllUsers = async (
 ): Promise<void> => {
   try {
     const tartanhacks = await getTartanHacks();
-    const currentUser = res.locals.user;
 
     const users = await User.find({
       status: Status.COMPLETED_PROFILE,

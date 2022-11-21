@@ -5,9 +5,7 @@ import { Express } from "express";
 import request from "supertest";
 import { setup, getApp, shutdown } from "../../index";
 import User from "src/models/User";
-import Status from "src/models/Status";
-import * as StatusController from "src/controllers/StatusController";
-import { StatusField } from "src/_enums/Status";
+import { Status } from "src/_enums/Status";
 import { ObjectId } from "mongodb";
 
 let app: Express = null;
@@ -48,16 +46,7 @@ describe("admission", () => {
     const { _id: userId } = registerResponse.body;
 
     // Update status so user appears to have completed profile
-    await StatusController.updateStatus(
-      new ObjectId(userId),
-      StatusField.VERIFIED,
-      true
-    );
-    await StatusController.updateStatus(
-      new ObjectId(userId),
-      StatusField.COMPLETED_PROFILE,
-      true
-    );
+    await User.findByIdAndUpdate(userId, { status: Status.COMPLETED_PROFILE });
 
     // Admit user
     const admitResponse = await request(app)
@@ -66,9 +55,9 @@ describe("admission", () => {
     expect(admitResponse.status).toEqual(200);
 
     // Check that status is true
-    const status = await Status.findOne({ user: new ObjectId(userId) });
-    expect(status).not.toBeNull();
-    expect(status.admitted).toStrictEqual(true);
+    const user = await User.findById(userId);
+    expect(user).not.toBeNull();
+    expect(user.status).toBe(Status.ADMITTED);
   });
 
   it("should fail for incomplete profiles", async () => {
@@ -81,11 +70,7 @@ describe("admission", () => {
     const { _id: userId } = registerResponse.body;
 
     // Update status so user appears to have verified account
-    await StatusController.updateStatus(
-      new ObjectId(userId),
-      StatusField.VERIFIED,
-      true
-    );
+    await User.findByIdAndUpdate(userId, { status: Status.VERIFIED });
 
     // Admit user
     const admitResponse = await request(app)
@@ -94,8 +79,9 @@ describe("admission", () => {
     expect(admitResponse.status).toEqual(400);
 
     // Check that status is not updated
-    const status = await Status.findOne({ user: new ObjectId(userId) });
-    expect(status.admitted).toBeUndefined();
+    const user = await User.findById(userId);
+    expect(user).not.toBeNull();
+    expect(user.status).toBe(Status.VERIFIED);
   });
 
   it("should be inaccessible to non-admins", async () => {
@@ -120,16 +106,7 @@ describe("admission", () => {
     const { _id: userId } = registerApplicantResponse.body;
 
     // Update status so user appears to have verified account
-    await StatusController.updateStatus(
-      new ObjectId(userId),
-      StatusField.VERIFIED,
-      true
-    );
-    await StatusController.updateStatus(
-      new ObjectId(userId),
-      StatusField.COMPLETED_PROFILE,
-      true
-    );
+    await User.findByIdAndUpdate(userId, { status: Status.COMPLETED_PROFILE });
 
     // Attempt admitting user
     const admitResponse = await request(app)
@@ -138,8 +115,9 @@ describe("admission", () => {
     expect(admitResponse.status).toEqual(403);
 
     // Check that status is not updated
-    const status = await Status.findOne({ user: new ObjectId(userId) });
-    expect(status.admitted).toBeUndefined();
+    const user = await User.findById(userId);
+    expect(user).not.toBeNull();
+    expect(user.status).toBe(Status.COMPLETED_PROFILE);
   });
 });
 
@@ -154,16 +132,7 @@ describe("rejection", () => {
     const { _id: userId } = registerResponse.body;
 
     // Update status so user appears to have completed profile
-    await StatusController.updateStatus(
-      new ObjectId(userId),
-      StatusField.VERIFIED,
-      true
-    );
-    await StatusController.updateStatus(
-      new ObjectId(userId),
-      StatusField.COMPLETED_PROFILE,
-      true
-    );
+    await User.findByIdAndUpdate(userId, { status: Status.COMPLETED_PROFILE });
 
     // Reject user
     const admitResponse = await request(app)
@@ -172,9 +141,9 @@ describe("rejection", () => {
     expect(admitResponse.status).toEqual(200);
 
     // Check that status is false
-    const status = await Status.findOne({ user: new ObjectId(userId) });
-    expect(status).not.toBeNull();
-    expect(status.admitted).toStrictEqual(false);
+    const user = await User.findById(userId);
+    expect(user).not.toBeNull();
+    expect(user.status).toBe(Status.REJECTED);
   });
 
   it("should fail for incomplete profiles", async () => {
@@ -187,11 +156,7 @@ describe("rejection", () => {
     const { _id: userId } = registerResponse.body;
 
     // Update status so user appears to have verified account
-    await StatusController.updateStatus(
-      new ObjectId(userId),
-      StatusField.VERIFIED,
-      true
-    );
+    await User.findByIdAndUpdate(userId, { status: Status.VERIFIED });
 
     // Reject user
     const admitResponse = await request(app)
@@ -200,8 +165,9 @@ describe("rejection", () => {
     expect(admitResponse.status).toEqual(400);
 
     // Check that status is not updated
-    const status = await Status.findOne({ user: new ObjectId(userId) });
-    expect(status.admitted).toBeUndefined();
+    const user = await User.findById(userId);
+    expect(user).not.toBeNull();
+    expect(user.status).toBe(Status.VERIFIED);
   });
 
   it("should be inaccessible to non-admins", async () => {
@@ -225,17 +191,8 @@ describe("rejection", () => {
     expect(registerApplicantResponse.status).toEqual(200);
     const { _id: userId } = registerApplicantResponse.body;
 
-    // Update status so user appears to have verified account
-    await StatusController.updateStatus(
-      new ObjectId(userId),
-      StatusField.VERIFIED,
-      true
-    );
-    await StatusController.updateStatus(
-      new ObjectId(userId),
-      StatusField.COMPLETED_PROFILE,
-      true
-    );
+    // Update status so user appears to have completed their profile
+    await User.findByIdAndUpdate(userId, { status: Status.COMPLETED_PROFILE });
 
     // Attempt rejecting user
     const admitResponse = await request(app)
@@ -244,7 +201,8 @@ describe("rejection", () => {
     expect(admitResponse.status).toEqual(403);
 
     // Check that status is not updated
-    const status = await Status.findOne({ user: new ObjectId(userId) });
-    expect(status.admitted).toBeUndefined();
+    const user = await User.findById(userId);
+    expect(user).not.toBeNull();
+    expect(user.status).toBe(Status.COMPLETED_PROFILE);
   });
 });
