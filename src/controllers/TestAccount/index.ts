@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import Profile from "src/models/Profile";
-import { Status } from "src/_enums/Status";
+import Profile from "../../models/Profile";
+import { Status } from "../../_enums/Status";
 import User from "../../models/User";
 import { bad, notFound } from "../../util/error";
 import { createTestAccountWithStatus } from "./accountCreator";
