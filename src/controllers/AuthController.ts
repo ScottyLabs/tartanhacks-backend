@@ -15,7 +15,11 @@ import { Status } from "../_enums/Status";
  * Register a user
  */
 export const register = async (req: Request, res: Response): Promise<void> => {
-  const { email, password } = req.body;
+  const { email: emailRaw, password } = req.body as {
+    email: string;
+    password: string;
+  };
+  const email = emailRaw.trim().toLowerCase();
 
   const registrationOpen = await isRegistrationOpen();
   if (!registrationOpen) {
@@ -91,7 +95,11 @@ const loginWithInfo = async (
  */
 export const login = async (req: Request, res: Response): Promise<void> => {
   const token = req.headers["x-access-token"] as string;
-  const { email, password } = req.body;
+  const { email: emailRaw, password } = req.body as {
+    email: string;
+    password: string;
+  };
+  const email = emailRaw.trim().toLowerCase();
 
   if (token) {
     // Login with token
@@ -161,10 +169,11 @@ export const resendVerificationEmail = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { email } = req.body;
-  if (email == null) {
+  const { email: emailRaw } = req.body;
+  if (emailRaw == null) {
     return bad(res, "Missing email");
   }
+  const email = emailRaw.trim().toLowerCase();
 
   try {
     const user = await User.findOne({ email });
@@ -243,10 +252,11 @@ export const sendPasswordResetEmail = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { email } = req.body;
-  if (email == null) {
+  const { email: emailRaw } = req.body;
+  if (emailRaw == null) {
     return bad(res, "Missing email");
   }
+  const email = emailRaw.trim().toLowerCase();
 
   try {
     const user = await User.findOne({ email });
