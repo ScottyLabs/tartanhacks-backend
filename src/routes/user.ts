@@ -6,7 +6,7 @@ import {
   getOwnProfile,
   submitConfirmation,
   submitProfile,
-  submitResume
+  submitResume,
 } from "../controllers/ProfileController";
 import { getOwnTeam } from "../controllers/TeamController";
 import { getOwnVerificationCode } from "../controllers/UserController";

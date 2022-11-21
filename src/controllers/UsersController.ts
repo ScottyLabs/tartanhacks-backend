@@ -5,12 +5,11 @@ import {
   getParticipantsPipeline,
 } from "../aggregations/participants";
 import Profile from "../models/Profile";
-import Status from "../models/Status";
+import { Status } from "../_enums/Status";
 import User from "../models/User";
 import { bad } from "../util/error";
 import { sendStatusUpdateEmail } from "./EmailController";
 import { getTartanHacks } from "./EventController";
-import * as StatusController from "./StatusController";
 import * as TeamController from "./TeamController";
 
 export const getParticipants = async (
@@ -73,15 +72,16 @@ export const admitUser = async (req: Request, res: Response): Promise<void> => {
       return bad(res, "User not found");
     }
     const currentUser = res.locals.user;
-    const status = await StatusController.getStatus(user._id);
-    if (!status.completedProfile) {
+    if (!currentUser.hasStatus(Status.COMPLETED_PROFILE)) {
       return bad(res, "User has not completed their profile yet!");
     }
+
     const profile = await Profile.findOne({
       event: tartanhacks._id,
       user: user._id,
     });
-    await StatusController.setAdmitted(user._id, currentUser._id);
+
+    await user.setStatus(Status.ADMITTED);
     await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
     res.status(200).send();
   } catch (err) {
@@ -95,19 +95,14 @@ export const admitAllCMU = async (
 ): Promise<void> => {
   try {
     const tartanhacks = await getTartanHacks();
-    const currentUser = res.locals.user;
 
     const pipeline = getCMUApplicantsPipeline(tartanhacks._id);
-    const toUpdate = await Status.aggregate(pipeline);
+    const users = await User.aggregate(pipeline);
 
     const promises = [];
-    for (const status of toUpdate) {
+    for (const user of users) {
       const promise = async () => {
-        await Status.updateOne(
-          { _id: status._id },
-          { admitted: true, admittedBy: currentUser._id }
-        );
-        const user = await User.findById(status.user);
+        await user.setStatus(Status.ADMITTED);
         const profile = await Profile.findOne({
           user: user._id,
           event: tartanhacks._id,
@@ -132,20 +127,14 @@ export const admitAllUsers = async (
     const tartanhacks = await getTartanHacks();
     const currentUser = res.locals.user;
 
-    const toUpdate = await Status.find({
-      completedProfile: true,
-      event: tartanhacks._id,
-      admitted: null,
+    const users = await User.find({
+      status: Status.COMPLETED_PROFILE,
     });
 
     const promises = [];
-    for (const status of toUpdate) {
+    for (const user of users) {
       const promise = async () => {
-        await Status.updateOne(
-          { _id: status._id },
-          { admitted: true, admittedBy: currentUser._id }
-        );
-        const user = await User.findById(status.user);
+        await user.setStatus(Status.ADMITTED);
         const profile = await Profile.findOne({
           user: user._id,
           event: tartanhacks._id,
@@ -170,20 +159,14 @@ export const rejectAllUsers = async (
     const tartanhacks = await getTartanHacks();
     const currentUser = res.locals.user;
 
-    const toUpdate = await Status.find({
-      completedProfile: true,
-      event: tartanhacks._id,
-      admitted: null,
+    const users = await User.find({
+      status: Status.COMPLETED_PROFILE,
     });
 
     const promises = [];
-    for (const status of toUpdate) {
+    for (const user of users) {
       const promise = async () => {
-        await Status.updateOne(
-          { _id: status._id },
-          { admitted: false, admittedBy: currentUser._id }
-        );
-        const user = await User.findById(status.user);
+        await user.setStatus(Status.REJECTED);
         const profile = await Profile.findOne({
           user: user._id,
           event: tartanhacks._id,
@@ -211,16 +194,14 @@ export const rejectUser = async (
     if (user == null) {
       return bad(res, "User not found");
     }
-    const currentUser = res.locals.user;
-    const status = await StatusController.getStatus(user._id);
-    if (!status.completedProfile) {
+    if (!user.hasStatus(Status.COMPLETED_PROFILE)) {
       return bad(res, "User has not completed their profile yet!");
     }
     const profile = await Profile.findOne({
       event: tartanhacks._id,
       user: user._id,
     });
-    await StatusController.setAdmitted(user._id, currentUser._id, false);
+    await user.setStatus(Status.REJECTED);
     await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
     res.status(200).send();
   } catch (err) {
@@ -250,21 +231,11 @@ export const getConfirmedUserEmails = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const tartanhacks = await getTartanHacks();
   try {
-    const admittedStatuses = await Status.find(
-      { confirmed: true, event: tartanhacks._id },
-      { user: 1 }
-    );
-
-    const emails: string[] = [];
-
-    for (let i = 0; i < admittedStatuses.length; i++) {
-      const admittedStatus = admittedStatuses[i];
-      const user = await User.findById(admittedStatus.user);
-      emails.push(user.email);
-    }
-
+    const users = await User.find({
+      status: Status.CONFIRMED,
+    });
+    const emails = users.map((user) => user.email);
     res.status(200).json(emails);
   } catch (err) {
     res.status(500).json(err);

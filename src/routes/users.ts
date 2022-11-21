@@ -1,7 +1,6 @@
 import express, { Router } from "express";
 import { getResume, getUserProfile } from "../controllers/ProfileController";
 import { getProjectByUserID } from "../controllers/ProjectsController";
-import { getUserStatus } from "../controllers/StatusController";
 import {
   admitAllCMU,
   admitAllUsers,
@@ -126,34 +125,6 @@ router.get("/:id/resume", asyncCatch(getResume));
  *           description: Internal Server Error.
  */
 router.get("/:id/profile", isOwnerRecruiterOrAdmin, asyncCatch(getUserProfile));
-
-/**
- * @swagger
- * /users/{userId}/status:
- *   get:
- *     summary: Get a user's status (application progress)
- *     tags: [Users Module]
- *     description: Get a user's status. Access - Owner or Admin only
- *     security:
- *       - apiKeyAuth: []
- *     parameters:
- *     - in: path
- *       name: userId
- *       required: true
- *       type: string
- *     responses:
- *       200:
- *           description: Success.
- *       400:
- *           description: Bad request
- *       403:
- *           description: Unauthorized.
- *       404:
- *           description: User does not exist.
- *       500:
- *           description: Internal Server Error.
- */
-router.get("/:id/status", isOwnerOrAdmin, asyncCatch(getUserStatus));
 
 /**
  * @swagger

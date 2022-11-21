@@ -3,14 +3,13 @@
  */
 import { Request, Response } from "express";
 import { ObjectId } from "bson";
-import { StatusField } from "../_enums/Status";
 import User from "../models/User";
 import { bad, error, notFound } from "../util/error";
 import * as EmailController from "./EmailController";
 import { isRegistrationOpen } from "./SettingsController";
-import * as StatusController from "./StatusController";
 import { getByCode, getByToken } from "./UserController";
 import { findUserTeam } from "./TeamController";
+import { Status } from "src/_enums/Status";
 
 /**
  * Register a user
@@ -147,9 +146,8 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
       return notFound(res, "User not found " + email);
     }
 
-    await StatusController.updateStatus(user._id, StatusField.VERIFIED, true);
-    const json = user.toJSON();
-    res.json({ ...json, token });
+    await user.setStatus(Status.VERIFIED);
+    res.status(200).send();
   } catch (err) {
     console.error(err);
     error(res, "An error occured");
@@ -174,8 +172,7 @@ export const resendVerificationEmail = async (
       return notFound(res, "User not found");
     }
 
-    const status = await StatusController.getStatus(user._id);
-    if (status.verified) {
+    if (user.hasStatus(Status.VERIFIED)) {
       return bad(res, "User is already verified!");
     }
 
@@ -288,7 +285,8 @@ export const getUserByVerificationCode = async (
 
     const team = await findUserTeam(user.id);
     res.status(200).json({
-      user, team
+      user,
+      team,
     });
   } catch (err) {
     console.error(err);

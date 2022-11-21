@@ -1,7 +1,7 @@
-import User from "../models/User";
-import { IUser } from "../_types/User";
 import { Request, Response } from "express";
-import { bad, error, notFound, unauthorized } from "../util/error";
+import User from "../models/User";
+import { error } from "../util/error";
+import { IUser } from "../_types/User";
 
 /**
  * Get a User by their authentication token
@@ -53,13 +53,11 @@ export const getOwnVerificationCode = async (
       await user.updateVerificationCode();
     }
 
-    res
-      .status(200)
-      .json({
-        code: user.verificationCode,
-        expiry: user.verificationExpiry,
-        link: process.env.DISCORD_URL,
-      });
+    res.status(200).json({
+      code: user.verificationCode,
+      expiry: user.verificationExpiry,
+      link: process.env.DISCORD_URL,
+    });
   } catch (err) {
     console.log(err);
     error(res);

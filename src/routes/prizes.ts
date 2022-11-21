@@ -1,6 +1,10 @@
 import express, { Router } from "express";
 import {
-  createNewPrize, deletePrize, editPrize, getAllPrizes, getPrizeByID
+  createNewPrize,
+  deletePrize,
+  editPrize,
+  getAllPrizes,
+  getPrizeByID,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";

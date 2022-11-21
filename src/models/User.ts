@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { model, Schema } from "mongoose";
 import { IUser, IUserModel } from "../_types/User";
 import isProduction from "../util/isProduction";
+import { doesStatusImply, getStatusLevel, Status } from "src/_enums/Status";
 
 /**
  * Time before the generated JWT tokens expire
@@ -37,6 +38,12 @@ const User: Schema<IUser> = new Schema(
     lastLogin: Number,
     verificationCode: String,
     verificationExpiry: Schema.Types.Date,
+    status: {
+      type: String,
+      enum: Object.values(Status),
+      default: Status.UNVERIFIED,
+      required: true,
+    },
   },
   {
     timestamps: {
@@ -103,6 +110,32 @@ User.methods.updateVerificationCode = function (): Promise<IUser> {
     Number(new Date()) + VERIFICATION_CODE_EXPIRY
   );
   return this.save();
+};
+
+/**
+ * Returns true if the user has the specified status or a status with a greater level
+ * @see getStatusLevel
+ */
+User.methods.hasStatus = function (status: Status): boolean {
+  return doesStatusImply(this.status, status);
+};
+
+/**
+ * Updates the User's status as specified
+ * @throws {Error} if the specified status level is less than or equal to the current status level
+ * @see getStatusLevel
+ */
+User.methods.setStatus = async function (status: Status): Promise<void> {
+  const statusLevel = getStatusLevel(status);
+  const userStatusLevel = getStatusLevel(this.status);
+
+  if (userStatusLevel >= statusLevel) {
+    throw new Error(
+      `Cannot revert status! Attempting to go backwards from ${this.status} to ${status}`
+    );
+  }
+
+  return this.updateOne({ status });
 };
 
 /**

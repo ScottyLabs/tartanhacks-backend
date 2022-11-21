@@ -1,4 +1,5 @@
 import { ObjectId } from "mongodb";
+import { Status } from "src/_enums/Status";
 
 /**
  * Generate the aggregation pipeline for getting participants of a particular event
@@ -84,29 +85,6 @@ export const getParticipantsPipeline = (
     },
     {
       $lookup: {
-        from: "statuses",
-        let: { userId: "$_id", eventId },
-        as: "status",
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $eq: ["$event", "$$eventId"],
-              },
-            },
-          },
-          {
-            $match: {
-              $expr: {
-                $eq: ["$user", "$$userId"],
-              },
-            },
-          },
-        ],
-      },
-    },
-    {
-      $lookup: {
         from: "teams",
         let: { userId: "$_id", eventId },
         as: "team",
@@ -131,20 +109,8 @@ export const getParticipantsPipeline = (
     },
     {
       $unwind: {
-        path: "$status",
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $unwind: {
         path: "$team",
         preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $sort: {
-        "status.completedProfile": -1,
-        "status.admittedBy": 1,
       },
     },
     {
@@ -157,12 +123,6 @@ export const getParticipantsPipeline = (
         verificationCode: 0,
         verificationExpiry: 0,
         company: 0,
-        "status._id": 0,
-        "status.event": 0,
-        "status.user": 0,
-        "status.__v": 0,
-        "status.createdAt": 0,
-        "status.updatedAt": 0,
         "team.event": 0,
         "team.__v": 0,
         "team.createdAt": 0,
@@ -180,21 +140,9 @@ export const getCMUApplicantsPipeline = (eventID: ObjectId): any[] => {
   return [
     {
       $match: {
-        completedProfile: true,
         event: eventID,
-        admitted: null as string,
+        status: Status.COMPLETED_PROFILE,
       },
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "user",
-        foreignField: "_id",
-        as: "user",
-      },
-    },
-    {
-      $unwind: "$user",
     },
     {
       $addFields: {
