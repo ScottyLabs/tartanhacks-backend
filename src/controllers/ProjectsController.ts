@@ -7,6 +7,21 @@ import { bad, error, notFound } from "../util/error";
 import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
 
+const GRAND_PRIZE_NAME = "Scott Krulcik Grand Prize";
+
+/**
+ * Initialize the prizes collection and create the Grand Prize
+ */
+export async function createGrandPrize(): Promise<void> {
+  const tartanhacks = await getTartanHacks();
+  const prize = new Prize({
+    event: tartanhacks._id,
+    name: GRAND_PRIZE_NAME,
+    description: "Grand prize",
+  });
+  await prize.save();
+}
+
 export const createNewProject = async (
   req: Request,
   res: Response
@@ -42,7 +57,7 @@ export const createNewProject = async (
     }
 
     const grandPrize = await Prize.findOne({
-      name: "Scott Krulcik Grand Prize",
+      name: GRAND_PRIZE_NAME,
     });
     const prizes = [];
     if (grandPrize != null) {
@@ -69,7 +84,7 @@ export const createNewProject = async (
     });
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
-      return bad(res);
+      return bad(res, err.message);
     } else {
       console.error(err);
       return error(res);
