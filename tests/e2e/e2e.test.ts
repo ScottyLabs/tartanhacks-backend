@@ -45,6 +45,8 @@ describe("Minimal e2e user flow", () => {
   let adminToken: string;
   let testPrizeId: string;
 
+  jest.setTimeout(30_000);
+
   // Create admin account
   beforeAll(async () => {
     admin = new User({
