@@ -25,7 +25,9 @@ const router: Router = express.Router();
  *   post:
  *     summary: Register user
  *     tags: [Authentication Module]
- *     description: Creates new user account. Access - Open
+ *     description: >
+ *       Creates new user account. This sends a verification email to the user containing a link to verify their account.
+ *       The base URL used in this verification link is from the request's `Origin` header. Access - Open
  *     requestBody:
  *       required: true
  *       content:
@@ -57,7 +59,7 @@ router.post("/register", asyncCatch(register));
  *   post:
  *     summary: Login user
  *     tags: [Authentication Module]
- *     description: |
+ *     description: >
  *      Verifies user credentials. Either the login credentials can be specified
  *      in the request body, or an access token can be specified in the header.. Access - Open
  *     requestBody:
@@ -120,7 +122,10 @@ router.get("/verify/:token", asyncCatch(verify));
  *   post:
  *     summary: Resend a user verification email
  *     tags: [Authentication Module]
- *     description: Resend a user verification email. Access - Open
+ *     description: >
+ *        Resend a user verification email.
+ *        This sends a verification email to the user containing a link to verify their account.
+ *        The base URL used in this verification link is from the request's `Origin` header. Access - Open
  *     requestBody:
  *       required: true
  *       content:
@@ -147,7 +152,10 @@ router.post("/verify/resend", asyncCatch(resendVerificationEmail));
  *   post:
  *     summary: Send a password reset email to a user
  *     tags: [Authentication Module]
- *     description: Send a password reset email to a user. Access - Open
+ *     description: >
+ *        Send a password reset email to a user.
+ *        This sends an email to the user containing a link to reset their password.
+ *        The base URL used in this reset link is from the request's `Origin` header. Access - Open
  *     requestBody:
  *       required: true
  *       content:
