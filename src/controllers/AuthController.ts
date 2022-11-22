@@ -19,6 +19,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     email: string;
     password: string;
   };
+  const { origin } = req.headers;
   const email = emailRaw?.trim()?.toLowerCase();
 
   const registrationOpen = await isRegistrationOpen();
@@ -48,7 +49,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
   const emailToken = await user.generateEmailVerificationToken();
   try {
-    await EmailController.sendVerificationEmail(email, emailToken);
+    await EmailController.sendVerificationEmail(email, emailToken, origin);
   } catch (err) {
     console.error("Could not send verification email for registered user!");
     console.error(err);
@@ -173,6 +174,7 @@ export const resendVerificationEmail = async (
   if (emailRaw == null) {
     return bad(res, "Missing email");
   }
+  const { origin } = req.headers;
   const email = emailRaw?.trim()?.toLowerCase();
 
   try {
@@ -187,7 +189,7 @@ export const resendVerificationEmail = async (
 
     const emailToken = await user.generateEmailVerificationToken();
     try {
-      await EmailController.sendVerificationEmail(email, emailToken);
+      await EmailController.sendVerificationEmail(email, emailToken, origin);
       res.status(200).send();
     } catch (err) {
       error(res, "Could not send verification email");
@@ -257,6 +259,7 @@ export const sendPasswordResetEmail = async (
     return bad(res, "Missing email");
   }
   const email = emailRaw?.trim()?.toLowerCase();
+  const { origin } = req.headers;
 
   try {
     const user = await User.findOne({ email });
@@ -266,7 +269,11 @@ export const sendPasswordResetEmail = async (
 
     const passwordResetToken = user.generatePasswordResetToken();
     try {
-      await EmailController.sendPasswordResetEmail(email, passwordResetToken);
+      await EmailController.sendPasswordResetEmail(
+        email,
+        passwordResetToken,
+        origin
+      );
       res.status(200).send();
     } catch (err) {
       error(res, "Could not send password reset email");

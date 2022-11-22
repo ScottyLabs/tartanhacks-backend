@@ -10,14 +10,16 @@ import { sendTemplateEmail } from "../services/email";
  */
 export const sendVerificationEmail = async (
   email: string,
-  verificationToken: string
+  verificationToken: string,
+  redirectUrl?: string
 ): Promise<void> => {
+  const baseUrl = redirectUrl ?? `${process.env.FRONTEND_URL}`;
   await sendTemplateEmail(
     [email],
     "[TartanHacks] Verify your email",
     "verification",
     {
-      url: `${process.env.FRONTEND_URL}/auth/verify/${verificationToken}`,
+      url: `${baseUrl}/auth/verify/${verificationToken}`,
     }
   );
 };
@@ -29,14 +31,16 @@ export const sendVerificationEmail = async (
  */
 export const sendPasswordResetEmail = async (
   email: string,
-  passwordResetToken: string
+  passwordResetToken: string,
+  redirectUrl?: string
 ): Promise<void> => {
+  const baseUrl = redirectUrl ?? `${process.env.FRONTEND_URL}`;
   await sendTemplateEmail(
     [email],
     "[TartanHacks] Reset your password",
     "password-reset",
     {
-      url: `${process.env.FRONTEND_URL}/auth/reset/${passwordResetToken}`,
+      url: `${baseUrl}/auth/reset/${passwordResetToken}`,
     }
   );
 };
@@ -66,15 +70,17 @@ export const sendRecruiterCreationEmail = async (
 
 export const sendStatusUpdateEmail = async (
   email: string,
-  name: string
+  name: string,
+  redirectUrl?: string
 ): Promise<void> => {
+  const url = redirectUrl ?? `${process.env.FRONTEND_URL}`;
   await sendTemplateEmail(
     [email],
     "[TartanHacks] Update regarding your application",
     "status-update",
     {
       name,
-      url: process.env.FRONTEND_URL,
+      url,
     }
   );
 };
