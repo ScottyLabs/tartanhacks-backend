@@ -26,7 +26,7 @@ jobs:
           npm run build
 
       - name: Run tests with code coverage
-        uses: paambaati/codeclimate-action@v3.0.0
+        uses: paambaati/codeclimate-action@v3.1.1
         env:
           CC_TEST_REPORTER_ID: 0e1282aa3a3381f8b403add1674c981483766b199d9ee55806bef31596851c7a
         with:
