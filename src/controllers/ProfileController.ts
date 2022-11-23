@@ -239,8 +239,8 @@ export const submitResume = async (
     }
     const user = res.locals.user;
     const { buffer } = req.file;
-    const fileId = await uploadResume(buffer, user._id);
-    res.json(fileId);
+    const fileUrl = await uploadResume(buffer, user._id);
+    res.status(200).json(fileUrl);
   } catch (err) {
     console.error(err);
     error(res);

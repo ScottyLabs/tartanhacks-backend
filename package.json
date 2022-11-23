@@ -17,8 +17,8 @@
     "test": "NODE_OPTIONS=--trace-warnings doppler setup -p tartanhacks-backend -c dev_test && doppler run -- jest tests --detectOpenHandles",
     "test:coverage": "npm test -- --coverage",
     "test:solo": "NODE_OPTIONS=--trace-warnings doppler setup -p tartanhacks-backend -c dev && doppler run -- jest --detectOpenHandles",
-    "test:nodoppler": "NODE_OPTIONS=--trace-warnings && jest tests --detectOpenHandles",
-    "citest:coverage": "npm run test:nodoppler -- --coverage",
+    "test:nodoppler": "NODE_OPTIONS=--trace-warnings && jest tests --detectOpenHandles --watchAll=false",
+    "ci": "NODE_OPTIONS=--trace-warnings && jest tests --ci --coverage --forceExit --watchAll=false",
     "build:swagger": "swagger-jsdoc -d src/swagger.js src/routes/*.ts -o swagger.json",
     "heroku": "node ."
   },

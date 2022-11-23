@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import router from "src/routes";
 import { startup } from "src/util/startup";
 
+let DB: MongoMemoryServer;
+
 /**
  * Initialize Express app
  */
@@ -40,7 +42,7 @@ export const setup = async (): Promise<void> => {
     useUnifiedTopology: true,
   });
 
-  (global as any).__DB__ = mongod;
+  DB = mongod;
   // run startup
   const result = await startup();
   if (!result) {
@@ -53,5 +55,5 @@ export const setup = async (): Promise<void> => {
  */
 export const shutdown = async (): Promise<void> => {
   await mongoose.disconnect();
-  await (global as any).__DB__.stop();
+  await DB.stop();
 };
