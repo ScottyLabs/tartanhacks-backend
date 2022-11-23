@@ -7,4 +7,5 @@ module.exports = {
     "^src/(.*)$": "<rootDir>/src/$1",
   },
   coverageReporters: ["lcov"],
+  roots: [".", "./tests/"],
 };
