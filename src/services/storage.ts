@@ -1,6 +1,6 @@
 import { GetSignedUrlConfig, Storage } from "@google-cloud/storage";
 import { ObjectId } from "mongodb";
-import { StorageBuckets } from "../_enums/StorageBuckets";
+import { StorageBucket, getStorageBucket } from "../_enums/StorageBuckets";
 import { Readable } from "stream";
 import assert from "assert";
 
@@ -105,7 +105,11 @@ export async function uploadProfilePicture(
   userId: ObjectId
 ): Promise<string> {
   const fileName = `${userId.toString()}.png`;
-  await uploadFile(StorageBuckets.PROFILE_PICTURES, fileBuffer, fileName);
+  await uploadFile(
+    getStorageBucket(StorageBucket.PROFILE_PICTURES),
+    fileBuffer,
+    fileName
+  );
   return getProfilePictureUrl(userId);
 }
 
@@ -115,7 +119,7 @@ export async function uploadProfilePicture(
  */
 export async function deleteProfilePicture(userId: ObjectId): Promise<void> {
   const fileName = `${userId.toString()}.png`;
-  await deleteFile(StorageBuckets.PROFILE_PICTURES, fileName);
+  await deleteFile(getStorageBucket(StorageBucket.PROFILE_PICTURES), fileName);
 }
 
 /**
@@ -123,7 +127,7 @@ export async function deleteProfilePicture(userId: ObjectId): Promise<void> {
  */
 export async function hasProfilePicture(userId: ObjectId): Promise<boolean> {
   const fileName = `${userId.toString()}.png`;
-  return fileExists(StorageBuckets.PROFILE_PICTURES, fileName);
+  return fileExists(getStorageBucket(StorageBucket.PROFILE_PICTURES), fileName);
 }
 
 /**
@@ -135,11 +139,11 @@ export async function hasProfilePicture(userId: ObjectId): Promise<boolean> {
 export async function getProfilePictureUrl(userId: ObjectId): Promise<string> {
   const fileName = `${userId.toString()}.png`;
   assert(
-    fileExists(StorageBuckets.PROFILE_PICTURES, fileName),
+    fileExists(getStorageBucket(StorageBucket.PROFILE_PICTURES), fileName),
     "Profile picture does not exist for user: " + userId.toString()
   );
   return await downloadFile(
-    StorageBuckets.PROFILE_PICTURES,
+    getStorageBucket(StorageBucket.PROFILE_PICTURES),
     fileName,
     HALF_HOUR
   );
@@ -156,7 +160,11 @@ export const uploadResume = async (
   userId: ObjectId
 ): Promise<string> => {
   const fileName = `${userId.toString()}.pdf`;
-  await uploadFile(StorageBuckets.RESUME, fileBuffer, fileName);
+  await uploadFile(
+    getStorageBucket(StorageBucket.RESUME),
+    fileBuffer,
+    fileName
+  );
   return getResumeUrl(userId);
 };
 
@@ -169,10 +177,14 @@ export const uploadResume = async (
 export const getResumeUrl = async (userId: ObjectId): Promise<string> => {
   const fileName = `${userId.toString()}.pdf`;
   assert(
-    fileExists(StorageBuckets.RESUME, fileName),
+    fileExists(getStorageBucket(StorageBucket.RESUME), fileName),
     "Resume does not exist for user: " + userId.toString()
   );
-  return downloadFile(StorageBuckets.RESUME, fileName, ONE_HOUR);
+  return downloadFile(
+    getStorageBucket(StorageBucket.RESUME),
+    fileName,
+    ONE_HOUR
+  );
 };
 
 /**
@@ -182,5 +194,5 @@ export const getResumeUrl = async (userId: ObjectId): Promise<string> => {
  */
 export const hasResume = async (userId: ObjectId): Promise<boolean> => {
   const fileName = `${userId.toString()}.pdf`;
-  return fileExists(StorageBuckets.RESUME, fileName);
+  return fileExists(getStorageBucket(StorageBucket.RESUME), fileName);
 };
