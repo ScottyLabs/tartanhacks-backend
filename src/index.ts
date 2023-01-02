@@ -24,10 +24,10 @@ mongoose.connect(MONGODB_URI, {
 mongoose.set("useFindAndModify", false);
 
 // Build indexes, avoid recreating every dev hot reload
-if (process.env.NODE_ENV !== "dev") {
-  Team.ensureIndexes();
-  Profile.ensureIndexes();
-}
+// if (process.env.NODE_ENV !== "dev") {
+//   Team.ensureIndexes();
+//   Profile.ensureIndexes();
+// }
 
 const app = express();
 app.use(cors());
