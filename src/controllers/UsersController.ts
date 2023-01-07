@@ -5,12 +5,22 @@ import {
   getParticipantsPipeline,
 } from "../aggregations/participants";
 import Profile from "../models/Profile";
-import { Status } from "../_enums/Status";
 import User from "../models/User";
 import { bad } from "../util/error";
+import { Status } from "../_enums/Status";
 import { sendStatusUpdateEmail } from "./EmailController";
 import { getTartanHacks } from "./EventController";
 import * as TeamController from "./TeamController";
+
+const statusLevels = {
+  COMPLETED_PROFILE: 0,
+  ADMITTED: 1,
+  CONFIRMED: 2,
+  DECLINED: 3,
+  REJECTED: 4,
+  VERIFIED: 5,
+  UNVERIFIED: 6,
+} as Record<Status, number>;
 
 export const getParticipants = async (
   req: Request,
@@ -20,6 +30,11 @@ export const getParticipants = async (
   const event = await getTartanHacks();
   const pipeline = getParticipantsPipeline(event._id, name as string);
   const participants = await User.aggregate(pipeline);
+  participants.sort(
+    (a, b) =>
+      statusLevels[(a.status as Status) ?? Status.UNVERIFIED] -
+      statusLevels[(b.status as Status) ?? Status.UNVERIFIED]
+  );
   res.status(200).json(participants);
 };
 
