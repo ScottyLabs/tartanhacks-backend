@@ -1,5 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
+import { IUser } from "src/_types/User";
 import {
   getCMUApplicantsPipeline,
   getParticipantsPipeline,
@@ -30,11 +31,37 @@ export const getParticipants = async (
   const event = await getTartanHacks();
   const pipeline = getParticipantsPipeline(event._id, name as string);
   const participants = await User.aggregate(pipeline);
-  participants.sort(
-    (a, b) =>
-      statusLevels[(a.status as Status) ?? Status.UNVERIFIED] -
-      statusLevels[(b.status as Status) ?? Status.UNVERIFIED]
-  );
+  participants.sort((a: IUser, b: IUser) => {
+    // Status level
+    const levelA = statusLevels[(a.status as Status) ?? Status.UNVERIFIED];
+    const levelB = statusLevels[(b.status as Status) ?? Status.UNVERIFIED];
+
+    // Add additional sort order based on email domain for equal statuses
+    const emailA = a.email;
+    const emailB = b.email;
+
+    const domainA = emailA.slice(emailA.indexOf("@") + 1);
+    const domainB = emailB.slice(emailB.indexOf("@") + 1);
+
+    const tokensA = domainA.split(".");
+    const tokensB = domainB.split(".");
+
+    // Top level domains (e.g. cmu.edu from andrew.cmu.edu)
+    const topDomainA = tokensA.slice(tokensA.length - 2).join(".");
+    const topDomainB = tokensB.slice(tokensB.length - 2).join(".");
+
+    let domainComparison = topDomainA.localeCompare(topDomainB);
+    if (domainComparison !== 0) {
+      // If domains are not equal, prioritize CMU emails
+      if (topDomainA === "cmu.edu") {
+        domainComparison = -1;
+      } else if (topDomainB === "cmu.edu") {
+        domainComparison = 1;
+      }
+    }
+
+    return levelA - levelB + (levelA === levelB ? domainComparison : 0);
+  });
   res.status(200).json(participants);
 };
 
