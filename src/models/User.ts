@@ -29,6 +29,7 @@ const User: Schema<IUser> = new Schema(
     email: { type: String, required: true },
     password: { type: String, required: true },
     admin: { type: Boolean, required: true, default: false },
+    judge: { type: Boolean, required: true, default: false },
     name: String,
     company: {
       type: Schema.Types.ObjectId,
