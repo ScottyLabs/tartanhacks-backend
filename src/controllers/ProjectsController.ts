@@ -10,16 +10,19 @@ import { findUserTeam } from "./TeamController";
 const GRAND_PRIZE_NAME = "Scott Krulcik Grand Prize";
 
 /**
- * Initialize the prizes collection and create the Grand Prize
+ * Initialize the prizes collection and create the Grand Prize if it does not yet exist
  */
-export async function createGrandPrize(): Promise<void> {
+export async function createGrandPrizeIfAbsent(): Promise<void> {
   const tartanhacks = await getTartanHacks();
-  const prize = new Prize({
-    event: tartanhacks._id,
-    name: GRAND_PRIZE_NAME,
-    description: "Grand prize",
-  });
-  await prize.save();
+  const existingPrize = await Prize.findOne({ name: GRAND_PRIZE_NAME });
+  if (existingPrize == null) {
+    const prize = new Prize({
+      event: tartanhacks._id,
+      name: GRAND_PRIZE_NAME,
+      description: "Grand prize",
+    });
+    await prize.save();
+  }
 }
 
 export const createNewProject = async (

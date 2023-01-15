@@ -3,7 +3,7 @@
  */
 import * as SettingsController from "../controllers/SettingsController";
 import * as EventController from "../controllers/EventController";
-import { createGrandPrize } from "../controllers/ProjectsController";
+import { createGrandPrizeIfAbsent } from "../controllers/ProjectsController";
 
 export const startup = async (): Promise<boolean> => {
   if (!checkEnvironment()) {
@@ -11,7 +11,7 @@ export const startup = async (): Promise<boolean> => {
   }
   await SettingsController.createSingleton();
   await EventController.getTartanHacks();
-  await createGrandPrize();
+  await createGrandPrizeIfAbsent();
   return true;
 };
 
