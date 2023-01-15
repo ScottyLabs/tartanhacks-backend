@@ -1,5 +1,6 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
+import Sponsor from "../models/Sponsor";
 import Prize from "../models/Prize";
 import Project from "../models/Project";
 import Team from "../models/Team";
@@ -293,7 +294,12 @@ export const createNewPrize = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { name, description, eligibility, sponsorId } = req.body;
+    const { name, description, eligibility, sponsorName } = req.body;
+
+    const sponsor = await Sponsor.findOne({ name: sponsorName });
+    if (sponsor == null) {
+      return notFound(res, "Could not find sponsor with name: " + sponsorName);
+    }
 
     const event = await getTartanHacks();
 
@@ -302,7 +308,7 @@ export const createNewPrize = async (
       description: description,
       event: event._id,
       eligibility: eligibility,
-      provider: sponsorId,
+      provider: sponsor._id,
     });
 
     await prize.save();
