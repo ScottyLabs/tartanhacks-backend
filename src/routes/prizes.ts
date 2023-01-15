@@ -40,7 +40,7 @@ const router: Router = express.Router();
  *                 type: string
  *               eligibility:
  *                 type: string
- *               provider:
+ *               sponsorId:
  *                 type: string
  *     responses:
  *       200:

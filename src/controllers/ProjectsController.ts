@@ -293,7 +293,7 @@ export const createNewPrize = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { name, description, eligibility, provider } = req.body;
+    const { name, description, eligibility, sponsorId } = req.body;
 
     const event = await getTartanHacks();
 
@@ -302,7 +302,7 @@ export const createNewPrize = async (
       description: description,
       event: event._id,
       eligibility: eligibility,
-      provider: provider,
+      provider: sponsorId,
     });
 
     await prize.save();
