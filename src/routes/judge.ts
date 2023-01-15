@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { makeJudges } from "src/controllers/UsersController";
+import { makeJudges } from "../controllers/UsersController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
 
