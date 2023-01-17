@@ -23,6 +23,7 @@ type Stats = {
     schools: Record<
       string,
       {
+        submitted: number;
         admitted: number;
         confirmed: number;
         declined: number;
@@ -173,11 +174,13 @@ export const computeAnalytics = async (): Promise<Stats> => {
       if (isProfileComplete) {
         if (!stats.demographic.schools[profile.school]) {
           stats.demographic.schools[profile.school] = {
+            submitted: 0,
             admitted: 0,
             confirmed: 0,
             declined: 0,
           };
         }
+        stats.demographic.domains[email].submitted += isProfileComplete ? 1 : 0;
         stats.demographic.schools[profile.school].admitted += isAdmitted
           ? 1
           : 0;
