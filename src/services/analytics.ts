@@ -3,7 +3,7 @@
  */
 
 import { doesStatusImply, Status } from "../_enums/Status";
-import { getParticipantDataPipeline } from "../aggregations/analytics";
+import { getParticipantAnalyticsPipeline } from "../aggregations/analytics";
 import { getTartanHacks } from "../controllers/EventController";
 import User from "../models/User";
 
@@ -11,10 +11,18 @@ type Stats = {
   total: number;
   demographic: {
     gender: Record<string, number>;
-    schools: Record<
+    domains: Record<
       string,
       {
         submitted: number;
+        admitted: number;
+        confirmed: number;
+        declined: number;
+      }
+    >;
+    schools: Record<
+      string,
+      {
         admitted: number;
         confirmed: number;
         declined: number;
@@ -50,11 +58,12 @@ type Stats = {
 
 export const computeAnalytics = async (): Promise<Stats> => {
   const tartanhacks = await getTartanHacks();
-  const pipeline = getParticipantDataPipeline(tartanhacks._id);
+  const pipeline = getParticipantAnalyticsPipeline(tartanhacks._id);
   const stats: Stats = {
     total: 0,
     demographic: {
       gender: {},
+      domains: {},
       schools: {},
       year: {},
       colleges: {},
@@ -146,19 +155,39 @@ export const computeAnalytics = async (): Promise<Stats> => {
       // Count the number of people who want hardware
       stats.wantsHardware += profile.wantsHardware ? 1 : 0;
 
-      // Count schools
-      if (!stats.demographic.schools[email]) {
-        stats.demographic.schools[email] = {
+      // Count domains
+      if (!stats.demographic.domains[email]) {
+        stats.demographic.domains[email] = {
           submitted: 0,
           admitted: 0,
           confirmed: 0,
           declined: 0,
         };
       }
-      stats.demographic.schools[email].submitted += isProfileComplete ? 1 : 0;
-      stats.demographic.schools[email].admitted += isAdmitted ? 1 : 0;
-      stats.demographic.schools[email].confirmed += isConfirmed ? 1 : 0;
-      stats.demographic.schools[email].declined += isDeclined ? 1 : 0;
+      stats.demographic.domains[email].submitted += isProfileComplete ? 1 : 0;
+      stats.demographic.domains[email].admitted += isAdmitted ? 1 : 0;
+      stats.demographic.domains[email].confirmed += isConfirmed ? 1 : 0;
+      stats.demographic.domains[email].declined += isDeclined ? 1 : 0;
+
+      // Count schools
+      if (isProfileComplete) {
+        if (!stats.demographic.schools[profile.school]) {
+          stats.demographic.schools[profile.school] = {
+            admitted: 0,
+            confirmed: 0,
+            declined: 0,
+          };
+        }
+        stats.demographic.schools[profile.school].admitted += isAdmitted
+          ? 1
+          : 0;
+        stats.demographic.schools[profile.school].confirmed += isConfirmed
+          ? 1
+          : 0;
+        stats.demographic.schools[profile.school].declined += isDeclined
+          ? 1
+          : 0;
+      }
 
       // Count CMU college
       if (isCMU) {

@@ -1,10 +1,10 @@
 import { ObjectId } from "mongodb";
 
 /**
- * Generate the aggregation pipeline for getting data of participants
+ * Generate the aggregation pipeline for getting participant analytics
  * @param eventId the ID of the event to get analytics
  */
-export const getParticipantDataPipeline = (eventId: ObjectId): any[] => {
+export const getParticipantAnalyticsPipeline = (eventId: ObjectId): any[] => {
   return [
     {
       $match: {
