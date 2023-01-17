@@ -180,7 +180,9 @@ export const computeAnalytics = async (): Promise<Stats> => {
             declined: 0,
           };
         }
-        stats.demographic.domains[email].submitted += isProfileComplete ? 1 : 0;
+        stats.demographic.schools[profile.school].submitted += isProfileComplete
+          ? 1
+          : 0;
         stats.demographic.schools[profile.school].admitted += isAdmitted
           ? 1
           : 0;
