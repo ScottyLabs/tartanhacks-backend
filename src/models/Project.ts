@@ -14,7 +14,8 @@ const Project: Schema<IProject> = new Schema(
     },
     name: { type: String, required: true },
     description: { type: String, required: true },
-    url: { type: String },
+    url: String,
+    location: String,
     slides: String,
     video: String,
     team: {
