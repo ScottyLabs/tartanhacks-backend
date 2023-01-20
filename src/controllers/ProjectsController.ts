@@ -158,13 +158,17 @@ export const getAllProjects = async (
   res: Response
 ): Promise<void> => {
   try {
-    const result = await Project.find({}).populate({
-      path: "team",
-      populate: {
-        path: "members",
-        model: "User",
-      },
-    });
+    const result = await Project.find({})
+      .populate({
+        path: "team",
+        populate: {
+          path: "members",
+          model: "User",
+        },
+      })
+      .populate({
+        path: "prizes",
+      });
 
     res.status(200).json(result);
   } catch (err) {
