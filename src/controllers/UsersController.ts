@@ -301,3 +301,18 @@ export const getConfirmedUserEmails = async (
     res.status(500).json(err);
   }
 };
+
+export async function getVerifiedUserEmails(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const users = await User.find({
+      status: Status.VERIFIED,
+    });
+    const emails = users.map((user) => user.email);
+    res.status(200).json(emails);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
