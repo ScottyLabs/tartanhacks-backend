@@ -366,6 +366,18 @@ export const inviteUser = async (
     return notFound(res, "User does not exist!");
   }
 
+  // Block duplicate requests
+  const existingRequest = await TeamRequest.findOne({
+    user: new ObjectId(user._id),
+    team: new ObjectId(team._id),
+    type: TeamRequestType.INVITE,
+    status: TeamRequestStatus.PENDING,
+  });
+
+  if (existingRequest != null) {
+    return bad(res, "This user still has a pending invite from your team!");
+  }
+
   const request = new TeamRequest({
     event: event._id,
     user: user._id,
@@ -419,6 +431,18 @@ export const inviteUserByEmail = async (
 
   if (team.members.includes(user._id)) {
     return bad(res, "User is already in the team!");
+  }
+
+  // Block duplicate requests
+  const existingRequest = await TeamRequest.findOne({
+    user: new ObjectId(user._id),
+    team: new ObjectId(team._id),
+    type: TeamRequestType.INVITE,
+    status: TeamRequestStatus.PENDING,
+  });
+
+  if (existingRequest != null) {
+    return bad(res, "This user still has a pending invite from your team!");
   }
 
   const request = new TeamRequest({
