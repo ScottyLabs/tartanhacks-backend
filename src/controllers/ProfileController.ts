@@ -47,9 +47,11 @@ export const getProfile = async (
 
   if (profile) {
     const newProfile = profile.toObject() as IProfile;
+    // console.log(newProfile);
 
     // Add profile picture, if it exists
-    if (hasProfilePicture(userId)) {
+    const hasProfilePic = await hasProfilePicture(userId);
+    if (hasProfilePic) {
       newProfile.profilePicture = await profile.getProfilePictureUrl();
     }
 
@@ -218,7 +220,10 @@ export async function removeProfilePicture(
 ): Promise<void> {
   try {
     const user = res.locals.user;
-    await deleteProfilePicture(user._id);
+    const hasProfilePic = await hasProfilePicture(user._id);
+    if (hasProfilePic) {
+      await deleteProfilePicture(user._id);
+    }
     res.status(200).send();
   } catch (err) {
     console.error(err);

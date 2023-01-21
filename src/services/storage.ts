@@ -68,7 +68,7 @@ const downloadFile = async (
   const options: GetSignedUrlConfig = {
     version: "v4",
     action: "read",
-    expires: Date.now() + duration, // 1 hour
+    expires: Date.now() + duration,
   };
 
   // Get a v4 signed URL for reading the file
