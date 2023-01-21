@@ -31,7 +31,7 @@ const Project: Schema<IProject> = new Schema(
     presentingVirtually: {
       type: Boolean,
       required: true,
-      default: true,
+      default: false,
     },
   },
   {

@@ -95,12 +95,12 @@ export const getLeaderboardPipeline = (eventId: ObjectId): any[] => {
  */
 export const getLeaderboardRankPipeline = (
   eventId: ObjectId,
-  userId: ObjectId
+  email: string
 ): any[] => {
   const aggregation = getLeaderboardPipeline(eventId);
   aggregation.push({
     $match: {
-      user: userId,
+      email,
     },
   });
   return aggregation;

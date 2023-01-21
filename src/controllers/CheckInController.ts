@@ -221,7 +221,7 @@ export const getLeaderboardPosition = async (
 
   const aggregation = await getLeaderboardRankPipeline(
     tartanhacks._id,
-    user._id
+    user.email
   );
   const matchingProfiles = await Profile.aggregate(aggregation);
 
