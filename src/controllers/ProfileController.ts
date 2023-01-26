@@ -21,6 +21,7 @@ import { ITeam } from "../_types/Team";
 import * as EventController from "./EventController";
 import { findUserTeam } from "./TeamController";
 import Jimp from "jimp";
+import { isRegistrationOpen, isConfirmationOpen } from "./SettingsController";
 
 const upload = multer({ storage: multer.memoryStorage() });
 const MAX_IMAGE_WIDTH = 250;
@@ -109,6 +110,11 @@ export const submitProfile = async (
 ): Promise<void> => {
   const tartanhacks = await EventController.getTartanHacks();
   try {
+    const registrationOpen = await isRegistrationOpen();
+    if (!registrationOpen) {
+      return bad(res, "Registration is closed.");
+    }
+
     const user = res.locals.user as IUser;
     const profileArgs = req.body as IProfile;
     // Prevent user from inserting confirmation here
@@ -284,6 +290,11 @@ export const submitConfirmation = async (
   res: Response
 ): Promise<void> => {
   try {
+    const confirmationOpen = await isConfirmationOpen();
+    if (!confirmationOpen) {
+      return bad(res, "Confirmation deadline has passed!");
+    }
+
     const confirmation = req.body as IConfirmation;
 
     const user = res.locals.user;
