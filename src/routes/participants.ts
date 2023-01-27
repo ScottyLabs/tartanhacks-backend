@@ -1,5 +1,7 @@
 import express, { Router } from "express";
 import {
+  getAdmittedUserEmails,
+  getConfirmedUserEmails,
   getParticipants,
   getVerifiedUserEmails,
 } from "../controllers/UsersController";
@@ -42,13 +44,51 @@ router.get("/", isRecruiterOrAdmin, asyncCatch(getParticipants));
 
 /**
  * @swagger
- * /participants/no-submission:
+ * /participants/verified:
  *  get:
  *    summary: Get emails of verified participants that have not yet submitted their applications
  *    security:
  *    - apiKeyAuth: []
  *    tags: [Participants Module]
- *    description: Retrieves list of participants who are verified but have not yet submitted their applications. Access - Recruiter or Admin
+ *    description: Retrieves list of emails of participants who are verified but have not yet submitted their applications. Access - Recruiter or Admin
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      403:
+ *        description: Forbidden.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.get("/verified", isRecruiterOrAdmin, asyncCatch(getVerifiedUserEmails));
+
+/**
+ * @swagger
+ * /participants/admitted:
+ *  get:
+ *    summary: Get emails of admitted participants that have not yet confirmed
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Participants Module]
+ *    description: Retrieves list of emails of participants that have been admitted but not yet confirmed. Access - Recruiter or Admin
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      403:
+ *        description: Forbidden.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.get("/admitted", isRecruiterOrAdmin, asyncCatch(getAdmittedUserEmails));
+
+/**
+ * @swagger
+ * /participants/confirmed:
+ *  get:
+ *    summary: Get emails of confirmed participants
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Participants Module]
+ *    description: Retrieves list of emails of confirmed participants. Access - Recruiter or Admin
  *    responses:
  *      200:
  *        description: Success.
@@ -58,9 +98,9 @@ router.get("/", isRecruiterOrAdmin, asyncCatch(getParticipants));
  *        description: Internal Server Error.
  */
 router.get(
-  "/no-submission",
+  "/confirmed",
   isRecruiterOrAdmin,
-  asyncCatch(getVerifiedUserEmails)
+  asyncCatch(getConfirmedUserEmails)
 );
 
 export default router;

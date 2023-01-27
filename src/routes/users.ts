@@ -297,23 +297,4 @@ router.post("/admit/cmu", isAdmin, asyncCatch(admitAllCMU));
  */
 router.post("/reject/all", isAdmin, asyncCatch(rejectAllUsers));
 
-/**
- * @swagger
- * /users/confirmed/emails:
- *  get:
- *    summary: Get list of confirmed user emails
- *    security:
- *    - apiKeyAuth: []
- *    tags: [Users Module]
- *    description: Retrieves list of emails associated with confirmed users. Access - Admin
- *    responses:
- *      200:
- *        description: Success.
- *      403:
- *        description: Forbidden.
- *      500:
- *        description: Internal Server Error.
- */
-router.get("/confirmed/emails", isAdmin, asyncCatch(getConfirmedUserEmails));
-
 export default router;

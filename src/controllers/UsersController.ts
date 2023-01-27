@@ -287,21 +287,6 @@ export const getUserTeam = async (
   }
 };
 
-export const getConfirmedUserEmails = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const users = await User.find({
-      status: Status.CONFIRMED,
-    });
-    const emails = users.map((user) => user.email);
-    res.status(200).json(emails);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
-
 export async function getVerifiedUserEmails(
   req: Request,
   res: Response
@@ -311,8 +296,41 @@ export async function getVerifiedUserEmails(
       status: Status.VERIFIED,
     });
     const emails = users.map((user) => user.email);
-    res.status(200).json(emails);
+    const emailString = emails.join(", ");
+    res.status(200).send(emailString);
   } catch (err) {
     res.status(500).json(err);
   }
 }
+
+export async function getAdmittedUserEmails(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const users = await User.find({
+      status: Status.ADMITTED,
+    });
+    const emails = users.map((user) => user.email);
+    const emailString = emails.join(", ");
+    res.status(200).send(emailString);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
+export const getConfirmedUserEmails = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const users = await User.find({
+      status: Status.CONFIRMED,
+    });
+    const emails = users.map((user) => user.email);
+    const emailString = emails.join(", ");
+    res.status(200).send(emailString);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
