@@ -334,3 +334,25 @@ export const getConfirmedUserEmails = async (
     res.status(500).json(err);
   }
 };
+
+/**
+ * TODO: remove
+ * Reverts the statuses of ADMITTED users to APPLICATION_COMPLETE
+ */
+export async function waitlistPendingUsers(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    await User.updateMany(
+      {
+        status: Status.ADMITTED,
+      },
+      {
+        status: Status.COMPLETED_PROFILE,
+      }
+    );
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
