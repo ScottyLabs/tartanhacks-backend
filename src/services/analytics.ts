@@ -224,7 +224,7 @@ export const computeAnalytics = async (): Promise<Stats> => {
       }
 
       //Dietary restrictions
-      if (profile.dietaryRestrictions) {
+      if (profile.dietaryRestrictions && isConfirmed) {
         const restriction = profile.dietaryRestrictions;
         if (!stats.dietaryRestrictions[restriction]) {
           stats.dietaryRestrictions[restriction] = 0;
