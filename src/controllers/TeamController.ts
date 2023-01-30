@@ -146,7 +146,9 @@ export const searchTeamByName = async (
   res: Response
 ): Promise<void> => {
   const { name } = req.query;
-  const teams = await Team.find({ $text: { $search: name as string } });
+  const teams = await Team.find({ $text: { $search: name as string } })
+    .populate("admin")
+    .populate("members");
   res.json(teams);
 };
 
