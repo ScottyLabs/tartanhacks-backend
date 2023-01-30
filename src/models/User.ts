@@ -130,6 +130,7 @@ User.methods.setStatus = async function (status: Status): Promise<void> {
   const statusLevel = getStatusLevel(status);
   const userStatusLevel = getStatusLevel(this.status);
 
+  // TODO change to >=
   if (userStatusLevel > statusLevel) {
     throw new Error(
       `Cannot revert status! Attempting to go backwards from ${this.status} to ${status}`
