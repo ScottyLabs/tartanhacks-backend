@@ -461,3 +461,23 @@ export const getPresentingTeams = async (
     return error(res);
   }
 };
+
+/**
+ * Assign projects to table numbers
+ */
+export async function assignProjectLocations(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const projects = await Project.find({}).sort({ name: "asc" });
+    for (let i = 0; i < projects.length; i++) {
+      await projects[i].updateOne({
+        location: `Table ${i + 1}`,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    return error(res);
+  }
+}
