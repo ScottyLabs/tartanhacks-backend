@@ -212,7 +212,10 @@ export const updateTeam = async (
   const { name, description, visible } = req.body;
   if (name) {
     const existingTeam = await findTeamByName(name);
-    if (existingTeam) {
+    if (
+      existingTeam &&
+      existingTeam._id.toString() !== userTeam._id.toString()
+    ) {
       return bad(res, "That team name is already taken!");
     }
   }
