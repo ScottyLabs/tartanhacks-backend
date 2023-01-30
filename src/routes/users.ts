@@ -11,6 +11,7 @@ import {
   getUserTeam,
   rejectAllUsers,
   rejectUser,
+  waitlistPendingUsers,
 } from "../controllers/UsersController";
 import { asyncCatch } from "../util/asyncCatch";
 import {
@@ -296,5 +297,26 @@ router.post("/admit/cmu", isAdmin, asyncCatch(admitAllCMU));
  *        description: Internal Server Error.
  */
 router.post("/reject/all", isAdmin, asyncCatch(rejectAllUsers));
+
+/**
+ * @swagger
+ * /users/waitlist:
+ *  post:
+ *    summary: Waitlist users
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Users Module]
+ *    description: Reject users with completed profiles that have not been admitted/rejected yet, Access - Admin
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      403:
+ *        description: Forbidden.
+ *      404:
+ *        description: User not found.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.post("/waitlist", isAdmin, asyncCatch(waitlistPendingUsers));
 
 export default router;

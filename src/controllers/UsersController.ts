@@ -352,6 +352,7 @@ export async function waitlistPendingUsers(
         status: Status.COMPLETED_PROFILE,
       }
     );
+    res.status(200).send();
   } catch (err) {
     res.status(500).json(err);
   }
