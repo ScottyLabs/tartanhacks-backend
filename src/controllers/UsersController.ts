@@ -303,6 +303,22 @@ export async function getVerifiedUserEmails(
   }
 }
 
+export async function getAppliedUserEmails(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const users = await User.find({
+      status: Status.COMPLETED_PROFILE,
+    });
+    const emails = users.map((user) => user.email);
+    const emailString = emails.join(", ");
+    res.status(200).send(emailString);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
 export async function getAdmittedUserEmails(
   req: Request,
   res: Response

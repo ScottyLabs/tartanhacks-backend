@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import {
   getAdmittedUserEmails,
+  getAppliedUserEmails,
   getConfirmedUserEmails,
   getParticipants,
   getVerifiedUserEmails,
@@ -60,6 +61,25 @@ router.get("/", isRecruiterOrAdmin, asyncCatch(getParticipants));
  *        description: Internal Server Error.
  */
 router.get("/verified", isRecruiterOrAdmin, asyncCatch(getVerifiedUserEmails));
+
+/**
+ * @swagger
+ * /participants/applied:
+ *  get:
+ *    summary: Get emails of participants that have already submitted applications but have not yet been admitted
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Participants Module]
+ *    description: Retrieves list of emails of participants that have already submitted applications but have not yet admitted. Access - Recruiter or Admin
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      403:
+ *        description: Forbidden.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.get("/applied", isRecruiterOrAdmin, asyncCatch(getAppliedUserEmails));
 
 /**
  * @swagger
