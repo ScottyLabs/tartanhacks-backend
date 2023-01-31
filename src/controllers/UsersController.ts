@@ -105,27 +105,6 @@ export const getUserById = async (
   }
 };
 
-// Make judges from a list of emails
-export async function makeJudges(req: Request, res: Response): Promise<void> {
-  const emails = req.body as string[];
-  if (!Array.isArray(emails)) {
-    return bad(res, "Request body should be an array of emails!");
-  }
-
-  await User.updateMany(
-    {
-      email: {
-        $in: emails,
-      },
-    },
-    {
-      judge: true,
-    }
-  );
-
-  res.status(200).send();
-}
-
 export const admitUser = async (req: Request, res: Response): Promise<void> => {
   const tartanhacks = await getTartanHacks();
   const { id } = req.params;

@@ -28,7 +28,7 @@ router.use("/admin", adminRouter);
 router.use("/bookmark", bookmarkRouter);
 router.use("/bookmarks", bookmarksRouter);
 router.use("/check-in", checkInRouter);
-router.use("/judge", judgeRouter);
+router.use("/judges", judgeRouter);
 router.use("/leaderboard", leaderboardRouter);
 router.use("/participants", participantsRouter);
 router.use("/prizes", prizesRouter);
