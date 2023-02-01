@@ -3,6 +3,7 @@ import {
   getAdmittedUserEmails,
   getAppliedUserEmails,
   getConfirmedUserEmails,
+  getMentorEmails,
   getParticipants,
   getVerifiedUserEmails,
 } from "../controllers/UsersController";
@@ -122,5 +123,24 @@ router.get(
   isRecruiterOrAdmin,
   asyncCatch(getConfirmedUserEmails)
 );
+
+/**
+ * @swagger
+ * /participants/mentor:
+ *  get:
+ *    summary: Get emails of mentors
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Participants Module]
+ *    description: Retrieves list of emails of mentors. Access - Recruiter or Admin
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      403:
+ *        description: Forbidden.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.get("/mentor", isRecruiterOrAdmin, asyncCatch(getMentorEmails));
 
 export default router;

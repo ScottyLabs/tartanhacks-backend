@@ -1,6 +1,7 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
-import { IUser } from "src/_types/User";
+import { IProfile } from "../_types/Profile";
+import { IUser } from "../_types/User";
 import {
   getCMUApplicantsPipeline,
   getParticipantsPipeline,
@@ -329,3 +330,20 @@ export const getConfirmedUserEmails = async (
     res.status(500).json(err);
   }
 };
+
+export async function getMentorEmails(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const profiles = await Profile.find({
+      "confirmation.willMentor": true,
+    }).populate("user");
+    console.log("Mentors", profiles.length);
+    const emails = profiles.map((profile) => (profile as any).user.email);
+    const emailString = emails.join(", ");
+    res.status(200).send(emailString);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
