@@ -1,6 +1,7 @@
 import { ObjectId } from "bson";
 import { Request, Response } from "express";
-import { IUser } from "src/_types/User";
+import { IProfile } from "../_types/Profile";
+import { IUser } from "../_types/User";
 import {
   getCMUApplicantsPipeline,
   getParticipantsPipeline,
@@ -104,27 +105,6 @@ export const getUserById = async (
     res.status(500).json(err);
   }
 };
-
-// Make judges from a list of emails
-export async function makeJudges(req: Request, res: Response): Promise<void> {
-  const emails = req.body as string[];
-  if (!Array.isArray(emails)) {
-    return bad(res, "Request body should be an array of emails!");
-  }
-
-  await User.updateMany(
-    {
-      email: {
-        $in: emails,
-      },
-    },
-    {
-      judge: true,
-    }
-  );
-
-  res.status(200).send();
-}
 
 export const admitUser = async (req: Request, res: Response): Promise<void> => {
   const tartanhacks = await getTartanHacks();
@@ -303,6 +283,22 @@ export async function getVerifiedUserEmails(
   }
 }
 
+export async function getAppliedUserEmails(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const users = await User.find({
+      status: Status.COMPLETED_PROFILE,
+    });
+    const emails = users.map((user) => user.email);
+    const emailString = emails.join(", ");
+    res.status(200).send(emailString);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
 export async function getAdmittedUserEmails(
   req: Request,
   res: Response
@@ -335,24 +331,18 @@ export const getConfirmedUserEmails = async (
   }
 };
 
-/**
- * TODO: remove
- * Reverts the statuses of ADMITTED users to APPLICATION_COMPLETE
- */
-export async function waitlistPendingUsers(
+export async function getMentorEmails(
   req: Request,
   res: Response
 ): Promise<void> {
   try {
-    await User.updateMany(
-      {
-        status: Status.ADMITTED,
-      },
-      {
-        status: Status.COMPLETED_PROFILE,
-      }
-    );
-    res.status(200).send();
+    const profiles = await Profile.find({
+      "confirmation.willMentor": true,
+    }).populate("user");
+    console.log("Mentors", profiles.length);
+    const emails = profiles.map((profile) => (profile as any).user.email);
+    const emailString = emails.join(", ");
+    res.status(200).send(emailString);
   } catch (err) {
     res.status(500).json(err);
   }
