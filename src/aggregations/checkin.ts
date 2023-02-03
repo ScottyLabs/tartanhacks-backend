@@ -17,6 +17,18 @@ export const getLeaderboardPipeline = (eventId: ObjectId): any[] => {
       },
     },
     {
+      $project: {
+        _id: 1,
+        user: 1,
+        email: 1,
+        displayName: 1,
+        isCMU: 1,
+        totalPoints: {
+          $ifNull: ["$totalPoints", 0],
+        },
+      },
+    },
+    {
       $group: {
         _id: {},
         items: {
