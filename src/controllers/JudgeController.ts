@@ -3,7 +3,19 @@ import User from "../models/User";
 import { bad } from "../util/error";
 
 export async function getJudges(req: Request, res: Response): Promise<void> {
-  const judges = await User.find({ judge: true });
+  const judges = await User.find({
+    $or: [
+      {
+        judge: true,
+      },
+      {
+        company: { $ne: null },
+      },
+      {
+        admin: true,
+      },
+    ],
+  });
 
   res.json(judges);
 }
