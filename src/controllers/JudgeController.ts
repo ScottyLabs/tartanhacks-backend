@@ -15,7 +15,7 @@ export async function getJudges(req: Request, res: Response): Promise<void> {
         admin: true,
       },
     ],
-  });
+  }).populate("company");
 
   res.json(judges);
 }
