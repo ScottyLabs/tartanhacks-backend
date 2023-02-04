@@ -5,7 +5,7 @@ import {
   editPrize,
   getAllPrizes,
   getPrizeByID,
-} from "../controllers/ProjectsController";
+} from "../controllers/PrizeController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
 
