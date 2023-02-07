@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+// Models
+// Represents a single user on the system
+model User {
+  id       String  @id @default(cuid()) @map("_id")
+  email    String
+  password String
+  admin    Boolean
+
+  firstName String?
+  lastName  String?
+
+  status String
+
+  companyId String?
+  company   Sponsor? @relation(fields: [companyId], references: [id])
+
+  @@unique([email])
+}
+
+// A corporate sponsor of the event
+model Sponsor {
+  id   String @id @default(cuid()) @map("_id")
+  name String
+  User User[]
+}
+
+// Enums
+// A user's position in the application process
+enum Status {
+  UNVERIFIED
+  VERIFIED
+  APPLIED
+  WAITLISTED
+  ADMITTED
+  REJECTED
+  CONFIRMED
+}
