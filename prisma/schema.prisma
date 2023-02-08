@@ -40,6 +40,7 @@ model User {
   team         Team?         @relation("Team Membership", onUpdate: NoAction, onDelete: NoAction, fields: [teamId], references: [id])
   teamRequests TeamRequest[]
   checkins     Checkin[]
+  Bookmark     Bookmark[]
 }
 
 // Information associated with a participant application
@@ -212,6 +213,32 @@ model Checkin {
   checkinItem   CheckinItem @relation(fields: [checkinItemId], references: [id])
 
   @@unique([userId, checkinItemId])
+}
+
+// A sponsor representative (recruiter) can bookmark participants they talked to during the event
+model ParticipantBookmark {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  ownerId String @db.ObjectId
+  owner   User   @relation("Bookmark Ownership", fields: [ownerId], references: [id])
+
+  participantId String @db.ObjectId
+  participant   User   @relation("Bookmark Membership", fields: [participantId], references: [id])
+
+  @@unique([ownerId, participantId])
+}
+
+// A sponsor representative (recruiter) can bookmark projects they found particularly interesting
+model ProjectBookmark {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  ownerId String @db.ObjectId
+  owner   User
+
+  projectId String  @db.ObjectId
+  project   Project
+
+  @@unique([ownerId, projectId])
 }
 
 // ======================================================
