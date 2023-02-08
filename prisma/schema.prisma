@@ -10,7 +10,10 @@ datasource db {
   url      = env("MONGODB_URI")
 }
 
+// ======================================================
 // Models
+// ======================================================
+
 // Represents a single user on the system
 model User {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -27,15 +30,22 @@ model User {
   company   Sponsor? @relation(fields: [companyId], references: [id])
 
   lastLogin DateTime
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Profile   Profile[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile Profile?
+  teamLed Team?    @relation("Team Leadership")
+
+  teamId       String?       @db.ObjectId
+  team         Team?         @relation("Team Membership", onUpdate: NoAction, onDelete: NoAction, fields: [teamId], references: [id])
+  teamRequests TeamRequest[]
 }
 
 // Information associated with a participant application
 model Profile {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId      String @unique @db.ObjectId
   user        User   @relation(fields: [userId], references: [id])
   displayName String
 
@@ -95,7 +105,39 @@ model Sponsor {
   User User[]
 }
 
+// A group of participants
+model Team {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+
+  leaderId String  @unique @db.ObjectId
+  leader   User    @relation("Team Leadership", fields: [leaderId], references: [id])
+  members  User[]  @relation("Team Membership")
+  visible  Boolean @default(true)
+
+  teamRequests TeamRequest[]
+}
+
+// A request to join a team or invite a user 
+model TeamRequest {
+  id          String          @id @default(auto()) @map("_id") @db.ObjectId
+  requestType TeamRequestType
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+
+  teamId String @db.ObjectId
+  team   Team   @relation(fields: [teamId], references: [id])
+
+  status  TeamRequestStatus
+  message String?
+}
+
+// ======================================================
 // Enums
+// ======================================================
+
 // A user's position in the application process
 enum Status {
   UNVERIFIED
@@ -166,4 +208,18 @@ enum ShirtSize {
   L
   XL
   XXL
+}
+
+// Dictates the type of a team request (incoming or outgoing)
+enum TeamRequestType {
+  INVITE
+  JOIN
+}
+
+// The request of a sent team join/invite request
+enum TeamRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
 }
