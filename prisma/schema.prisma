@@ -13,8 +13,8 @@ datasource db {
 // Models
 // Represents a single user on the system
 model User {
-  id       String  @id @default(cuid()) @map("_id")
-  email    String
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique
   password String
   admin    Boolean
 
@@ -23,15 +23,74 @@ model User {
 
   status String
 
-  companyId String?
+  companyId String?  @db.ObjectId
   company   Sponsor? @relation(fields: [companyId], references: [id])
 
-  @@unique([email])
+  lastLogin DateTime
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Profile   Profile[]
+}
+
+// Information associated with a participant application
+model Profile {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String @db.ObjectId
+  user        User   @relation(fields: [userId], references: [id])
+  displayName String
+
+  school         String
+  college        String?
+  educationLevel EducationLevel
+  graduationYear Int
+
+  gender      Gender
+  genderOther String?
+
+  ethnicity      Ethnicity
+  ethnicityOther String?
+
+  totalPoints Int    @default(0)
+  phoneNumber String
+
+  major                String?
+  coursework           String?
+  programmingLanguages String?
+
+  hackathonExperience HackathonExperience?
+  workPermission      WorkPermission?
+  workLocation        String?
+  workStrengths       String?
+
+  github  String?
+  website String?
+
+  essays String[] @default([])
+
+  dietaryRestrictions      DietaryRestriction[] @default([])
+  dietaryRestrictionsOther String?
+
+  shirtSize           ShirtSize?
+  wantsHardware       Boolean?
+  attendingPhysically Boolean    @default(true)
+
+  // Generated server-side, not stored in DB
+  resumeUrl String?
+  photoUrl  String?
+
+  confirmation Confirmation
+}
+
+// Information collected after admission
+type Confirmation {
+  signatureLiability     Boolean
+  signaturePhotoRelease  Boolean
+  signatureCodeOfConduct Boolean
 }
 
 // A corporate sponsor of the event
 model Sponsor {
-  id   String @id @default(cuid()) @map("_id")
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
   name String
   User User[]
 }
@@ -46,4 +105,65 @@ enum Status {
   ADMITTED
   REJECTED
   CONFIRMED
+}
+
+// Highest education level 
+enum EducationLevel {
+  UNDERGRADUATE
+  MASTERS
+  DOCTORATE
+  OTHER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+enum Ethnicity {
+  NATIVE_AMERICAN
+  ASIAN
+  BLACK
+  PACIFIC_ISLANDER
+  WHITE
+  HISPANIC
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+// Number of years of hackathon experience
+enum HackathonExperience {
+  ZERO
+  ONE_TO_THREE
+  FOUR_PLUS
+}
+
+// US work permission
+enum WorkPermission {
+  CITIZEN
+  SPONSORSHIP
+  NO_SPONSORSHIP
+}
+
+// Dietary restrictions
+enum DietaryRestriction {
+  PORK
+  BEEF
+  HALAL
+  NUTS
+  LACTOSE
+  SEAFOOD
+  VEGETARIAN
+  VEGAN
+}
+
+enum ShirtSize {
+  XS
+  S
+  M
+  L
+  XL
+  XXL
 }
