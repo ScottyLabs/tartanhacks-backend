@@ -39,6 +39,7 @@ model User {
   teamId       String?       @db.ObjectId
   team         Team?         @relation("Team Membership", onUpdate: NoAction, onDelete: NoAction, fields: [teamId], references: [id])
   teamRequests TeamRequest[]
+  checkins     Checkin[]
 }
 
 // Information associated with a participant application
@@ -100,16 +101,16 @@ type Confirmation {
 
 // A corporate sponsor of the event
 model Sponsor {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
-  User  User[]
-  Prize Prize[]
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  name            String  @unique
+  recruiters      User[]
+  sponsoredPrizes Prize[]
 }
 
 // A group of participants
 model Team {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
+  name        String  @unique
   description String?
 
   leaderId String  @unique @db.ObjectId
@@ -134,6 +135,8 @@ model TeamRequest {
 
   status  TeamRequestStatus
   message String?
+
+  @@unique([userId, teamId, requestType, status])
 }
 
 // Prizes a project can be submitted for
@@ -150,6 +153,7 @@ model Prize {
 // A project submission
 model Project {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
   description String
   url         String?
   slides      String?
@@ -170,6 +174,44 @@ model ProjectPrizeEntry {
   prize   Prize  @relation(fields: [prizeId], references: [id])
 
   @@unique([projectId, prizeId])
+}
+
+// An item on the schedule
+model ScheduleItem {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  startTime   DateTime
+  endTime     DateTime
+  location    String
+  platform    EventPlatform @default(IN_PERSON)
+  platformUrl String?
+  active      Boolean       @default(true)
+}
+
+// A checkin item is used to mark attendance for events or completion of challenges
+model CheckinItem {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  description       String
+  startTime         DateTime
+  endTime           DateTime
+  points            Int
+  active            Boolean   @default(true)
+  enableSelfCheckin Boolean
+  Checkin           Checkin[]
+}
+
+// A log of a user's checking for a checkin item
+model Checkin {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+
+  checkinItemId String      @db.ObjectId
+  checkinItem   CheckinItem @relation(fields: [checkinItemId], references: [id])
+
+  @@unique([userId, checkinItemId])
 }
 
 // ======================================================
@@ -260,4 +302,11 @@ enum TeamRequestStatus {
   ACCEPTED
   REJECTED
   CANCELLED
+}
+
+// Platform in which an event will be hosted
+enum EventPlatform {
+  IN_PERSON
+  REMOTE
+  HYBRID
 }
