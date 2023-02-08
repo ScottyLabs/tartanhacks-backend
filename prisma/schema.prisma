@@ -100,9 +100,10 @@ type Confirmation {
 
 // A corporate sponsor of the event
 model Sponsor {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  User User[]
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  User  User[]
+  Prize Prize[]
 }
 
 // A group of participants
@@ -117,6 +118,7 @@ model Team {
   visible  Boolean @default(true)
 
   teamRequests TeamRequest[]
+  project      Project?
 }
 
 // A request to join a team or invite a user 
@@ -132,6 +134,42 @@ model TeamRequest {
 
   status  TeamRequestStatus
   message String?
+}
+
+// Prizes a project can be submitted for
+model Prize {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+
+  sponsorId      String              @db.ObjectId
+  sponsor        Sponsor             @relation(fields: [sponsorId], references: [id])
+  projectEntries ProjectPrizeEntry[]
+}
+
+// A project submission
+model Project {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  url         String?
+  slides      String?
+  video       String?
+
+  teamId       String              @unique @db.ObjectId
+  team         Team                @relation(fields: [teamId], references: [id])
+  prizeEntries ProjectPrizeEntry[]
+}
+
+// (Join table) Prizes that a project entered for
+model ProjectPrizeEntry {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  projectId String  @db.ObjectId
+  project   Project @relation(fields: [projectId], references: [id])
+
+  prizeId String @db.ObjectId
+  prize   Prize  @relation(fields: [prizeId], references: [id])
+
+  @@unique([projectId, prizeId])
 }
 
 // ======================================================
