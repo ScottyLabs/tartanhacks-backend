@@ -168,12 +168,14 @@ model Prize {
 
 // A project submission
 model Project {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String @unique
   description String
-  url         String?
-  slides      String?
-  video       String?
+
+  location String?
+  url      String?
+  slides   String?
+  video    String?
 
   teamId       String              @unique @db.ObjectId
   team         Team                @relation(fields: [teamId], references: [id])
