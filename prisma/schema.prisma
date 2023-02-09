@@ -47,7 +47,7 @@ model User {
   teamLed Team?    @relation("Team Leadership")
 
   teamId       String?       @db.ObjectId
-  team         Team?         @relation("Team Membership", onUpdate: NoAction, onDelete: NoAction, fields: [teamId], references: [id])
+  team         Team?         @relation("Team Membership", fields: [teamId], references: [id], onUpdate: NoAction)
   teamRequests TeamRequest[]
   checkins     Checkin[]
 
@@ -129,7 +129,7 @@ model Team {
   description String?
 
   leaderId String  @unique @db.ObjectId
-  leader   User    @relation("Team Leadership", fields: [leaderId], references: [id])
+  leader   User    @relation("Team Leadership", fields: [leaderId], references: [id], onUpdate: NoAction)
   members  User[]  @relation("Team Membership")
   visible  Boolean @default(true)
 
