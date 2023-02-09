@@ -157,7 +157,7 @@ model TeamRequest {
 // Prizes a project can be submitted for
 model Prize {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
+  name        String  @unique
   description String?
 
   sponsorId String  @db.ObjectId
