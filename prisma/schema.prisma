@@ -34,7 +34,7 @@ model User {
   firstName String?
   lastName  String?
 
-  status String
+  status Status
 
   companyId String?  @db.ObjectId
   company   Sponsor? @relation(fields: [companyId], references: [id])
