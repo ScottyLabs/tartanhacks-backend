@@ -3,40 +3,20 @@
   "description": "Initial setting configuration",
   "parameters": {
     "timeOpen": {
-      "value": 0,
-      "description": "Unix timestamp for when registration opens. Set to 0 to disable enforcing open time"
+      "value": null,
+      "description": "ISO time for when registration opens. Set to null to disable enforcing open time"
     },
     "timeClose": {
-      "value": 1754296400000,
-      "description": "Unix timestamp for when registration closes. Set to 0 to disable enforcing close of registration"
+      "value": "2023-02-05T04:59:00.000+00:00",
+      "description": "ISO time for when registration closes. Set to null to disable enforcing close of registration"
     },
     "timeConfirm": {
-      "value": 1753950800000,
-      "description": "Unix timestamp for when confirmation closes. Set to 0 to disable enforcing close of confirmation"
+      "value": "2023-02-05T04:59:00.000+00:00",
+      "description": "ISO time for when confirmation closes. Set to null to disable enforcing close of confirmation"
     },
-    "enableWhitelist": {
+    "requireEduEmails": {
       "value": false,
-      "description": "Enable or disable the email whitelist"
-    },
-    "whitelistedEmails": {
-      "value": [],
-      "description": "List of enabled email domains. Ignored if enableWhitelist is false."
-    },
-    "waitlistText": {
-      "value": "You have been placed on the waitlist!",
-      "description": "Email sent to participants who were placed on the waitlist"
-    },
-    "acceptanceText": {
-      "value": "You have been accepted to TartanHacks!",
-      "description": "Email sent to participants who were accepted to the event"
-    },
-    "confirmationText": {
-      "value": "You have been confirmed for TartanHacks!",
-      "description": "Email sent to participants who confirmed attendance to the event"
-    },
-    "allowMinors": {
-      "value": false,
-      "description": "Whether or not to allow minors to register for the event"
+      "description": "Set to true to require .edu emails when signing up"
     },
     "maxTeamSize": {
       "value": 4,

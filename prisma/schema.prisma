@@ -1,0 +1,373 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGODB_URI")
+}
+
+// ======================================================
+// Models
+// ======================================================
+
+// Overall event settings
+model Settings {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  timeOpen         DateTime
+  timeClose        DateTime
+  timeConfirm      DateTime
+  requireEduEmails Boolean  @default(false)
+  maxTeamSize      Int
+}
+
+// Represents a single user on the system
+model User {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  email    String  @unique
+  password String
+  admin    Boolean
+
+  firstName String?
+  lastName  String?
+
+  status Status
+
+  companyId String?  @db.ObjectId
+  company   Sponsor? @relation(fields: [companyId], references: [id])
+
+  lastLogin DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile Profile?
+  teamLed Team?    @relation("Team Leadership")
+
+  teamId       String?       @db.ObjectId
+  team         Team?         @relation("Team Membership", fields: [teamId], references: [id], onUpdate: NoAction)
+  teamRequests TeamRequest[]
+  checkins     Checkin[]
+
+  participantBookmarks ParticipantBookmark[] @relation("Bookmark Ownership")
+  projectBookmarks     ProjectBookmark[]
+
+  bookmarkMentions ParticipantBookmark[] @relation("Bookmark Mentions")
+}
+
+// Information associated with a participant application
+model Profile {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId      String @unique @db.ObjectId
+  user        User   @relation(fields: [userId], references: [id])
+  displayName String
+
+  school         String
+  college        CMUCollege?
+  educationLevel EducationLevel @default(UNDERGRADUATE)
+  graduationYear Int
+
+  gender      Gender
+  genderOther String?
+
+  ethnicity      Ethnicity
+  ethnicityOther String?
+
+  totalPoints Int    @default(0)
+  phoneNumber String
+
+  major                String?
+  coursework           String?
+  programmingLanguages String?
+
+  hackathonExperience HackathonExperience?
+  workPermission      WorkPermission?
+  workLocation        String?
+  workStrengths       String?
+
+  github  String?
+  website String?
+
+  essays String[] @default([])
+
+  dietaryRestrictions      DietaryRestriction[] @default([])
+  dietaryRestrictionsOther String?
+
+  shirtSize           ShirtSize?
+  wantsHardware       Boolean?
+  attendingPhysically Boolean    @default(true)
+
+  // Generated server-side, not stored in DB
+  resumeUrl String?
+  photoUrl  String?
+
+  confirmation Confirmation
+}
+
+// Information collected after admission
+type Confirmation {
+  signatureLiability     Boolean
+  signaturePhotoRelease  Boolean
+  signatureCodeOfConduct Boolean
+}
+
+// A corporate sponsor of the event
+model Sponsor {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  name            String  @unique
+  recruiters      User[]
+  sponsoredPrizes Prize[]
+}
+
+// A group of participants
+model Team {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String  @unique
+  description String?
+
+  leaderId String  @unique @db.ObjectId
+  leader   User    @relation("Team Leadership", fields: [leaderId], references: [id], onUpdate: NoAction)
+  members  User[]  @relation("Team Membership")
+  visible  Boolean @default(true)
+
+  teamRequests TeamRequest[]
+  project      Project?
+}
+
+// A request to join a team or invite a user 
+model TeamRequest {
+  id          String          @id @default(auto()) @map("_id") @db.ObjectId
+  requestType TeamRequestType
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+
+  teamId String @db.ObjectId
+  team   Team   @relation(fields: [teamId], references: [id])
+
+  status  TeamRequestStatus
+  message String?
+
+  @@unique([userId, teamId, requestType, status])
+}
+
+// Prizes a project can be submitted for
+model Prize {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String  @unique
+  description String?
+
+  sponsorId String  @db.ObjectId
+  sponsor   Sponsor @relation(fields: [sponsorId], references: [id])
+
+  projectEntries ProjectPrizeEntry[]
+}
+
+// A project submission
+model Project {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String @unique
+  description String
+
+  location String?
+  url      String?
+  slides   String?
+  video    String?
+
+  teamId       String              @unique @db.ObjectId
+  team         Team                @relation(fields: [teamId], references: [id])
+  prizeEntries ProjectPrizeEntry[]
+
+  bookmarkMentions ProjectBookmark[]
+}
+
+// (Join table) Prizes that a project entered for
+model ProjectPrizeEntry {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  projectId String  @db.ObjectId
+  project   Project @relation(fields: [projectId], references: [id])
+
+  prizeId String @db.ObjectId
+  prize   Prize  @relation(fields: [prizeId], references: [id])
+
+  @@unique([projectId, prizeId])
+}
+
+// An item on the schedule
+model ScheduleItem {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  startTime   DateTime
+  endTime     DateTime
+  location    String
+  platform    EventPlatform @default(IN_PERSON)
+  platformUrl String?
+  active      Boolean       @default(true)
+}
+
+// A checkin item is used to mark attendance for events or completion of challenges
+model CheckinItem {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  description       String
+  startTime         DateTime
+  endTime           DateTime
+  points            Int
+  active            Boolean   @default(true)
+  enableSelfCheckin Boolean
+  checkins          Checkin[]
+}
+
+// A log of a user's checking for a checkin item
+model Checkin {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+
+  checkinItemId String      @db.ObjectId
+  checkinItem   CheckinItem @relation(fields: [checkinItemId], references: [id])
+
+  @@unique([userId, checkinItemId])
+}
+
+// A sponsor representative (recruiter) can bookmark participants they talked to during the event
+model ParticipantBookmark {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  ownerId String @db.ObjectId
+  owner   User   @relation("Bookmark Ownership", fields: [ownerId], references: [id])
+
+  participantId String @db.ObjectId
+  participant   User   @relation("Bookmark Mentions", fields: [participantId], references: [id])
+
+  description String?
+
+  @@unique([ownerId, participantId])
+}
+
+// A sponsor representative (recruiter) can bookmark projects they found particularly interesting
+model ProjectBookmark {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  ownerId String @db.ObjectId
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  projectId String  @db.ObjectId
+  project   Project @relation(fields: [projectId], references: [id])
+
+  description String?
+
+  @@unique([ownerId, projectId])
+}
+
+// ======================================================
+// Enums
+// ======================================================
+
+// A user's position in the application process
+enum Status {
+  UNVERIFIED
+  VERIFIED
+  APPLIED
+  WAITLISTED
+  ADMITTED
+  REJECTED
+  CONFIRMED
+}
+
+// College within CMU
+enum CMUCollege {
+  SCS
+  CIT
+  CFA
+  DIETRICH
+  MCS
+  TEPPER
+  HEINZ
+}
+
+// Highest education level 
+enum EducationLevel {
+  UNDERGRADUATE
+  MASTERS
+  DOCTORATE
+  OTHER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+enum Ethnicity {
+  NATIVE_AMERICAN
+  ASIAN
+  BLACK
+  PACIFIC_ISLANDER
+  WHITE
+  HISPANIC
+  OTHER
+  PREFER_NOT_TO_SAY
+}
+
+// Number of years of hackathon experience
+enum HackathonExperience {
+  ZERO
+  ONE_TO_THREE
+  FOUR_PLUS
+}
+
+// US work permission
+enum WorkPermission {
+  CITIZEN
+  SPONSORSHIP
+  NO_SPONSORSHIP
+}
+
+// Dietary restrictions
+enum DietaryRestriction {
+  PORK
+  BEEF
+  HALAL
+  NUTS
+  LACTOSE
+  SEAFOOD
+  VEGETARIAN
+  VEGAN
+}
+
+enum ShirtSize {
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+}
+
+// Dictates the type of a team request (incoming or outgoing)
+enum TeamRequestType {
+  INVITE
+  JOIN
+}
+
+// The request of a sent team join/invite request
+enum TeamRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+}
+
+// Platform in which an event will be hosted
+enum EventPlatform {
+  IN_PERSON
+  REMOTE
+  HYBRID
+}
