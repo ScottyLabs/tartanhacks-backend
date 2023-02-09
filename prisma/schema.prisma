@@ -66,8 +66,8 @@ model Profile {
   displayName String
 
   school         String
-  college        String?
-  educationLevel EducationLevel
+  college        CMUCollege?
+  educationLevel EducationLevel @default(UNDERGRADUATE)
   graduationYear Int
 
   gender      Gender
@@ -275,6 +275,17 @@ enum Status {
   ADMITTED
   REJECTED
   CONFIRMED
+}
+
+// College within CMU
+enum CMUCollege {
+  SCS
+  CIT
+  CFA
+  DIETRICH
+  MCS
+  TEPPER
+  HEINZ
 }
 
 // Highest education level 
