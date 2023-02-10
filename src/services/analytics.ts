@@ -103,7 +103,7 @@ export const computeAnalytics = async (): Promise<Stats> => {
 
       // Grab the email extension
       const email = user.email.split("@")[1];
-      const isCMU = email === "andrew.cmu.edu" || email === "cmu.edu";
+      let isCMU = email === "andrew.cmu.edu" || email === "cmu.edu";
 
       if (!status) {
         continue;
@@ -119,6 +119,10 @@ export const computeAnalytics = async (): Promise<Stats> => {
         Status.COMPLETED_PROFILE
       );
       stats.submitted += isProfileComplete ? 1 : 0;
+
+      if (isProfileComplete && !isCMU) {
+        isCMU = profile.school.includes("Carnegie Mellon");
+      }
 
       // Count accepted
       const isAdmitted = doesStatusImply(status, Status.ADMITTED);
