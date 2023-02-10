@@ -30,11 +30,10 @@ model User {
   email    String  @unique
   password String
   admin    Boolean
+  status   Status
 
   firstName String?
   lastName  String?
-
-  status Status
 
   companyId String?  @db.ObjectId
   company   Sponsor? @relation(fields: [companyId], references: [id])
@@ -54,7 +53,8 @@ model User {
   participantBookmarks ParticipantBookmark[] @relation("Bookmark Ownership")
   projectBookmarks     ProjectBookmark[]
 
-  bookmarkMentions ParticipantBookmark[] @relation("Bookmark Mentions")
+  bookmarkMentions        ParticipantBookmark[]    @relation("Bookmark Mentions")
+  partialJudgeAssignments PartialJudgeAssignment[]
 }
 
 // Information associated with a participant application
@@ -156,14 +156,27 @@ model TeamRequest {
 
 // Prizes a project can be submitted for
 model Prize {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  name        String  @unique
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String    @unique
+  prizeType   PrizeType
   description String?
 
-  sponsorId String  @db.ObjectId
-  sponsor   Sponsor @relation(fields: [sponsorId], references: [id])
+  sponsorId String?  @db.ObjectId
+  sponsor   Sponsor? @relation(fields: [sponsorId], references: [id])
 
-  projectEntries ProjectPrizeEntry[]
+  projectEntries          ProjectPrizeEntry[]
+  partialJudgeAssignments PartialJudgeAssignment[]
+}
+
+// An assignment of a judge to a prize
+model PartialJudgeAssignment {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  judgeId String @db.ObjectId
+  judge   User   @relation(fields: [judgeId], references: [id])
+
+  prizeId String @db.ObjectId
+  prize   Prize  @relation(fields: [prizeId], references: [id])
 }
 
 // A project submission
@@ -370,4 +383,17 @@ enum EventPlatform {
   IN_PERSON
   REMOTE
   HYBRID
+}
+
+// Describes how judges are assigned to a prize
+enum PrizeType {
+  // Grand prize(s) are judged by all judges regardless of judge type
+  // e.g. overall grand prize
+  GRAND
+  // General prizes are judged by all general judges and potentially some partial judges
+  // e.g. Special awards, or club partnership awards
+  GENERAL
+  // Exclusive prizes are judged only by exclusive judges assigned to them
+  // e.g. sponsor prizes
+  EXCLUSIVE
 }
