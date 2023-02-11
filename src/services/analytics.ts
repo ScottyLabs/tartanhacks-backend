@@ -11,6 +11,7 @@ type Stats = {
   total: number;
   demographic: {
     gender: Record<string, number>;
+    ethnicity: Record<string, number>;
     domains: Record<
       string,
       {
@@ -31,6 +32,10 @@ type Stats = {
     >;
     colleges: Record<string, number>;
     year: Record<string, number>;
+  };
+  confirmedDemographic: {
+    gender: Record<string, number>;
+    ethnicity: Record<string, number>;
   };
 
   verified: number;
@@ -64,10 +69,16 @@ export const computeAnalytics = async (): Promise<Stats> => {
     total: 0,
     demographic: {
       gender: {},
+      ethnicity: {},
       domains: {},
       schools: {},
       year: {},
       colleges: {},
+    },
+
+    confirmedDemographic: {
+      gender: {},
+      ethnicity: {},
     },
 
     verified: 0,
@@ -76,11 +87,6 @@ export const computeAnalytics = async (): Promise<Stats> => {
     confirmed: 0,
     confirmedCmu: 0,
     declined: 0,
-
-    confirmedFemale: 0,
-    confirmedMale: 0,
-    confirmedOther: 0,
-    confirmedNone: 0,
 
     shirtSizes: {},
 
@@ -150,12 +156,30 @@ export const computeAnalytics = async (): Promise<Stats> => {
         stats.demographic.gender[profile.gender] = 1;
       }
 
-      stats.confirmedFemale +=
-        isConfirmed && profile.gender == "Female" ? 1 : 0;
-      stats.confirmedMale += isConfirmed && profile.gender == "Male" ? 1 : 0;
-      stats.confirmedOther += isConfirmed && profile.gender == "Other" ? 1 : 0;
-      stats.confirmedNone +=
-        isConfirmed && profile.gender == "Prefer not to say" ? 1 : 0;
+      // Add to confirmed gender analytics
+      if (isConfirmed) {
+        if (profile.gender in stats.confirmedDemographic.gender) {
+          stats.confirmedDemographic.gender[profile.gender] += 1;
+        } else {
+          stats.confirmedDemographic.gender[profile.gender] = 1;
+        }
+      }
+
+      // Count ethnicity
+      if (profile.ethnicity in stats.demographic.ethnicity) {
+        stats.demographic.ethnicity[profile.ethnicity] += 1;
+      } else {
+        stats.demographic.ethnicity[profile.ethnicity] = 1;
+      }
+
+      // Count confirmed ethnicity
+      if (isConfirmed) {
+        if (profile.ethnicity in stats.confirmedDemographic.ethnicity) {
+          stats.confirmedDemographic.ethnicity[profile.ethnicity] += 1;
+        } else {
+          stats.confirmedDemographic.ethnicity[profile.ethnicity] = 1;
+        }
+      }
 
       // Count the number of people who want hardware
       stats.wantsHardware += profile.wantsHardware ? 1 : 0;
