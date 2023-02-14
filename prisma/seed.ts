@@ -20,11 +20,12 @@ async function createSettings() {
     {} as SettingsCreateInput
   );
 
-  await prisma.settings.upsert({
-    where: {},
-    update: {},
-    create: settingsInput,
-  });
+  const settings = await prisma.settings.findFirst();
+  if (settings == null) {
+    await prisma.settings.create({
+      data: settingsInput,
+    });
+  }
 }
 
 /**
