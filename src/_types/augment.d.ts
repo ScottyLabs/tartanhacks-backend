@@ -2,6 +2,8 @@
  * This file augments existing types
  */
 
+import { ResponseContext } from "./ResponseContext";
+
 /**
  * Extension of the Express Request type interface
  */
@@ -32,6 +34,12 @@ declare global {
       DRIVE_REFRESH_TOKEN?: string;
       DRIVE_TOKEN_EXPIRY_DATE?: string;
     }
+  }
+}
+
+declare module "express" {
+  export interface Response {
+    locals: ResponseContext;
   }
 }
 

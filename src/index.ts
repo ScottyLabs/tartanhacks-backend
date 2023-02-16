@@ -1,14 +1,15 @@
+import { PrismaClient } from "@prisma/client";
+import cors from "cors";
 import dotenv from "dotenv";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
+import APIError from "./errors/APIError";
+import ServerError from "./errors/ServerError";
 import router from "./routes";
 import swaggerSpecification from "./swagger";
 import { startup } from "./util/startup";
-import cors from "cors";
-import Team from "./models/Team";
-import Profile from "./models/Profile";
 
 dotenv.config();
 
@@ -28,6 +29,8 @@ mongoose.set("useFindAndModify", false);
 //   Profile.ensureIndexes();
 // }
 
+const prisma = new PrismaClient();
+
 const app = express();
 app.use(cors());
 app.use(morgan("dev"));
@@ -42,6 +45,22 @@ app.use(
     extended: true,
   })
 );
+
+// Initialize context
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.locals.prisma = prisma;
+  next();
+});
+
+// Set error handler
+app.use((err: APIError, req: Request, res: Response) => {
+  if (err instanceof ServerError) {
+    console.error(err.message);
+  }
+  res.status(err.statusCode).json({
+    message: err.message,
+  });
+});
 app.use("/", router);
 
 app.use(
