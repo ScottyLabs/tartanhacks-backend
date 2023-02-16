@@ -5,6 +5,7 @@ import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
+import { ZodError } from "zod";
 import APIError from "./errors/APIError";
 import ServerError from "./errors/ServerError";
 import router from "./routes";
@@ -52,15 +53,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Set error handler
-app.use((err: APIError, req: Request, res: Response) => {
-  if (err instanceof ServerError) {
-    console.error(err.message);
-  }
-  res.status(err.statusCode).json({
-    message: err.message,
-  });
-});
 app.use("/", router);
 
 app.use(
@@ -69,6 +61,33 @@ app.use(
   swaggerUi.setup(swaggerSpecification, {
     swaggerOptions: { persistAuthorization: true },
   })
+);
+
+// Set error handler
+app.use(
+  (
+    err: APIError | ZodError,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    if (err instanceof ZodError) {
+      // Argument type validation
+      res.status(400).json({
+        errors: err.issues,
+        message: err.message,
+      });
+    } else if (err instanceof APIError) {
+      // Route logic validation
+      if (err instanceof ServerError) {
+        console.error(err.message);
+      }
+      res.status(err.statusCode).json({
+        message: err.message,
+      });
+    }
+    next();
+  }
 );
 
 const server = app.listen(PORT, async () => {
