@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
@@ -6,6 +5,7 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import { ZodError } from "zod";
+import { prisma } from "./db";
 import APIError from "./errors/APIError";
 import ServerError from "./errors/ServerError";
 import router from "./routes";
@@ -29,8 +29,6 @@ mongoose.set("useFindAndModify", false);
 //   Team.ensureIndexes();
 //   Profile.ensureIndexes();
 // }
-
-const prisma = new PrismaClient();
 
 const app = express();
 app.use(cors());
