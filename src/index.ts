@@ -88,13 +88,6 @@ app.use(
   }
 );
 
-const server = app.listen(PORT, async () => {
-  const result = await startup();
-  if (!result) {
-    console.error("Failed to complete startup successfully. Shutting down.");
-    server.close();
-    return;
-  }
-
+app.listen(PORT, async () => {
   console.log(`Running on port ${PORT}`);
 });
