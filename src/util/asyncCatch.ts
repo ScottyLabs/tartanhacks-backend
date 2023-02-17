@@ -8,6 +8,6 @@ export const asyncCatch = (
   fn: (req: Request, res: Response) => Promise<void>
 ) => {
   return (req: Request, res: Response, next: NextFunction): void => {
-    return Promise.resolve(fn(req, res)).catch(next);
+    Promise.resolve(fn(req, res)).catch(next);
   };
 };
