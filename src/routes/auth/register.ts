@@ -1,5 +1,11 @@
 import { Request, Response } from "express";
+import {
+  generateAuthToken,
+  generateEmailVerificationToken,
+} from "src/controllers/AuthController";
+import { sendVerificationEmail } from "src/controllers/EmailController";
 import BadRequestError from "src/errors/BadRequestError";
+import ServerError from "src/errors/ServerError";
 import generateHash from "src/util/generateHash";
 import { z } from "zod";
 import { isRegistrationOpen } from "../../controllers/SettingsController";
@@ -51,10 +57,39 @@ export async function register(req: Request, res: Response): Promise<void> {
   const { origin } = req.headers;
 
   const registrationOpen = await isRegistrationOpen();
-  if (!isRegistrationOpen) {
+  if (!registrationOpen) {
     throw new BadRequestError("Registration is closed");
   }
 
   const passwordHash = generateHash(password);
-  res.status(200).send();
+
+  // Create user instance
+  const user = await res.locals.prisma.user.create({
+    data: {
+      email,
+      password: passwordHash,
+    },
+  });
+
+  // Generate JWT auth token
+  const authToken = generateAuthToken(user.id);
+
+  // Only return subset of fields
+  const { id, status } = user;
+
+  res.json({
+    id,
+    email,
+    status,
+    token: authToken,
+  });
+
+  const emailToken = generateEmailVerificationToken(email);
+  try {
+    await sendVerificationEmail(email, emailToken, origin);
+  } catch (err) {
+    throw new ServerError(
+      "Failed to send verification email for user: " + email
+    );
+  }
 }
