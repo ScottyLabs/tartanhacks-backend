@@ -5,9 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc --build && copyfiles -u 1 **/*.mjml dist",
-    "start": "doppler setup -p tartanhacks-backend -c prd && doppler run -- node . || echo \"Did you run 'npm run build'?\"",
-    "start-stg": "doppler setup -p tartanhacks-backend -c stg && doppler run -- node . || echo \"Did you run 'npm run build'?\"",
-    "start-dev": "doppler setup -p tartanhacks-backend -c dev && doppler run -- node . || echo \"Did you run 'npm run build'?\"",
+    "start": "doppler setup -p tartanhacks-backend -c prd && doppler run -- ts-node -r tsconfig-paths/register --transpileOnly --files src/index.ts || echo \"Did you run 'npm run build'?\"",
+    "start-stg": "doppler setup -p tartanhacks-backend -c stg && doppler run -- ts-node -r tsconfig-paths/register --transpileOnly --files src/index.ts || echo \"Did you run 'npm run build'?\"",
+    "start-dev": "doppler setup -p tartanhacks-backend -c dev && doppler run -- ts-node -r tsconfig-paths/register --transpileOnly --files src/index.ts || echo \"Did you run 'npm run build'?\"",
+    "start-mig": "doppler setup -p tartanhacks-backend -c dev_migrate && doppler run -- ts-node -r tsconfig-paths/register --transpileOnly --files src/index.ts || echo \"Did you run 'npm run build'?\"",
     "dev": "doppler setup -p tartanhacks-backend -c dev && doppler run -- nodemon --exec ts-node -r tsconfig-paths/register --files src/index.ts",
     "dev:migrate": "doppler setup -p tartanhacks-backend -c dev_migrate && doppler run -- nodemon --exec ts-node -r tsconfig-paths/register --files src/index.ts",
     "stg": "doppler setup -p tartanhacks-backend -c stg && doppler run -- nodemon --exec ts-node -r tsconfig-paths/register --files src/index.ts",
