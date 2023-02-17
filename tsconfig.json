@@ -14,6 +14,7 @@
     },
     "allowJs": true,
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "typeRoots": ["./node_modules/@types", "./src/_types"],
     "plugins": [
       {
@@ -23,6 +24,7 @@
     ]
   },
   "include": ["src/**/*"],
+  "exclude": ["./node_modules"],
   "ts-node": {
     "transpileOnly": true,
     "transpiler": "ts-node/transpilers/swc-experimental"
