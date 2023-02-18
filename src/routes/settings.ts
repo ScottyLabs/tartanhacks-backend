@@ -3,11 +3,8 @@ import {
   getCloseTime,
   getConfirmTime,
   getOpenTime,
-  handleGetSettings,
-  updateSettings,
 } from "../controllers/SettingsController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAdmin } from "./middleware";
 
 const router: Router = express.Router();
 
