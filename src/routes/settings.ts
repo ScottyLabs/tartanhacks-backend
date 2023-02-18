@@ -20,57 +20,6 @@ const router: Router = express.Router();
 
 /**
  * @swagger
- * /settings:
- *   put:
- *     summary: Update the settings
- *     tags: [Settings Module]
- *     description: Update the settings. Access - Admin only
- *     security:
- *       - apiKeyAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               timeOpen:
- *                 type: string
- *                 format: date-time
- *               timeClose:
- *                 type: string
- *                 format: date-time
- *               timeConfirm:
- *                 type: string
- *                 format: date-time
- *               enableWhitelist:
- *                 type: boolean
- *               whitelistedEmails:
- *                 type: array
- *                 items:
- *                   type: string
- *               waitlistText:
- *                 type: string
- *               acceptanceText:
- *                 type: string
- *               confirmationText:
- *                 type: string
- *               allowMinors:
- *                 type: boolean
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       403:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.put("/", isAdmin, asyncCatch(updateSettings));
-
-/**
- * @swagger
  * /settings/time/open:
  *   get:
  *     summary: Get the time when registration opens

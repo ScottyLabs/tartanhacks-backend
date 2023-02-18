@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import { asyncCatch } from "src/util/asyncCatch";
 import { getSettings } from "./getSettings";
+import { updateSettings } from "./updateSettings";
 
 /**
  * @swagger
@@ -10,5 +11,6 @@ import { getSettings } from "./getSettings";
  */
 const router: Router = express.Router();
 router.get("/", asyncCatch(getSettings));
+router.put("/", asyncCatch(updateSettings));
 
 export default router;
