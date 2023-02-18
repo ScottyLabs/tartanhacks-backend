@@ -1,9 +1,10 @@
 import dotenv from "dotenv";
-import express, { Express } from "express";
+import express, { Express, Request, Response, NextFunction } from "express";
 import MongoMemoryServer from "mongodb-memory-server-core";
 import mongoose from "mongoose";
 import router from "src/routes";
 import { startup } from "src/util/startup";
+import { prisma } from "src/db";
 
 let DB: MongoMemoryServer;
 
@@ -23,6 +24,11 @@ export const getApp = (): Express => {
       extended: true,
     })
   );
+  // Initialize context
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    res.locals.prisma = prisma;
+    next();
+  });
   app.use("/", router);
   return app;
 };
