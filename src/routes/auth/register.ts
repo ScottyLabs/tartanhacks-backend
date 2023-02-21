@@ -44,7 +44,11 @@ import { isRegistrationOpen } from "../../controllers/SettingsController";
  */
 
 const schema = z.object({
-  email: z.string().email(),
+  email: z
+    .string()
+    .email()
+    .trim()
+    .transform((email) => email.toLowerCase()),
   password: z.string().min(6),
 });
 
@@ -52,8 +56,7 @@ const schema = z.object({
  * Create a new account
  */
 export async function register(req: Request, res: Response): Promise<void> {
-  const { email: emailRaw, password } = schema.parse(req.body);
-  const email = emailRaw.toLowerCase();
+  const { email, password } = schema.parse(req.body);
   const { origin } = req.headers;
 
   const registrationOpen = await isRegistrationOpen();
