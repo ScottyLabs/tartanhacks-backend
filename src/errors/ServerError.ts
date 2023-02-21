@@ -1,7 +1,7 @@
 import APIError from "./APIError";
 
 /**
- * Internal server error (404)
+ * Internal server error (500)
  */
 export default class ServerError extends APIError {
   constructor(public readonly message: string) {
