@@ -63,10 +63,7 @@ const schema = z.object({
 /**
  * Update the application settings
  */
-export async function updateSettings(
-  req: Request,
-  res: Response
-): Promise<void> {
+export default async function put(req: Request, res: Response): Promise<void> {
   const params = schema.parse(req.body);
 
   const settings = await getSettings();
@@ -76,4 +73,6 @@ export async function updateSettings(
     },
     data: params,
   });
+
+  res.status(200).send();
 }

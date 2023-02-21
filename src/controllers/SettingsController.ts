@@ -8,6 +8,7 @@ import ServerError from "src/errors/ServerError";
 
 /**
  * Retrieve the application settings
+ * @throws {ServerError} if a settings singleton does not exist
  */
 export async function getSettings(): Promise<Settings> {
   const settings = await prisma.settings.findFirst();

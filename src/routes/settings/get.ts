@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import ServerError from "src/errors/ServerError";
+import { getSettings } from "src/controllers/SettingsController";
 
 /**
  * @swagger
@@ -26,14 +26,7 @@ import ServerError from "src/errors/ServerError";
 /**
  * Retrieve the application settings
  */
-export async function getSettings(req: Request, res: Response): Promise<void> {
-  const settings = await prisma.settings.findFirst();
-
-  if (settings == null) {
-    throw new ServerError(
-      "Settings object does not exist! Has the database been seeded?"
-    );
-  }
-
+export default async function get(req: Request, res: Response): Promise<void> {
+  const settings = await getSettings();
   res.json(settings);
 }
