@@ -12,6 +12,4 @@ export const prisma =
       process.env.NODE_ENV === "dev" ? ["query", "error", "warn"] : ["error"],
   });
 
-if (process.env.NODE_ENV !== "prod") {
-  global.prisma = prisma;
-}
+global.prisma = prisma;
