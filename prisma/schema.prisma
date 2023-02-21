@@ -290,6 +290,9 @@ enum Status {
   ADMITTED
   REJECTED
   CONFIRMED
+  CHECKED_IN
+  NO_SHOW
+  DECLINED
 }
 
 // College within CMU
