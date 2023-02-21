@@ -55,7 +55,10 @@ const schema = z.object({
 /**
  * Create a new account
  */
-export async function register(req: Request, res: Response): Promise<void> {
+export default async function register(
+  req: Request,
+  res: Response
+): Promise<void> {
   const { email, password } = schema.parse(req.body);
   const { origin } = req.headers;
 

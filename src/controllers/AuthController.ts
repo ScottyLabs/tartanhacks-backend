@@ -1,16 +1,17 @@
 /**
  * Controller for auth routes
  */
-import { Request, Response } from "express";
 import { ObjectId } from "bson";
+import { Request, Response } from "express";
+import { sign, verify } from "jsonwebtoken";
+import BadRequestError from "src/errors/BadRequestError";
 import User from "../models/User";
 import { bad, error, notFound } from "../util/error";
+import { Status } from "../_enums/Status";
 import * as EmailController from "./EmailController";
 import { isRegistrationOpen } from "./SettingsController";
-import { getByCode, getByToken } from "./UserController";
 import { findUserTeam } from "./TeamController";
-import { Status } from "../_enums/Status";
-import { sign } from "jsonwebtoken";
+import { getByCode, getByToken } from "./UserController";
 
 // Time before generated JWT tokens expire
 const AUTH_TOKEN_EXPIRY = process.env.AUTH_TOKEN_EXPIRY ?? "30d";
@@ -23,6 +24,19 @@ export function generateAuthToken(userId: string): string {
   return sign({ userId }, process.env.JWT_SECRET, {
     expiresIn: AUTH_TOKEN_EXPIRY,
   });
+}
+
+/**
+ * Decrypt an authentication token and return the encrypted userId
+ */
+export function decryptAuthToken(authToken: string): string {
+  const decrypted = verify(authToken, process.env.JWT_SECRET);
+
+  if (typeof decrypted === "string") {
+    throw new BadRequestError("Malformed authentication token");
+  }
+
+  return decrypted.userId;
 }
 
 /**
@@ -153,38 +167,38 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 /**
  * Verify a user via email
  */
-export const verify = async (req: Request, res: Response): Promise<void> => {
-  const { token } = req.params;
-  if (token == null) {
-    return bad(res, "Missing verification token");
-  }
+// export const verify = async (req: Request, res: Response): Promise<void> => {
+//   const { token } = req.params;
+//   if (token == null) {
+//     return bad(res, "Missing verification token");
+//   }
 
-  try {
-    let email;
-    try {
-      email = User.decryptEmailVerificationToken(token);
-    } catch (err) {
-      if (err.name === "TokenExpiredError") {
-        return bad(res, "Expired token!");
-      } else if (err.name === "JsonWebTokenError") {
-        return bad(res, "Bad token");
-      } else {
-        throw err;
-      }
-    }
+//   try {
+//     let email;
+//     try {
+//       email = User.decryptEmailVerificationToken(token);
+//     } catch (err) {
+//       if (err.name === "TokenExpiredError") {
+//         return bad(res, "Expired token!");
+//       } else if (err.name === "JsonWebTokenError") {
+//         return bad(res, "Bad token");
+//       } else {
+//         throw err;
+//       }
+//     }
 
-    const user = await User.findOne({ email });
-    if (user == null) {
-      return notFound(res, "User not found " + email);
-    }
+//     const user = await User.findOne({ email });
+//     if (user == null) {
+//       return notFound(res, "User not found " + email);
+//     }
 
-    await user.setStatus(Status.VERIFIED);
-    res.status(200).send();
-  } catch (err) {
-    console.error(err);
-    error(res, "An error occured");
-  }
-};
+//     await user.setStatus(Status.VERIFIED);
+//     res.status(200).send();
+//   } catch (err) {
+//     console.error(err);
+//     error(res, "An error occured");
+//   }
+// };
 
 /**
  * Resend a user verification email

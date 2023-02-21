@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import { asyncCatch } from "src/util/asyncCatch";
-import { register } from "./register";
+import login from "./login";
+import register from "./register";
 
 /**
  * @swagger
@@ -10,5 +11,6 @@ import { register } from "./register";
  */
 const router: Router = express.Router();
 router.post("/register", asyncCatch(register));
+router.post("/login", asyncCatch(login));
 
 export default router;
