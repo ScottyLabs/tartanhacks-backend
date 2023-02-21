@@ -10,6 +10,29 @@ import { isRegistrationOpen } from "./SettingsController";
 import { getByCode, getByToken } from "./UserController";
 import { findUserTeam } from "./TeamController";
 import { Status } from "../_enums/Status";
+import { sign } from "jsonwebtoken";
+
+// Time before generated JWT tokens expire
+const AUTH_TOKEN_EXPIRY = process.env.AUTH_TOKEN_EXPIRY ?? "30d";
+const EMAIL_TOKEN_EXPIRY = process.env.EMAIL_TOKEN_EXPIRY || "24h";
+
+/**
+ * Generate an authentication token for the specified user
+ */
+export function generateAuthToken(userId: string): string {
+  return sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: AUTH_TOKEN_EXPIRY,
+  });
+}
+
+/**
+ * Generate an email verification token for the specified user email
+ */
+export function generateEmailVerificationToken(email: string): string {
+  return sign({ email }, process.env.JWT_SECRET, {
+    expiresIn: EMAIL_TOKEN_EXPIRY,
+  });
+}
 
 /**
  * Register a user

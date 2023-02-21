@@ -1,7 +1,6 @@
 /**
  * Startup script
  */
-import * as SettingsController from "../controllers/SettingsController";
 import * as EventController from "../controllers/EventController";
 import { createGrandPrizeIfAbsent } from "../controllers/ProjectsController";
 
@@ -9,7 +8,6 @@ export const startup = async (): Promise<boolean> => {
   if (!checkEnvironment()) {
     return false;
   }
-  await SettingsController.createSingleton();
   await EventController.getTartanHacks();
   await createGrandPrizeIfAbsent();
   return true;

@@ -1,14 +1,16 @@
+import cors from "cors";
 import dotenv from "dotenv";
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
+import { ZodError } from "zod";
+import { prisma } from "./db";
+import APIError from "./errors/APIError";
+import ServerError from "./errors/ServerError";
 import router from "./routes";
 import swaggerSpecification from "./swagger";
 import { startup } from "./util/startup";
-import cors from "cors";
-import Team from "./models/Team";
-import Profile from "./models/Profile";
 
 dotenv.config();
 
@@ -42,6 +44,13 @@ app.use(
     extended: true,
   })
 );
+
+// Initialize context
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.locals.prisma = prisma;
+  next();
+});
+
 app.use("/", router);
 
 app.use(
@@ -52,13 +61,33 @@ app.use(
   })
 );
 
-const server = app.listen(PORT, async () => {
-  const result = await startup();
-  if (!result) {
-    console.error("Failed to complete startup successfully. Shutting down.");
-    server.close();
-    return;
+// Set error handler
+app.use(
+  (
+    err: APIError | ZodError,
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    if (err instanceof ZodError) {
+      // Argument type validation
+      res.status(400).json({
+        errors: err.issues,
+        message: err.message,
+      });
+    } else if (err instanceof APIError) {
+      // Route logic validation
+      if (err instanceof ServerError) {
+        console.error(err.message);
+      }
+      res.status(err.statusCode).json({
+        message: err.message,
+      });
+    }
+    next();
   }
+);
 
+app.listen(PORT, async () => {
   console.log(`Running on port ${PORT}`);
 });

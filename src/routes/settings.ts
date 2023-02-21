@@ -3,11 +3,8 @@ import {
   getCloseTime,
   getConfirmTime,
   getOpenTime,
-  handleGetSettings,
-  updateSettings,
 } from "../controllers/SettingsController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAdmin } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -17,80 +14,6 @@ const router: Router = express.Router();
  *  name: Settings Module
  *  description: Endpoints for settings control. Access - Admin only
  */
-
-/**
- * @swagger
- * /settings:
- *   get:
- *     summary: Get the settings object
- *     tags: [Settings Module]
- *     description: Get the settings object. Access - Admin only
- *     security:
- *       - apiKeyAuth: []
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       403:
- *          description: Unauthorized.
- *       404:
- *          description: User does not exist.
- *       500:
- *          description: Internal Server Error.
- */
-router.get("/", isAdmin, asyncCatch(handleGetSettings));
-
-/**
- * @swagger
- * /settings:
- *   put:
- *     summary: Update the settings
- *     tags: [Settings Module]
- *     description: Update the settings. Access - Admin only
- *     security:
- *       - apiKeyAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               timeOpen:
- *                 type: string
- *                 format: date-time
- *               timeClose:
- *                 type: string
- *                 format: date-time
- *               timeConfirm:
- *                 type: string
- *                 format: date-time
- *               enableWhitelist:
- *                 type: boolean
- *               whitelistedEmails:
- *                 type: array
- *                 items:
- *                   type: string
- *               waitlistText:
- *                 type: string
- *               acceptanceText:
- *                 type: string
- *               confirmationText:
- *                 type: string
- *               allowMinors:
- *                 type: boolean
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       403:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.put("/", isAdmin, asyncCatch(updateSettings));
 
 /**
  * @swagger

@@ -7,11 +7,11 @@
       "description": "ISO time for when registration opens. Set to null to disable enforcing open time"
     },
     "timeClose": {
-      "value": "2023-02-05T04:59:00.000+00:00",
+      "value": "2024-02-05T04:59:00.000+00:00",
       "description": "ISO time for when registration closes. Set to null to disable enforcing close of registration"
     },
     "timeConfirm": {
-      "value": "2023-02-05T04:59:00.000+00:00",
+      "value": "2024-02-05T04:59:00.000+00:00",
       "description": "ISO time for when confirmation closes. Set to null to disable enforcing close of confirmation"
     },
     "requireEduEmails": {

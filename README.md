@@ -16,6 +16,9 @@ This is the backend system for the TartanHacks software suite.
 7. Run `npm run dev` to run the project in dev mode.
 8. See the swagger endpoint documentation by visiting `/docs`
 
+## Preparing the Database
+To start using the application, you need to seed the database. Check out `./src/settings.json` to configure what settings you want to use for your application. Afterwards, run `npx prisma db seed` to insert this into your database.
+
 ## Database Model
 https://www.figma.com/file/TXPqZa0vUg3BNw9fHGn9vT/TartanHacks-Model?node-id=1%3A6
 

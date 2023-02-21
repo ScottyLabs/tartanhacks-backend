@@ -16,11 +16,11 @@ datasource db {
 
 // Overall event settings
 model Settings {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  timeOpen         DateTime
-  timeClose        DateTime
-  timeConfirm      DateTime
-  requireEduEmails Boolean  @default(false)
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  timeOpen         DateTime?
+  timeClose        DateTime?
+  timeConfirm      DateTime?
+  requireEduEmails Boolean   @default(false)
   maxTeamSize      Int
 }
 
@@ -29,8 +29,8 @@ model User {
   id       String  @id @default(auto()) @map("_id") @db.ObjectId
   email    String  @unique
   password String
-  admin    Boolean
-  status   Status
+  admin    Boolean @default(false)
+  status   Status  @default(UNVERIFIED)
 
   firstName String?
   lastName  String?

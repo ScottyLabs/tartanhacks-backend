@@ -14,47 +14,6 @@ const router: Router = express.Router();
 
 /**
  * @swagger
- * tags:
- *  name: Authentication Module
- *  description: Endpoints to manage user authentication.
- */
-
-/**
- * @swagger
- * /auth/register:
- *   post:
- *     summary: Register user
- *     tags: [Authentication Module]
- *     description: >
- *       Creates new user account. This sends a verification email to the user containing a link to verify their account.
- *       The base URL used in this verification link is from the request's `Origin` header. Access - Open
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *               password:
- *                 type: string
- *                 format: password
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       403:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.post("/register", asyncCatch(register));
-
-/**
- * @swagger
  * /auth/login:
  *   post:
  *     summary: Login user
