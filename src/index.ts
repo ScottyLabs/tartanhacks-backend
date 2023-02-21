@@ -64,7 +64,7 @@ app.use(
 // Set error handler
 app.use(
   (
-    err: APIError | ZodError,
+    err: APIError | ZodError | Error,
     req: Request,
     res: Response,
     next: NextFunction
@@ -82,6 +82,11 @@ app.use(
       }
       res.status(err.statusCode).json({
         message: err.message,
+      });
+    } else {
+      console.error(err);
+      res.status(500).json({
+        message: "An error occured",
       });
     }
     next();
