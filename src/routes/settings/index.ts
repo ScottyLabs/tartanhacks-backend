@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import { asyncCatch } from "src/util/asyncCatch";
+import { isAdmin } from "../middleware";
 import { getSettings } from "./getSettings";
 import { updateSettings } from "./updateSettings";
 
@@ -10,7 +11,7 @@ import { updateSettings } from "./updateSettings";
  *  description: Endpoints for settings control. Access - Admin only
  */
 const router: Router = express.Router();
-router.get("/", asyncCatch(getSettings));
-router.put("/", asyncCatch(updateSettings));
+router.get("/", isAdmin, asyncCatch(getSettings));
+router.put("/", isAdmin, asyncCatch(updateSettings));
 
 export default router;
