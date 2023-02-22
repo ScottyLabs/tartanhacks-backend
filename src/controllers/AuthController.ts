@@ -49,6 +49,21 @@ export function generateEmailVerificationToken(email: string): string {
 }
 
 /**
+ * Decrypt an email verification token and return the encrypted email
+ */
+export function decryptEmailVerificationToken(
+  verificationToken: string
+): string {
+  const decrypted = verify(verificationToken, process.env.JWT_SECRET);
+
+  if (typeof decrypted === "string") {
+    throw new BadRequestError("Malformed verification token");
+  }
+
+  return decrypted.email;
+}
+
+/**
  * Register a user
  */
 export const register = async (req: Request, res: Response): Promise<void> => {
@@ -163,42 +178,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     await loginWithInfo(email, password, res);
   }
 };
-
-/**
- * Verify a user via email
- */
-// export const verify = async (req: Request, res: Response): Promise<void> => {
-//   const { token } = req.params;
-//   if (token == null) {
-//     return bad(res, "Missing verification token");
-//   }
-
-//   try {
-//     let email;
-//     try {
-//       email = User.decryptEmailVerificationToken(token);
-//     } catch (err) {
-//       if (err.name === "TokenExpiredError") {
-//         return bad(res, "Expired token!");
-//       } else if (err.name === "JsonWebTokenError") {
-//         return bad(res, "Bad token");
-//       } else {
-//         throw err;
-//       }
-//     }
-
-//     const user = await User.findOne({ email });
-//     if (user == null) {
-//       return notFound(res, "User not found " + email);
-//     }
-
-//     await user.setStatus(Status.VERIFIED);
-//     res.status(200).send();
-//   } catch (err) {
-//     console.error(err);
-//     error(res, "An error occured");
-//   }
-// };
 
 /**
  * Resend a user verification email
