@@ -1,16 +1,11 @@
 import express, { Router } from "express";
-import { createAdmin, removeAdmin } from "../controllers/AdminController";
-import { isAdmin } from "./middleware";
-import { asyncCatch } from "../util/asyncCatch";
+import { createAdmin, removeAdmin } from "../../controllers/AdminController";
+import { isAdmin } from "../middleware";
+import { asyncCatch } from "../../util/asyncCatch";
 
 const router: Router = express.Router();
 
-/**
- * @swagger
- * tags:
- *  name: Admin Module
- *  description: Endpoints for admin control. Access - Admin only
- */
+
 
 /**
  * @swagger
@@ -40,7 +35,7 @@ const router: Router = express.Router();
  *       500:
  *          description: Internal Server Error.
  */
-router.post("/:id", isAdmin, asyncCatch(createAdmin));
+
 
 /**
  * @swagger

@@ -1,5 +1,5 @@
 import express from "express";
-import adminRouter from "./admin";
+import adminRouter from "./admin/admin";
 import analyticsRouter from "./analytics";
 import authRouter from "./auth/index";
 import bookmarkRouter from "./bookmark";
