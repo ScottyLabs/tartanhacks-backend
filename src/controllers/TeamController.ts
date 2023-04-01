@@ -146,7 +146,9 @@ export const searchTeamByName = async (
   res: Response
 ): Promise<void> => {
   const { name } = req.query;
-  const teams = await Team.find({ $text: { $search: name as string } });
+  const teams = await Team.find({ $text: { $search: name as string } })
+    .populate("admin")
+    .populate("members");
   res.json(teams);
 };
 
@@ -210,7 +212,10 @@ export const updateTeam = async (
   const { name, description, visible } = req.body;
   if (name) {
     const existingTeam = await findTeamByName(name);
-    if (existingTeam) {
+    if (
+      existingTeam &&
+      existingTeam._id.toString() !== userTeam._id.toString()
+    ) {
       return bad(res, "That team name is already taken!");
     }
   }

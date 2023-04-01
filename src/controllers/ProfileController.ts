@@ -350,9 +350,7 @@ export const declineAcceptance = async (
       return bad(res, "User does not have a profile yet. Create one first");
     }
 
-    if (user.hasStatus(Status.CONFIRMED)) {
-      return bad(res, "You already confirmed your attendance for the event!");
-    } else if (!user.hasStatus(Status.ADMITTED)) {
+    if (!user.hasStatus(Status.ADMITTED) && !user.hasStatus(Status.CONFIRMED)) {
       return unauthorized(res, "You have not been admitted to the event!");
     }
 
