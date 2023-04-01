@@ -5,6 +5,7 @@ import {
   fileMiddleware,
   getOwnProfile,
   removeProfilePicture,
+  setStatus,
   submitConfirmation,
   submitProfile,
   submitProfilePicture,
@@ -13,7 +14,7 @@ import {
 import { getOwnTeam } from "../controllers/TeamController";
 import { getOwnVerificationCode } from "../controllers/UserController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAuthenticated } from "./middleware";
+import { isAdmin, isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -393,5 +394,38 @@ router.get(
   isAuthenticated,
   asyncCatch(getOwnVerificationCode)
 );
+
+/**
+ * @swagger
+ * /user/set-status:
+ *  put:
+ *    summary: Set a user's status
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [User Module]
+ *    description: Set the status of a user. Access - Admin.
+ *    requestBody:
+ *      required: true
+ *      content:
+ *       application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              id:
+ *               type: string
+ *              status:
+ *                type: string
+ *                enum: [UNVERIFIED, VERIFIED, COMPLETED_PROFILE, ADMITTED, REJECTED, CONFIRMED, DECLINED]
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      400:
+ *        description: Bad request
+ *      403:
+ *        description: Unauthorized.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.put("/set-status", isAdmin, asyncCatch(setStatus));
 
 export default router;
