@@ -18,9 +18,7 @@
     "/admin/{id}": {
       "post": {
         "summary": "Make a user an admin",
-        "tags": [
-          "Admin Module"
-        ],
+        "tags": ["Admin Module"],
         "description": "Make a user into an admin. Access - Admin only",
         "security": [
           {
@@ -60,9 +58,7 @@
     "/admin/remove/{id}": {
       "post": {
         "summary": "Demote an admin",
-        "tags": [
-          "Admin Module"
-        ],
+        "tags": ["Admin Module"],
         "description": "Demote an existing admin. Access - Admin only",
         "security": [
           {
@@ -102,9 +98,7 @@
     "/analytics/": {
       "get": {
         "summary": "Get Analytics",
-        "tags": [
-          "Analytics Module"
-        ],
+        "tags": ["Analytics Module"],
         "description": "Compute and get analytics. Access - Admin only.",
         "security": [
           {
@@ -130,9 +124,7 @@
     "/auth/register": {
       "post": {
         "summary": "Register user",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Creates new user account. This sends a verification email to the user containing a link to verify their account. The base URL used in this verification link is from the request's `Origin` header. Access - Open\n",
         "requestBody": {
           "required": true,
@@ -173,9 +165,7 @@
     "/auth/login": {
       "post": {
         "summary": "Login user",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Verifies user credentials. Either the login credentials can be specified in the request body, or an access token can be specified in the header.. Access - Open\n",
         "requestBody": {
           "required": false,
@@ -225,9 +215,7 @@
     "/auth/verify/{token}": {
       "get": {
         "summary": "Verify a user by their token",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Verifies a user. Access - Open",
         "parameters": [
           {
@@ -256,9 +244,7 @@
     "/auth/verify/resend": {
       "post": {
         "summary": "Resend a user verification email",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Resend a user verification email. This sends a verification email to the user containing a link to verify their account. The base URL used in this verification link is from the request's `Origin` header. Access - Open\n",
         "requestBody": {
           "required": true,
@@ -292,9 +278,7 @@
     "/auth/request-reset": {
       "post": {
         "summary": "Send a password reset email to a user",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Send a password reset email to a user. This sends an email to the user containing a link to reset their password. The base URL used in this reset link is from the request's `Origin` header. Access - Open\n",
         "requestBody": {
           "required": true,
@@ -331,9 +315,7 @@
     "/auth/reset/password": {
       "post": {
         "summary": "Reset a user's password",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Reset a user's password Access - Open",
         "requestBody": {
           "required": true,
@@ -372,9 +354,7 @@
     "/auth/discord/verify": {
       "post": {
         "summary": "Get a user and their team using a verification code",
-        "tags": [
-          "Authentication Module"
-        ],
+        "tags": ["Authentication Module"],
         "description": "Get a user and their team using a verification code. Access - Open",
         "requestBody": {
           "required": true,
@@ -412,9 +392,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Bookmark Module"
-        ],
+        "tags": ["Bookmark Module"],
         "description": "Create a new bookmark for a user.\n\n`type` should be either \"PARTICIPANT\" or \"PROJECT\"\n\nif `PARTICIPANT`, then the `participant` field is required and should specify a user ID.\n\nif `PROJECT`, then the `project` field is required and should specify a project ID.\n\n`description` is an optional field for personal notes\n",
         "requestBody": {
           "required": true,
@@ -425,10 +403,7 @@
                 "properties": {
                   "bookmarkType": {
                     "type": "string",
-                    "enum": [
-                      "PARTICIPANT",
-                      "PROJECT"
-                    ],
+                    "enum": ["PARTICIPANT", "PROJECT"],
                     "required": true
                   },
                   "participant": {
@@ -469,9 +444,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Bookmark Module"
-        ],
+        "tags": ["Bookmark Module"],
         "description": "Get a bookmark by its ID\n",
         "parameters": [
           {
@@ -509,9 +482,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Bookmark Module"
-        ],
+        "tags": ["Bookmark Module"],
         "description": "Delete a bookmark by its ID\n",
         "parameters": [
           {
@@ -551,9 +522,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Bookmark Module"
-        ],
+        "tags": ["Bookmark Module"],
         "description": "Get all participant bookmarks of this user. Access - User.",
         "responses": {
           "200": {
@@ -579,9 +548,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Bookmark Module"
-        ],
+        "tags": ["Bookmark Module"],
         "description": "Get all project bookmarks of this user. Access - User.",
         "responses": {
           "200": {
@@ -607,9 +574,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Get a user's check in history. Access - Admin or User(Own).",
         "parameters": [
           {
@@ -646,9 +611,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Creates new Check in Item. Access - Admin.",
         "requestBody": {
           "required": true,
@@ -707,9 +670,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Edit existing check in item information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.",
         "parameters": [
           {
@@ -772,9 +733,7 @@
       },
       "get": {
         "summary": "Get Check In item by ID",
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Get a single Check In item by iD. Access - Public.",
         "parameters": [
           {
@@ -809,9 +768,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Delete Check In item by specifying ID. Access - Admin.",
         "parameters": [
           {
@@ -843,9 +800,7 @@
     "/check-in/": {
       "get": {
         "summary": "Get Check In items",
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Get all check in items. Access - Public.",
         "responses": {
           "200": {
@@ -871,9 +826,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Checks in a user to a check in item. Access - Admin Users can check in any user for any check in item. Participants can only check themselves in for check-in items that have self check-in enabled.",
         "parameters": [
           {
@@ -917,9 +870,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Check In Module"
-        ],
+        "tags": ["Check In Module"],
         "description": "Recalculate user points. Access - Admin",
         "responses": {
           "200": {
@@ -940,9 +891,7 @@
     "/judge": {
       "post": {
         "summary": "Create many judges from a list of emails",
-        "tags": [
-          "Judge Module"
-        ],
+        "tags": ["Judge Module"],
         "description": "Make a list of users (emails) into judges. Access - Admin only",
         "security": [
           {
@@ -982,9 +931,7 @@
     "/leaderboard": {
       "get": {
         "summary": "Get the leaderboard",
-        "tags": [
-          "Leaderboard Module"
-        ],
+        "tags": ["Leaderboard Module"],
         "description": "Get the leader board. Access - Public.",
         "responses": {
           "200": {
@@ -1010,9 +957,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Leaderboard Module"
-        ],
+        "tags": ["Leaderboard Module"],
         "description": "Get the current user's rank on the leaderboard. Access - User.",
         "responses": {
           "200": {
@@ -1038,9 +983,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Participants Module"
-        ],
+        "tags": ["Participants Module"],
         "description": "Retrieves list of participants in the database. Access - Recruiter or Admin",
         "parameters": [
           {
@@ -1073,9 +1016,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Participants Module"
-        ],
+        "tags": ["Participants Module"],
         "description": "Retrieves list of emails of participants who are verified but have not yet submitted their applications. Access - Recruiter or Admin",
         "responses": {
           "200": {
@@ -1098,9 +1039,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Participants Module"
-        ],
+        "tags": ["Participants Module"],
         "description": "Retrieves list of emails of participants that have been admitted but not yet confirmed. Access - Recruiter or Admin",
         "responses": {
           "200": {
@@ -1123,9 +1062,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Participants Module"
-        ],
+        "tags": ["Participants Module"],
         "description": "Retrieves list of emails of confirmed participants. Access - Recruiter or Admin",
         "responses": {
           "200": {
@@ -1148,9 +1085,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Prizes Module"
-        ],
+        "tags": ["Prizes Module"],
         "description": "Creates new prize. Access - Admin.",
         "requestBody": {
           "required": true,
@@ -1193,9 +1128,7 @@
       },
       "get": {
         "summary": "Get Prizes",
-        "tags": [
-          "Prizes Module"
-        ],
+        "tags": ["Prizes Module"],
         "description": "Get all Prizes. Access - Public.",
         "responses": {
           "200": {
@@ -1221,9 +1154,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Prizes Module"
-        ],
+        "tags": ["Prizes Module"],
         "description": "Edit existing prize information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.",
         "parameters": [
           {
@@ -1280,9 +1211,7 @@
       },
       "get": {
         "summary": "Get Prize by ID",
-        "tags": [
-          "Prizes Module"
-        ],
+        "tags": ["Prizes Module"],
         "description": "Get a single prize by iD. Access - Public.",
         "parameters": [
           {
@@ -1317,9 +1246,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Prizes Module"
-        ],
+        "tags": ["Prizes Module"],
         "description": "Delete prize by specifying ID. Access - Admin.",
         "parameters": [
           {
@@ -1356,9 +1283,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Projects Module"
-        ],
+        "tags": ["Projects Module"],
         "description": "Enters project for a prize. Access - User(Own)/Admin.",
         "parameters": [
           {
@@ -1403,9 +1328,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Projects Module"
-        ],
+        "tags": ["Projects Module"],
         "description": "Creates new project. Access - Authenticated Users.",
         "requestBody": {
           "required": true,
@@ -1462,9 +1385,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Projects Module"
-        ],
+        "tags": ["Projects Module"],
         "description": "Get all Projects. Access - Admin.",
         "responses": {
           "200": {
@@ -1490,9 +1411,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Projects Module"
-        ],
+        "tags": ["Projects Module"],
         "description": "Edit existing project information. All body parameters are optional. If unspecified, the parameters are not updated. Access - User(own)/Admin.",
         "parameters": [
           {
@@ -1557,9 +1476,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Projects Module"
-        ],
+        "tags": ["Projects Module"],
         "description": "Get a single project by iD. Access - User(own)/Admin.",
         "parameters": [
           {
@@ -1594,9 +1511,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Projects Module"
-        ],
+        "tags": ["Projects Module"],
         "description": "Delete project by specifying ID. Access - User(Own)/Admin.",
         "parameters": [
           {
@@ -1633,9 +1548,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Recruiter Module"
-        ],
+        "tags": ["Recruiter Module"],
         "description": "Create a new recruiter user. Access - Admin.",
         "requestBody": {
           "required": true,
@@ -1685,9 +1598,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Recruiter Module"
-        ],
+        "tags": ["Recruiter Module"],
         "description": "Make an existing user into a recruiter. Access - Admin.",
         "parameters": [
           {
@@ -1734,9 +1645,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Recruiter Module"
-        ],
+        "tags": ["Recruiter Module"],
         "description": "Demote an existing recruiter. Access - Admin.",
         "parameters": [
           {
@@ -1765,9 +1674,7 @@
     "/requests/team": {
       "get": {
         "summary": "View incoming and outgoing requests for the current user's team",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "View incoming and outgoing requests for the current user's team. Access - User",
         "security": [
           {
@@ -1793,9 +1700,7 @@
     "/requests/team/{teamId}": {
       "get": {
         "summary": "View incoming and outgoing requests for a team",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "View incoming and outgoing requests for a team. Access - Team Admin, Admin",
         "security": [
           {
@@ -1829,9 +1734,7 @@
     "/requests/user": {
       "get": {
         "summary": "View incoming and outgoing requests for the current user",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "View incoming and outgoing requests for the current user. Access - User",
         "security": [
           {
@@ -1857,9 +1760,7 @@
     "/requests/user/{userId}": {
       "get": {
         "summary": "View incoming and outgoing requests for a user",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "View incoming and outgoing requests for a user. Access - Owner, Admin",
         "security": [
           {
@@ -1893,9 +1794,7 @@
     "/requests/open/{requestId}": {
       "patch": {
         "summary": "Open a team request, marking it as seen",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "Opens a team request, marking it as seen.\nIf JOIN request, can only be accessed by team admin.\nIf INVITE request, can only be accessed by owner. Access - User\n",
         "security": [
           {
@@ -1929,9 +1828,7 @@
     "/requests/accept/{requestId}": {
       "post": {
         "summary": "Accept a team request",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "Accept a team request.\nIf JOIN request, can only be accessed by team admin.\nIf INVITE request, can only be accessed by owner. Access - User\n",
         "security": [
           {
@@ -1965,9 +1862,7 @@
     "/requests/decline/{requestId}": {
       "post": {
         "summary": "Decline a team request",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "Decline a team request.\nIf JOIN request, can only be accessed by team admin.\nIf INVITE request, can only be accessed by owner. Access - User\n",
         "security": [
           {
@@ -2001,9 +1896,7 @@
     "/requests/cancel/{requestId}": {
       "post": {
         "summary": "Cancel a team request",
-        "tags": [
-          "Team Requests Module"
-        ],
+        "tags": ["Team Requests Module"],
         "description": "Cancel a team request.\nIf INVITE request, can only be accessed by team admin.\nIf JOIN request, can only be accessed by owner. Access - User\n",
         "security": [
           {
@@ -2042,9 +1935,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Schedule Module"
-        ],
+        "tags": ["Schedule Module"],
         "description": "Creates new schedule item. Access - Admin.",
         "requestBody": {
           "required": true,
@@ -2112,9 +2003,7 @@
     "/schedule/{id}": {
       "patch": {
         "summary": "Edit schedule item",
-        "tags": [
-          "Schedule Module"
-        ],
+        "tags": ["Schedule Module"],
         "description": "Edit existing schedule item information. All body parameters are optional. If unspecified, the parameters are not updated. Access - Admin.",
         "parameters": [
           {
@@ -2183,9 +2072,7 @@
       },
       "get": {
         "summary": "Get Schedule item by ID",
-        "tags": [
-          "Schedule Module"
-        ],
+        "tags": ["Schedule Module"],
         "description": "Get a single schedule item by iD. Access - Public.",
         "parameters": [
           {
@@ -2220,9 +2107,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Schedule Module"
-        ],
+        "tags": ["Schedule Module"],
         "description": "Delete schedule item by specifying ID. Access - Admin.",
         "parameters": [
           {
@@ -2254,9 +2139,7 @@
     "/schedule/": {
       "get": {
         "summary": "Get Schedule items",
-        "tags": [
-          "Schedule Module"
-        ],
+        "tags": ["Schedule Module"],
         "description": "Get all schedule items. Access - Public.",
         "responses": {
           "200": {
@@ -2277,9 +2160,7 @@
     "/settings": {
       "get": {
         "summary": "Get the settings object",
-        "tags": [
-          "Settings Module"
-        ],
+        "tags": ["Settings Module"],
         "description": "Get the settings object. Access - Admin only",
         "security": [
           {
@@ -2306,9 +2187,7 @@
       },
       "put": {
         "summary": "Update the settings",
-        "tags": [
-          "Settings Module"
-        ],
+        "tags": ["Settings Module"],
         "description": "Update the settings. Access - Admin only",
         "security": [
           {
@@ -2379,9 +2258,7 @@
     "/settings/time/open": {
       "get": {
         "summary": "Get the time when registration opens",
-        "tags": [
-          "Settings Module"
-        ],
+        "tags": ["Settings Module"],
         "description": "Get the time when registration opens. Access - Public",
         "responses": {
           "200": {
@@ -2402,9 +2279,7 @@
     "/settings/time/close": {
       "get": {
         "summary": "Get the time when registration closes",
-        "tags": [
-          "Settings Module"
-        ],
+        "tags": ["Settings Module"],
         "description": "Get the time when registration closes. Access - Public",
         "responses": {
           "200": {
@@ -2425,9 +2300,7 @@
     "/settings/time/confirm": {
       "get": {
         "summary": "Get the confirmation deadline",
-        "tags": [
-          "Settings Module"
-        ],
+        "tags": ["Settings Module"],
         "description": "Get the confirmation deadline. Access - Public",
         "responses": {
           "200": {
@@ -2453,9 +2326,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Sponsor Module"
-        ],
+        "tags": ["Sponsor Module"],
         "description": "Creates new sponsor. Access - Admin.",
         "requestBody": {
           "required": true,
@@ -2496,9 +2367,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Sponsor Module"
-        ],
+        "tags": ["Sponsor Module"],
         "description": "Get sponsor information. Access - Admin.",
         "parameters": [
           {
@@ -2532,9 +2401,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Sponsor Module"
-        ],
+        "tags": ["Sponsor Module"],
         "description": "Gets all sponsors. Access - Public.",
         "responses": {
           "200": {
@@ -2555,9 +2422,7 @@
     "/team/{teamId}": {
       "get": {
         "summary": "Get information about a specific team",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Get information about a specific team. Access - User",
         "parameters": [
           {
@@ -2591,9 +2456,7 @@
     "/team/": {
       "post": {
         "summary": "Create and join a team",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Create and join a team. Access - User",
         "security": [
           {
@@ -2638,9 +2501,7 @@
       },
       "patch": {
         "summary": "Update a team's information",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Update a team's name, description, or visibility. All specified fields will be updated. Access - User, Team Admin",
         "security": [
           {
@@ -2687,9 +2548,7 @@
     "/team/join/{teamId}": {
       "post": {
         "summary": "Send a request to join a team",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Send a request to join a team. Access - User",
         "security": [
           {
@@ -2724,9 +2583,7 @@
     "/team/invite/{userId}": {
       "post": {
         "summary": "Invite a user to a team by their ID",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Invite a user to a team by their ID. Access - User, Team Admin",
         "security": [
           {
@@ -2760,9 +2617,7 @@
     "/team/invite": {
       "post": {
         "summary": "Invite a user to a team by their email address",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Invite a user to a team by their email address. Access - User, Team Admin",
         "security": [
           {
@@ -2803,9 +2658,7 @@
     "/team/kick/{userId}": {
       "post": {
         "summary": "Kick a user from your team",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Kick a user from your team. Access - User, Team Admin",
         "security": [
           {
@@ -2839,9 +2692,7 @@
     "/team/promote/{userId}": {
       "post": {
         "summary": "Promote another member of your team into the admin",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Promote another member of your team into the admin. This will remove your admin status. Access - User, Team Admin",
         "security": [
           {
@@ -2875,9 +2726,7 @@
     "/team/leave": {
       "post": {
         "summary": "Leave your current team",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Leave your current team. Access - User",
         "security": [
           {
@@ -2908,9 +2757,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Get a single project by team ID. Access - User",
         "parameters": [
           {
@@ -2942,9 +2789,7 @@
     "/teams": {
       "get": {
         "summary": "List all existing teams",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "List all existing teams. Access - User",
         "security": [
           {
@@ -2970,9 +2815,7 @@
     "/teams/search": {
       "get": {
         "summary": "Search for a team based on name",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Search for a team based on name. Access - User",
         "security": [
           {
@@ -3006,9 +2849,7 @@
     "/teams/presenting-live": {
       "get": {
         "summary": "Get teams that will be presenting live",
-        "tags": [
-          "Teams Module"
-        ],
+        "tags": ["Teams Module"],
         "description": "Get list of teams that will be presenting their projects live. Access - Admin",
         "security": [
           {
@@ -3034,9 +2875,7 @@
     "/test-account": {
       "post": {
         "summary": "Create a new short-lived test account",
-        "tags": [
-          "Test Account Module"
-        ],
+        "tags": ["Test Account Module"],
         "security": [
           {
             "apiKeyAuth": []
@@ -3079,9 +2918,7 @@
     "/test-account/all": {
       "delete": {
         "summary": "Delete all test accounts",
-        "tags": [
-          "Test Account Module"
-        ],
+        "tags": ["Test Account Module"],
         "security": [
           {
             "apiKeyAuth": []
@@ -3104,9 +2941,7 @@
     "/test-account/{id}": {
       "delete": {
         "summary": "Delete a test account",
-        "tags": [
-          "Test Account Module"
-        ],
+        "tags": ["Test Account Module"],
         "security": [
           {
             "apiKeyAuth": []
@@ -3137,9 +2972,7 @@
     "/user/name/available": {
       "post": {
         "summary": "Check if a display name is still available",
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "security": [
           {
             "apiKeyAuth": []
@@ -3178,9 +3011,7 @@
     "/user/profile": {
       "get": {
         "summary": "Get current user's application profile",
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Get current user's application profile. Access - Owner",
         "security": [
           {
@@ -3207,9 +3038,7 @@
       },
       "put": {
         "summary": "Submit a user application",
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Submit a user application. Access - User only",
         "security": [
           {
@@ -3257,12 +3086,7 @@
                   },
                   "level": {
                     "type": "string",
-                    "enum": [
-                      "Undergraduate",
-                      "Masters",
-                      "Doctorate",
-                      "Other"
-                    ]
+                    "enum": ["Undergraduate", "Masters", "Doctorate", "Other"]
                   },
                   "graduationYear": {
                     "type": "integer",
@@ -3272,12 +3096,7 @@
                   },
                   "gender": {
                     "type": "string",
-                    "enum": [
-                      "Male",
-                      "Female",
-                      "Prefer not to say",
-                      "Other"
-                    ],
+                    "enum": ["Male", "Female", "Prefer not to say", "Other"],
                     "required": true
                   },
                   "genderOther": {
@@ -3313,19 +3132,11 @@
                   },
                   "hackathonExperience": {
                     "type": "string",
-                    "enum": [
-                      0,
-                      "0-3",
-                      "4+"
-                    ]
+                    "enum": [0, "0-3", "4+"]
                   },
                   "workPermission": {
                     "type": "string",
-                    "enum": [
-                      "Citizen",
-                      "Sponsorship",
-                      "No sponsorship"
-                    ]
+                    "enum": ["Citizen", "Sponsorship", "No sponsorship"]
                   },
                   "workLocation": {
                     "type": "string"
@@ -3383,11 +3194,7 @@
                   },
                   "region": {
                     "type": "string,",
-                    "enum": [
-                      "Rural",
-                      "Suburban",
-                      "Urban"
-                    ]
+                    "enum": ["Rural", "Suburban", "Urban"]
                   },
                   "attendingPhysically": {
                     "type": "boolean"
@@ -3419,9 +3226,7 @@
     "/user/team": {
       "get": {
         "summary": "Get the current user's team",
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Get the current user's team. Access - User",
         "security": [
           {
@@ -3452,9 +3257,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Submit a user's resume. Must have an associated profile. Access - User",
         "requestBody": {
           "required": true,
@@ -3496,9 +3299,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Submit a profile picture for the current user. Must have an associated profile. Access - User",
         "requestBody": {
           "required": true,
@@ -3538,9 +3339,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Clear the profile picture for the current user. Must have an associated profile. Access - User",
         "responses": {
           "200": {
@@ -3566,9 +3365,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Submit a user's confirmation. Must have been accepted. Access - User",
         "requestBody": {
           "required": true,
@@ -3615,9 +3412,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Decline a user's acceptance. Must have been accepted. Access - User",
         "responses": {
           "200": {
@@ -3643,9 +3438,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Get a user's verification code. If it does not exist or is expired, generate a new one. Access - User",
         "responses": {
           "200": {
@@ -3671,9 +3464,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "User Module"
-        ],
+        "tags": ["User Module"],
         "description": "Set the status of a user. Access - Admin.",
         "requestBody": {
           "required": true,
@@ -3726,9 +3517,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Retrieves list of all users in the database. Access - Admin",
         "responses": {
           "200": {
@@ -3751,9 +3540,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Retrieves user info by user ID, Access - Admin or Owner",
         "parameters": [
           {
@@ -3784,9 +3571,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Get a user's resume. Must have an associated profile. Access - User",
         "parameters": [
           {
@@ -3815,9 +3600,7 @@
     "/users/{id}/profile": {
       "get": {
         "summary": "Get a user's application profile",
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Get a user's application profile. Access - Owner, Recruiter, or Admin only",
         "security": [
           {
@@ -3859,9 +3642,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Admit user by ID, Access - Admin",
         "parameters": [
           {
@@ -3895,9 +3676,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Reject user by ID, Access - Admin",
         "parameters": [
           {
@@ -3931,9 +3710,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Get a user's team, Access - Admin, Recruiter or Owner",
         "parameters": [
           {
@@ -3970,9 +3747,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Get a single project by user ID. Access - User",
         "parameters": [
           {
@@ -4009,9 +3784,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Admit users with completed profiles that have not been accepted/rejected yet, Access - Admin",
         "responses": {
           "200": {
@@ -4037,9 +3810,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Admit users from CMU with completed profiles that have not been accepted/rejected yet, Access - Admin",
         "responses": {
           "200": {
@@ -4065,9 +3836,7 @@
             "apiKeyAuth": []
           }
         ],
-        "tags": [
-          "Users Module"
-        ],
+        "tags": ["Users Module"],
         "description": "Reject users with completed profiles that have not been admitted/rejected yet, Access - Admin",
         "responses": {
           "200": {

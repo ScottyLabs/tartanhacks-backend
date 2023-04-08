@@ -396,12 +396,9 @@ export const displayNameAvailable = async (
 /**
  * Set the status of a user
  */
-export const setStatus = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const setStatus = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id, status } = req.body as { id: string; status: string }
+    const { id, status } = req.body as { id: string; status: string };
     const user = await User.findById(id);
     if (user == null) {
       return notFound(res, "User not found");
@@ -416,4 +413,4 @@ export const setStatus = async (
     console.error(err);
     error(res);
   }
-}
+};
