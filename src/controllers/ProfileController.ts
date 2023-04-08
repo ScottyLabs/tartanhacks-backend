@@ -22,7 +22,7 @@ import * as EventController from "./EventController";
 import { findUserTeam } from "./TeamController";
 import Jimp from "jimp";
 import { isRegistrationOpen, isConfirmationOpen } from "./SettingsController";
-import User from "src/models/User";
+import User from "../models/User";
 
 const upload = multer({ storage: multer.memoryStorage() });
 const MAX_IMAGE_WIDTH = 250;
