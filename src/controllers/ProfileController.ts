@@ -22,6 +22,7 @@ import * as EventController from "./EventController";
 import { findUserTeam } from "./TeamController";
 import Jimp from "jimp";
 import { isRegistrationOpen, isConfirmationOpen } from "./SettingsController";
+import User from "src/models/User";
 
 const upload = multer({ storage: multer.memoryStorage() });
 const MAX_IMAGE_WIDTH = 250;
@@ -391,3 +392,28 @@ export const displayNameAvailable = async (
         existingProfile.user.toString() === user._id.toString()
     );
 };
+
+/**
+ * Set the status of a user
+ */
+export const setStatus = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id, status } = req.body as { id: string; status: string }
+    const user = await User.findById(id);
+    if (user == null) {
+      return notFound(res, "User not found");
+    }
+
+    if (!(<any>Object).values(Status).includes(status)) {
+      return bad(res, "Invalid status");
+    }
+    await user.setStatus(Status[status.toUpperCase() as keyof typeof Status]);
+    res.status(200).send();
+  } catch (err) {
+    console.error(err);
+    error(res);
+  }
+}
