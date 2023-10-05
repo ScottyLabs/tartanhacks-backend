@@ -9,6 +9,7 @@ export enum Status {
   REJECTED = "REJECTED",
   CONFIRMED = "CONFIRMED",
   DECLINED = "DECLINED",
+  WAITLISTED = "WAITLISTED",
 }
 
 const statusLevelMapping = [
@@ -16,6 +17,7 @@ const statusLevelMapping = [
   [Status.VERIFIED],
   [Status.COMPLETED_PROFILE],
   [Status.ADMITTED, Status.REJECTED],
+  [Status.WAITLISTED],
   [Status.CONFIRMED, Status.DECLINED],
 ];
 
@@ -42,9 +44,13 @@ export function getStatusLevel(status: Status): number {
 export function doesStatusImply(srcStatus: Status, cmpStatus: Status): boolean {
   const srcStatusLevel = getStatusLevel(srcStatus);
   const cmpStatusLevel = getStatusLevel(cmpStatus);
+  const exactEqualityStates = [Status.REJECTED, Status.WAITLISTED];
 
-  if (srcStatus === Status.REJECTED || cmpStatus === Status.REJECTED) {
-    // If either status is REJECTED, only return true if other is also REJECTED
+  if (
+    exactEqualityStates.includes(srcStatus) ||
+    exactEqualityStates.includes(cmpStatus)
+  ) {
+    // If either status is REJECTED or WAITLISTED, only return true if other is the same
     return srcStatus === cmpStatus;
   }
 
