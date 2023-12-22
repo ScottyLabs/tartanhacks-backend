@@ -12,6 +12,8 @@ export interface ISettings extends Document {
   timeConfirm?: string;
   enableWhitelist?: number;
   whitelistedEmails?: string[];
+  maxParticipants: number;
+  autoWaitlist: boolean;
   waitlistText?: string;
   acceptanceText?: string;
   confirmationText?: string;

@@ -20,6 +20,19 @@ export const handleGetSettings = async (
 };
 
 /**
+ * Express handler for getting the waitlist status
+ */
+export const handleGetWaitlistStatus = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const settings = await getSettings();
+  res.json({
+    waitlist: settings.autoWaitlist
+  });
+};
+
+/**
  * Express handler for updating settings
  */
 export const updateSettings = async (
