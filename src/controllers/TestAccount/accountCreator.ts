@@ -55,7 +55,7 @@ export async function createTestAccountWithStatus(
   await user.save();
 
   let profile: IProfile | undefined = undefined;
-  if (doesStatusImply(status, Status.COMPLETED_PROFILE)) {
+  if (doesStatusImply(status, Status.COMPLETED_PROFILE) || status === Status.WAITLISTED) {
     profile = await createTestProfileForUser(user);
 
     if (doesStatusImply(status, Status.CONFIRMED)) {

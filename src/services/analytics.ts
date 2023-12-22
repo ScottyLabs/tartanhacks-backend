@@ -110,11 +110,11 @@ export const computeAnalytics = async (): Promise<Stats> => {
       }
 
       // Count verified
-      const isVerified = doesStatusImply(status, Status.VERIFIED);
+      const isVerified = status == Status.WAITLISTED || doesStatusImply(status, Status.VERIFIED);
       stats.verified += isVerified ? 1 : 0;
 
       // Count submitted
-      const isProfileComplete = doesStatusImply(
+      const isProfileComplete = status == Status.WAITLISTED || doesStatusImply(
         status,
         Status.COMPLETED_PROFILE
       );
@@ -125,11 +125,11 @@ export const computeAnalytics = async (): Promise<Stats> => {
       }
 
       // Count accepted
-      const isAdmitted = doesStatusImply(status, Status.ADMITTED);
+      const isAdmitted = status == Status.WAITLISTED || doesStatusImply(status, Status.ADMITTED);
       stats.admitted += isAdmitted ? 1 : 0;
 
       // Count confirmed
-      const isConfirmed = doesStatusImply(status, Status.CONFIRMED);
+      const isConfirmed = status == Status.WAITLISTED || doesStatusImply(status, Status.CONFIRMED);
       stats.confirmed += isConfirmed ? 1 : 0;
 
       // Count declined

@@ -114,7 +114,10 @@ export const admitUser = async (req: Request, res: Response): Promise<void> => {
     if (user == null) {
       return bad(res, "User not found");
     }
-    if (!user.hasStatus(Status.COMPLETED_PROFILE)) {
+    if (
+      !user.hasStatus(Status.COMPLETED_PROFILE) &&
+      !user.hasStatus(Status.WAITLISTED)
+    ) {
       return bad(res, "User has not completed their profile yet!");
     }
 
@@ -169,7 +172,14 @@ export const admitAllUsers = async (
     const tartanhacks = await getTartanHacks();
 
     const users = await User.find({
-      status: Status.COMPLETED_PROFILE,
+      $or: [
+        {
+          status: Status.COMPLETED_PROFILE,
+        },
+        {
+          status: Status.WAITLISTED,
+        },
+      ],
     });
 
     const promises = [];
@@ -200,7 +210,14 @@ export const rejectAllUsers = async (
     const tartanhacks = await getTartanHacks();
 
     const users = await User.find({
-      status: Status.COMPLETED_PROFILE,
+      $or: [
+        {
+          status: Status.COMPLETED_PROFILE,
+        },
+        {
+          status: Status.WAITLISTED,
+        },
+      ]
     });
 
     const promises = [];
@@ -234,7 +251,7 @@ export const rejectUser = async (
     if (user == null) {
       return bad(res, "User not found");
     }
-    if (!user.hasStatus(Status.COMPLETED_PROFILE)) {
+    if (!user.hasStatus(Status.COMPLETED_PROFILE) && !user.hasStatus(Status.WAITLISTED)) {
       return bad(res, "User has not completed their profile yet!");
     }
     const profile = await Profile.findOne({
