@@ -217,7 +217,7 @@ export const rejectAllUsers = async (
         {
           status: Status.WAITLISTED,
         },
-      ]
+      ],
     });
 
     const promises = [];
@@ -251,7 +251,10 @@ export const rejectUser = async (
     if (user == null) {
       return bad(res, "User not found");
     }
-    if (!user.hasStatus(Status.COMPLETED_PROFILE) && !user.hasStatus(Status.WAITLISTED)) {
+    if (
+      !user.hasStatus(Status.COMPLETED_PROFILE) &&
+      !user.hasStatus(Status.WAITLISTED)
+    ) {
       return bad(res, "User has not completed their profile yet!");
     }
     const profile = await Profile.findOne({

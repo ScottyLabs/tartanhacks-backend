@@ -28,7 +28,7 @@ export const handleGetWaitlistStatus = async (
 ): Promise<void> => {
   const settings = await getSettings();
   res.json({
-    waitlist: settings.autoWaitlist
+    waitlist: settings.autoWaitlist,
   });
 };
 

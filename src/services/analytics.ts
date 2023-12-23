@@ -110,14 +110,14 @@ export const computeAnalytics = async (): Promise<Stats> => {
       }
 
       // Count verified
-      const isVerified = status == Status.WAITLISTED || doesStatusImply(status, Status.VERIFIED);
+      const isVerified =
+        status == Status.WAITLISTED || doesStatusImply(status, Status.VERIFIED);
       stats.verified += isVerified ? 1 : 0;
 
       // Count submitted
-      const isProfileComplete = status == Status.WAITLISTED || doesStatusImply(
-        status,
-        Status.COMPLETED_PROFILE
-      );
+      const isProfileComplete =
+        status == Status.WAITLISTED ||
+        doesStatusImply(status, Status.COMPLETED_PROFILE);
       stats.submitted += isProfileComplete ? 1 : 0;
 
       if (isProfileComplete && !isCMU) {
@@ -125,11 +125,14 @@ export const computeAnalytics = async (): Promise<Stats> => {
       }
 
       // Count accepted
-      const isAdmitted = status == Status.WAITLISTED || doesStatusImply(status, Status.ADMITTED);
+      const isAdmitted =
+        status == Status.WAITLISTED || doesStatusImply(status, Status.ADMITTED);
       stats.admitted += isAdmitted ? 1 : 0;
 
       // Count confirmed
-      const isConfirmed = status == Status.WAITLISTED || doesStatusImply(status, Status.CONFIRMED);
+      const isConfirmed =
+        status == Status.WAITLISTED ||
+        doesStatusImply(status, Status.CONFIRMED);
       stats.confirmed += isConfirmed ? 1 : 0;
 
       // Count declined
