@@ -22,6 +22,14 @@
       "value": [],
       "description": "List of enabled email domains. Ignored if enableWhitelist is false."
     },
+    "maxParticipants": {
+      "value": 450,
+      "description": "Number of participants that need to confirm before opening the waitlist"
+    },
+    "autoWaitlist": {
+      "value": false,
+      "description": "Whether or not to automatically place new participants on the waitlist"
+    },
     "waitlistText": {
       "value": "You have been placed on the waitlist!",
       "description": "Email sent to participants who were placed on the waitlist"

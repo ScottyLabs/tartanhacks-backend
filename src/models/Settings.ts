@@ -17,6 +17,8 @@ const Settings: Schema<ISettings> = new Schema(
     timeConfirm: Date,
     enableWhitelist: Boolean,
     whitelistedEmails: [String],
+    maxParticipants: Number,
+    autoWaitlist: Boolean,
     waitlistText: String,
     acceptanceText: String,
     confirmationText: String,

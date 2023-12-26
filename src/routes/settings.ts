@@ -4,6 +4,7 @@ import {
   getConfirmTime,
   getOpenTime,
   handleGetSettings,
+  handleGetWaitlistStatus,
   updateSettings,
 } from "../controllers/SettingsController";
 import { asyncCatch } from "../util/asyncCatch";
@@ -148,5 +149,26 @@ router.get("/time/close", asyncCatch(getCloseTime));
  *          description: Internal Server Error.
  */
 router.get("/time/confirm", asyncCatch(getConfirmTime));
+
+/**
+ * @swagger
+ * /settings/waitlist:
+ *   get:
+ *     summary: Check whether the waitlist is open
+ *     tags: [Settings Module]
+ *     description: Returns whether newly registered users should be put on a waitlist. Access - Public
+ *     security:
+ *       - apiKeyAuth: []
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       404:
+ *          description: User does not exist.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.get("/waitlist", asyncCatch(handleGetWaitlistStatus));
 
 export default router;
