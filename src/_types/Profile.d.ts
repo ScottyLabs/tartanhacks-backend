@@ -12,6 +12,7 @@ export interface IProfile extends Document {
   event: ObjectId;
   user: ObjectId;
   firstName: string;
+  middleName?: string;
   lastName: string;
   displayName: string;
   age: number;
@@ -24,20 +25,19 @@ export interface IProfile extends Document {
   ethnicityOther?: string;
   phoneNumber: string;
   major?: string;
-  coursework?: string;
-  languages?: string;
+  courses?: string[];
+  programmingLanguages?: string[];
+  otherSkills?: string[];
   hackathonExperience?: Profile.HackathonExperience;
   workPermission?: Profile.WorkPermission;
   workLocation?: string;
-  workStrengths?: string;
-  sponsorRanking?: ObjectId[];
   resume?: string;
   profilePicture?: string;
   github: string;
   design?: string;
   website?: string;
   essays?: string[];
-  dietaryRestrictions?: string;
+  dietaryRestrictions?: string[];
   shirtSize?: Profile.ShirtSize;
   wantsHardware?: boolean;
   address?: string;
@@ -47,6 +47,7 @@ export interface IProfile extends Document {
   updatedAt?: Date;
   totalPoints: number;
   attendingPhysically: boolean;
+  notes?: string;
 
   team?: ITeam;
 

@@ -123,11 +123,6 @@ export const submitProfile = async (
     delete profileArgs.resume;
 
     // Filter out invalid object IDs in sponsor ranking
-    if (profileArgs.sponsorRanking) {
-      profileArgs.sponsorRanking = profileArgs.sponsorRanking.filter((id) =>
-        ObjectId.isValid(id)
-      );
-    }
 
     // Check if user has uploaded a resume yet
     const resumeExists = await hasResume(user._id);
@@ -148,6 +143,7 @@ export const submitProfile = async (
       return bad(res, `Display name ${displayName} is taken!`);
     }
 
+    console.log('upserting', profileArgs)
     await Profile.findOneAndUpdate(
       { user: user._id, event: tartanhacks._id },
       {
