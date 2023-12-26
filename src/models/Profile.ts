@@ -52,6 +52,7 @@ const Profile: Schema<IProfile> = new Schema(
       required: true,
     },
     firstName: { type: String, required: true },
+    middleName: { type: String },
     lastName: { type: String, required: true },
     displayName: { type: String, required: true },
     age: { type: Number },
@@ -108,8 +109,9 @@ const Profile: Schema<IProfile> = new Schema(
       },
     },
     major: String,
-    coursework: String,
-    languages: String,
+    courses: Array<String>,
+    programmingLanguages: Array<String>,
+    otherSkills: Array<String>,
     hackathonExperience: {
       type: String,
       enum: Object.values(HackathonExperience).concat([null]),
@@ -133,7 +135,7 @@ const Profile: Schema<IProfile> = new Schema(
     design: String,
     website: String,
     essays: [String],
-    dietaryRestrictions: String,
+    dietaryRestrictions: Array<String>,
     shirtSize: {
       type: String,
       enum: Object.values(ShirtSize).concat([null]),
@@ -150,6 +152,7 @@ const Profile: Schema<IProfile> = new Schema(
       required: true,
       default: false,
     },
+    notes: String,
   },
   {
     timestamps: {

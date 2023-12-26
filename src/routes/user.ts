@@ -141,8 +141,8 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *                 enum: [Undergraduate, Masters, Doctorate, Other]
  *               graduationYear:
  *                 type: integer
- *                 minimum: 2022
- *                 maximum: 2027
+ *                 minimum: 2023
+ *                 maximum: 2028
  *                 required: true
  *               gender:
  *                 type: string
@@ -160,10 +160,18 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *                 validation: '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$'
  *               major:
  *                 type: string
- *               coursework:
- *                 type: string
- *               languages:
- *                 type: string
+ *               courses:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               programmingLanguages:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               otherSkills:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *               hackathonExperience:
  *                 type: string
  *                 enum: [0, 0-3, 4+]
@@ -174,8 +182,6 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *                 type: string
  *               workStrengths:
  *                 type: string
- *               sponsorRanking:
- *                 type: array
  *                 items:
  *                   type: string
  *               github:
@@ -190,7 +196,9 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *                 items:
  *                   type: string
  *               dietaryRestrictions:
- *                 type: string
+ *                 type: array
+ *                 items:
+ *                   type: string
  *               shirtSize:
  *                 type: string
  *                 enum: [XS, S, M, L, XL, XXL, WXS, WS, WM, WL, WXL, WXXL]
@@ -203,6 +211,8 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *                 enum: [Rural, Suburban, Urban]
  *               attendingPhysically:
  *                 type: boolean
+ *               notes:
+ *                 type: string
  *     responses:
  *       200:
  *           description: Success.
