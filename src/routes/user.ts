@@ -187,6 +187,8 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *               github:
  *                 type: string
  *                 required: true
+ *               linkedin:
+ *                 type: string
  *               design:
  *                 type: string
  *               website:

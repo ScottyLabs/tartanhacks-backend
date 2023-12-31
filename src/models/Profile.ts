@@ -111,6 +111,7 @@ const Profile: Schema<IProfile> = new Schema(
     major: String,
     courses: Array<String>,
     programmingLanguages: Array<String>,
+    linkedin: String,
     otherSkills: Array<String>,
     hackathonExperience: {
       type: String,

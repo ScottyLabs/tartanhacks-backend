@@ -34,6 +34,7 @@ export interface IProfile extends Document {
   resume?: string;
   profilePicture?: string;
   github: string;
+  linkedin?: string;
   design?: string;
   website?: string;
   essays?: string[];
