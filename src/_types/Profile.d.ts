@@ -25,9 +25,6 @@ export interface IProfile extends Document {
   ethnicityOther?: string;
   phoneNumber: string;
   major?: string;
-  courses?: string[];
-  programmingLanguages?: string[];
-  otherSkills?: string[];
   hackathonExperience?: Profile.HackathonExperience;
   workPermission?: Profile.WorkPermission;
   workLocation?: string;

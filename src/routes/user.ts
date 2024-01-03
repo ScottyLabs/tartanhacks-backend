@@ -160,18 +160,6 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *                 validation: '^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$'
  *               major:
  *                 type: string
- *               courses:
- *                 type: array
- *                 items:
- *                   type: string
- *               programmingLanguages:
- *                 type: array
- *                 items:
- *                   type: string
- *               otherSkills:
- *                 type: array
- *                 items:
- *                   type: string
  *               hackathonExperience:
  *                 type: string
  *                 enum: [0, 0-3, 4+]
