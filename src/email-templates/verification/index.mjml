@@ -37,7 +37,7 @@
           Verify your email by clicking on the button below.
         </mj-text>
         <mj-button
-          background-color="#F7C062"
+          background-color="#ff7aa5"
           href="{{url}}"
           font-family="Poppins, sans-serif"
           css-class="rounded-button"

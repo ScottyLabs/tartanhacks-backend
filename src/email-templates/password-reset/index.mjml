@@ -41,7 +41,7 @@
           To reset your password, click the button below.
         </mj-text>
         <mj-button
-          background-color="#F7C062"
+          background-color="#ff7aa5"
           color="#FFFFFF"
           href="{{url}}"
           font-family="Poppins"
