@@ -7,6 +7,7 @@ import {
 import isProduction from "../util/isProduction";
 import {
   CMUCollege,
+  CollegeLevel,
   Ethnicity,
   Gender,
   HackathonExperience,
@@ -60,6 +61,10 @@ const Profile: Schema<IProfile> = new Schema(
     college: {
       type: String,
       enum: Object.values(CMUCollege).concat([null]),
+    },
+    collegeLevel: {
+      type: String,
+      enum: Object.values(CollegeLevel).concat([null]),
     },
     graduationYear: {
       type: Number,

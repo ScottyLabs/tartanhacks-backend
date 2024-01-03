@@ -136,7 +136,7 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *               college:
  *                 type: string
  *                 enum: [SCS, CIT, CFA, Dietrich, MCS, Tepper, Heinz]
- *               level:
+ *               collegeLevel:
  *                 type: string
  *                 enum: [Undergraduate, Masters, Doctorate, Other]
  *               graduationYear:

@@ -18,6 +18,7 @@ export interface IProfile extends Document {
   age: number;
   school: string;
   college?: Profile.CMUCollege;
+  collegeLevel: Profile.CollegeLevel;
   graduationYear: number;
   gender: Profile.Gender;
   genderOther?: string;

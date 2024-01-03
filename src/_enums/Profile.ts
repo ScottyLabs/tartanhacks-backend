@@ -11,6 +11,13 @@ export enum CMUCollege {
   HEINZ = "Heinz",
 }
 
+export enum CollegeLevel {
+  UNDERGRADUATE = "Undergraduate",
+  MASTERS = "Masters",
+  DOCTORATE = "Doctorate",
+  OTHER = "Other",
+}
+
 export enum Gender {
   MALE = "Male",
   FEMALE = "Female",
