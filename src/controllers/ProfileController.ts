@@ -143,7 +143,6 @@ export const submitProfile = async (
       return bad(res, `Display name ${displayName} is taken!`);
     }
 
-    console.log("upserting", profileArgs);
     await Profile.findOneAndUpdate(
       { user: user._id, event: tartanhacks._id },
       {

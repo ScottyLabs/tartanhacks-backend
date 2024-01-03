@@ -155,7 +155,9 @@ export const verify = async (req: Request, res: Response): Promise<void> => {
       return notFound(res, "User not found " + email);
     }
 
-    await user.setStatus(Status.VERIFIED);
+    if (user.status === Status.UNVERIFIED) {
+      await user.setStatus(Status.VERIFIED);
+    }
     res.status(200).send();
   } catch (err) {
     console.error(err);
