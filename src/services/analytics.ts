@@ -234,7 +234,7 @@ export const computeAnalytics = async (): Promise<Stats> => {
       if (profile.dietaryRestrictions && isConfirmed) {
         profile.dietaryRestrictions.forEach((restriction: string) => {
           if (!stats.dietaryRestrictions[restriction]) {
-            stats.dietaryRestrictions[restriction] = 1;
+            stats.dietaryRestrictions[restriction] = 0;
           }
           stats.dietaryRestrictions[restriction] += 1;
         });
