@@ -50,11 +50,6 @@ export const getParticipantsPipeline = (
       },
     },
     {
-      $match: {
-        profile: { $exists: true },
-      },
-    },
-    {
       $lookup: {
         from: "teams",
         let: { userId: "$_id", eventId },
