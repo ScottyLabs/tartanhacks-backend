@@ -232,11 +232,12 @@ export const computeAnalytics = async (): Promise<Stats> => {
 
       //Dietary restrictions
       if (profile.dietaryRestrictions && isConfirmed) {
-        const restriction = profile.dietaryRestrictions;
-        if (!stats.dietaryRestrictions[restriction]) {
-          stats.dietaryRestrictions[restriction] = 0;
-        }
-        stats.dietaryRestrictions[restriction] += 1;
+        profile.dietaryRestrictions.forEach((restriction: string) => {
+          if (!stats.dietaryRestrictions[restriction]) {
+            stats.dietaryRestrictions[restriction] = 0;
+          }
+          stats.dietaryRestrictions[restriction] += 1;
+        });
       }
 
       //Count attendance modes

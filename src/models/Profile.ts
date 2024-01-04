@@ -138,7 +138,7 @@ const Profile: Schema<IProfile> = new Schema(
     design: String,
     website: String,
     essays: [String],
-    dietaryRestrictions: Array<String>,
+    dietaryRestrictions: [String],
     shirtSize: {
       type: String,
       enum: Object.values(ShirtSize).concat([null]),
