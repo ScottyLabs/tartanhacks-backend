@@ -71,16 +71,29 @@ export const sendRecruiterCreationEmail = async (
 export const sendStatusUpdateEmail = async (
   email: string,
   name: string,
+  admitted: boolean,
   redirectUrl?: string
 ): Promise<void> => {
   const url = redirectUrl ?? `${process.env.FRONTEND_URL}`;
-  await sendTemplateEmail(
-    [email],
-    "[TartanHacks] Update regarding your application",
-    "status-update",
-    {
-      name,
-      url,
-    }
-  );
+  if (admitted) {
+    await sendTemplateEmail(
+      [email],
+      "[TartanHacks] You have been accepted to TartanHacks!",
+      "admission",
+      {
+        name,
+        url,
+      }
+    );
+  } else {
+    await sendTemplateEmail(
+      [email],
+      "[TartanHacks] Update regarding your application",
+      "status-update",
+      {
+        name,
+        url,
+      }
+    );
+  }
 };

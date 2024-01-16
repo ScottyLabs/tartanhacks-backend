@@ -1,0 +1,76 @@
+<mjml>
+  <mj-head>
+    <mj-style>
+      .rounded-button a { border-radius: 10px; box-shadow: 0 4px 6px hsla(0, 0%,
+      46%, 0.2), 0 1px 3px hsla(0, 0%, 46%, 0.2); }
+    </mj-style>
+    <mj-style>
+      @import
+      url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-section border="solid black 1px" background-color="#fff">
+      <mj-column width="80%">
+        <mj-text
+          align="center"
+          color="#000"
+          font-size="40px"
+          font-family="Poppins, sans-serif"
+        >
+          TartanHacks
+        </mj-text>
+        <mj-text
+          align="left"
+          color="#000"
+          font-size="12px"
+          font-family="Poppins, sans-serif"
+        >
+          Hey {{name}},
+        </mj-text>
+        <mj-text
+          align="left"
+          color="#000"
+          font-size="12px"
+          font-family="Poppins, sans-serif"
+        >
+        After reviewing your skills and qualifications, we are pleased to inform you that your application to TartanHacks has been accepted! To confirm your attendance, please access the TartanHacks portal <a href="{{url}}">here</a>. You will have 5 days from the receipt of this email to confirm your participation.
+        </mj-text>
+        <mj-button
+          background-color="#ff7aa5"
+          href="{{url}}"
+          font-family="Poppins, sans-serif"
+          css-class="rounded-button"
+        >
+          Access Portal
+        </mj-button>
+        <mj-text
+          align="left"
+          color="#000"
+          font-size="12px"
+          font-family="Poppins, sans-serif"
+        >
+        We’ll be sending out more details closer to the hackathon date (February 2-3). If you need venue and schedule information, please refer to our website <a href="tartanhacks.com">tartanhacks.com</a>. For those who need to travel to Pittsburgh, we would like to remind you that unfortunately we are unable to provide any travel reimbursement this year. If you have any questions or concerns, feel free to reach out to us at <a href="mailto:tartanhacks@scottylabs.org">tartanhacks@scottylabs.org</a>.
+        </mj-text>
+        <mj-text
+          align="left"
+          color="#000"
+          font-size="12px"
+          font-family="Poppins, sans-serif"
+        >
+        We look forward to seeing you at TartanHacks!
+        </mj-text>
+        <mj-text
+          align="left"
+          color="#000"
+          font-size="12px"
+          font-family="Poppins, sans-serif"
+        >
+        Best regards,
+        <br>
+        TartanHacks Organizing Team
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

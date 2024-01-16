@@ -127,7 +127,7 @@ export const admitUser = async (req: Request, res: Response): Promise<void> => {
     });
 
     await user.setStatus(Status.ADMITTED);
-    await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
+    await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker", true);
     res.status(200).send();
   } catch (err) {
     res.status(500).json(err);
@@ -152,7 +152,7 @@ export const admitAllCMU = async (
           user: user._id,
           event: tartanhacks._id,
         });
-        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
+        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker", true);
       };
       promises.push(promise());
     }
@@ -190,7 +190,7 @@ export const admitAllUsers = async (
           user: user._id,
           event: tartanhacks._id,
         });
-        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
+        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker", true);
       };
       promises.push(promise());
     }
@@ -228,7 +228,7 @@ export const rejectAllUsers = async (
           user: user._id,
           event: tartanhacks._id,
         });
-        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
+        await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker", false);
       };
       promises.push(promise);
     }
@@ -262,7 +262,7 @@ export const rejectUser = async (
       user: user._id,
     });
     await user.setStatus(Status.REJECTED);
-    await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker");
+    await sendStatusUpdateEmail(user.email, profile?.firstName ?? "hacker", false);
     res.status(200).send();
   } catch (err) {
     res.status(500).json(err);
