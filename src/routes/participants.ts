@@ -5,6 +5,7 @@ import {
   getConfirmedUserEmails,
   getMentorEmails,
   getParticipants,
+  getUnverifiedUserEmails,
   getVerifiedUserEmails,
 } from "../controllers/UsersController";
 import { asyncCatch } from "../util/asyncCatch";
@@ -43,6 +44,29 @@ const router: Router = express.Router();
  *        description: Internal Server Error.
  */
 router.get("/", isRecruiterOrAdmin, asyncCatch(getParticipants));
+
+/**
+ * @swagger
+ * /participants/unverified:
+ *  get:
+ *    summary: Get emails of unverified participants
+ *    security:
+ *    - apiKeyAuth: []
+ *    tags: [Participants Module]
+ *    description: Retrieves list of emails of participants who have not verified their account. Access - Recruiter or Admin
+ *    responses:
+ *      200:
+ *        description: Success.
+ *      403:
+ *        description: Forbidden.
+ *      500:
+ *        description: Internal Server Error.
+ */
+router.get(
+  "/unverified",
+  isRecruiterOrAdmin,
+  asyncCatch(getUnverifiedUserEmails)
+);
 
 /**
  * @swagger
