@@ -34,7 +34,11 @@
           font-size="12px"
           font-family="Poppins, sans-serif"
         >
-        After reviewing your skills and qualifications, we are pleased to inform you that your application to TartanHacks has been accepted! To confirm your attendance, please access the TartanHacks portal <a href="{{url}}">here</a>. You will have 5 days from the receipt of this email to confirm your participation.
+          After reviewing your skills and qualifications, we are pleased to
+          inform you that your application to TartanHacks has been accepted! To
+          confirm your attendance, please access the TartanHacks portal
+          <a href="{{url}}">here</a>. You will have 5 days from the receipt of
+          this email to confirm your participation.
         </mj-text>
         <mj-button
           background-color="#ff7aa5"
@@ -50,7 +54,16 @@
           font-size="12px"
           font-family="Poppins, sans-serif"
         >
-        We’ll be sending out more details closer to the hackathon date (February 2-3). If you need venue and schedule information, please refer to our website <a href="tartanhacks.com">tartanhacks.com</a>. For those who need to travel to Pittsburgh, we would like to remind you that unfortunately we are unable to provide any travel reimbursement this year. If you have any questions or concerns, feel free to reach out to us at <a href="mailto:tartanhacks@scottylabs.org">tartanhacks@scottylabs.org</a>.
+          We’ll be sending out more details closer to the hackathon date
+          (February 2-3). If you need venue and schedule information, please
+          refer to our website <a href="tartanhacks.com">tartanhacks.com</a>.
+          For those who need to travel to Pittsburgh, we would like to remind
+          you that unfortunately we are unable to provide any travel
+          reimbursement this year. If you have any questions or concerns, feel
+          free to reach out to us at
+          <a href="mailto:tartanhacks@scottylabs.org"
+            >tartanhacks@scottylabs.org</a
+          >.
         </mj-text>
         <mj-text
           align="left"
@@ -58,7 +71,7 @@
           font-size="12px"
           font-family="Poppins, sans-serif"
         >
-        We look forward to seeing you at TartanHacks!
+          We look forward to seeing you at TartanHacks!
         </mj-text>
         <mj-text
           align="left"
@@ -66,9 +79,9 @@
           font-size="12px"
           font-family="Poppins, sans-serif"
         >
-        Best regards,
-        <br>
-        TartanHacks Organizing Team
+          Best regards,
+          <br />
+          TartanHacks Organizing Team
         </mj-text>
       </mj-column>
     </mj-section>
