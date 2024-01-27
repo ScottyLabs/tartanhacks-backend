@@ -145,10 +145,25 @@ export const getAllCheckInItems = async (
 ): Promise<void> => {
   try {
     const tartanhacks = await getTartanHacks();
-    const result = await CheckinItem.find({ event: tartanhacks._id }).sort({
-      startTime: 1,
-    });
-
+    const result = await CheckinItem.aggregate([
+      { $match: { event: tartanhacks._id } },
+      { $sort: { startTime: 1 } },
+      {
+        $lookup: {
+          from: "checkins",
+          localField: "_id",
+          foreignField: "item",
+          as: "checkins",
+        },
+      },
+      {
+        $addFields: {
+          // number of participants that checked in
+          checkinCount: { $size: "$checkins" },
+        },
+      },
+      { $unset: "checkins" },
+    ]);
     res.status(200).json(result);
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
