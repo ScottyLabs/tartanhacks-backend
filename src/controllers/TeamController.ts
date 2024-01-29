@@ -242,7 +242,13 @@ export const updateTeamAdmin = async (
   res: Response
 ): Promise<void> => {
   const { id, name, description, visible } = req.body;
-  const team = await getTeamById(new ObjectId(id));
+
+  let team;
+  try {
+    team = await getTeamById(new ObjectId(id));
+  } catch (e) {
+    return bad(res, "Invalid team ID");
+  }
   if (!team) {
     return bad(res, "This team does not exist!");
   }
