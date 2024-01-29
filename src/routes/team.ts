@@ -10,10 +10,11 @@ import {
   leaveTeam,
   promoteUser,
   updateTeam,
+  updateTeamAdmin,
 } from "../controllers/TeamController";
 import { getProjectByTeamID } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
-import { isAuthenticated } from "./middleware";
+import { isAdmin, isAuthenticated } from "./middleware";
 
 const router: Router = express.Router();
 
@@ -88,7 +89,7 @@ router.post("/", isAuthenticated, asyncCatch(createTeam));
  * @swagger
  * /team/:
  *   patch:
- *     summary: Update a team's information
+ *     summary: Update the user's team's information
  *     tags: [Teams Module]
  *     description: Update a team's name, description, or visibility. All specified fields will be updated. Access - User, Team Admin
  *     security:
@@ -117,6 +118,42 @@ router.post("/", isAuthenticated, asyncCatch(createTeam));
  *          description: Internal Server Error.
  */
 router.patch("/", isAuthenticated, asyncCatch(updateTeam));
+
+/**
+ * @swagger
+ * /team/update-admin:
+ *   patch:
+ *     summary: Update a team's information
+ *     tags: [Teams Module]
+ *     description: Update the name, description, or visibility of an arbitrary team. All specified fields will be updated. Access - Admin
+ *     security:
+ *       - apiKeyAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               visible:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       403:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.patch("/update-admin", isAdmin, asyncCatch(updateTeamAdmin));
 
 /**
  * @swagger

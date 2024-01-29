@@ -227,7 +227,7 @@ export const updateTeam = async (
   if (description) {
     update.description = description;
   }
-  if (visible) {
+  if (visible !== undefined) {
     update.visible = visible;
   }
 
@@ -235,6 +235,38 @@ export const updateTeam = async (
   const updatedTeam = await findUserTeamPopulated(user._id);
 
   res.json(updatedTeam);
+};
+
+export const updateTeamAdmin = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id, name, description, visible } = req.body;
+  const team = await getTeamById(new ObjectId(id));
+  if (!team) {
+    return bad(res, "This team does not exist!");
+  }
+
+  if (name) {
+    const existingTeam = await findTeamByName(name);
+    if (existingTeam && existingTeam._id.toString() !== team._id.toString()) {
+      return bad(res, "That team name is already taken!");
+    }
+  }
+
+  const update: { name?: string; description?: string; visible?: boolean } = {};
+  if (name) {
+    update.name = name;
+  }
+  if (description) {
+    update.description = description;
+  }
+  if (visible !== undefined) {
+    update.visible = visible;
+  }
+
+  await Team.updateOne({ _id: team._id }, { $set: update });
+  res.status(200).send();
 };
 
 /**
