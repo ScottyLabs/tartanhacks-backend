@@ -13,9 +13,7 @@ import {
   getPointsPipeline,
 } from "../aggregations/checkin";
 
-import { ObjectId } from "bson";
-import Team from "src/models/Team";
-import Project from "src/models/Project";
+import Project from "../models/Project";
 import { findUserTeam } from "./TeamController";
 
 export const recalculatePoints = async (
