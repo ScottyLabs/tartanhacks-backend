@@ -278,7 +278,7 @@ export const checkInUser = async (
 
     if (item._id.equals(process.env.EXPO_EVENT_ID)) {
       // checking into judging expo
-      const team = await findUserTeam(user._id)
+      const team = await findUserTeam(user._id);
       const project = await Project.findOne({ team: team._id });
       const judgingUrl = process.env.JUDGING_URL;
       fetch(`${judgingUrl}/checkin?helixProjectId=${project._id}`, {
