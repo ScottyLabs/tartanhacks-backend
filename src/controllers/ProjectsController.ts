@@ -6,7 +6,6 @@ import Team from "../models/Team";
 import { bad, error, notFound } from "../util/error";
 import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
-import Checkin from "src/models/Checkin";
 
 const GRAND_PRIZE_NAME = "Scott Krulcik Grand Prize";
 
@@ -179,22 +178,6 @@ export const getAllProjects = async (
       return error(res);
     }
   }
-};
-
-export const getExpoProjects = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const expoEventId = new ObjectId(process.env.EXPO_EVENT_ID);
-  const checkins = await Checkin.find({ item: expoEventId });
-  const users = checkins.map((checkin) => checkin.user);
-  const teams = await Team.find({ members: { $in: users } });
-  const teamIds = teams.map((team) => team._id);
-  const uniqueIds = new Set(teamIds);
-  const expoProjects = await Project.find({
-    team: { $in: Array.from(uniqueIds) },
-  });
-  res.json(expoProjects);
 };
 
 export const getProjectByTeamID = async (

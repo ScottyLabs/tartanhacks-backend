@@ -5,7 +5,6 @@ import {
   editProject,
   enterProject,
   getAllProjects,
-  getExpoProjects,
   getProjectByID,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
@@ -145,27 +144,6 @@ router.post("/", isAuthenticated, asyncCatch(createNewProject));
  *          description: Internal Server Error.
  */
 router.patch("/:id", isProjectOwnerOrAdmin, asyncCatch(editProject));
-
-/**
- * @swagger
- * /projects/expo:
- *   get:
- *     summary: Get Projects that have been checked into the Expo
- *     security:
- *     - apiKeyAuth: []
- *     tags: [Projects Module]
- *     description: Get all Projects. Access - Admin.
- *     responses:
- *       200:
- *          description: Success.
- *       400:
- *          description: Bad request
- *       403:
- *          description: Unauthorized.
- *       500:
- *          description: Internal Server Error.
- */
-router.get("/expo/", isAdmin, asyncCatch(getExpoProjects));
 
 /**
  * @swagger
