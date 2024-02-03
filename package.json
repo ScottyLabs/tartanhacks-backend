@@ -31,6 +31,7 @@
     "@types/swagger-jsdoc": "^6.0.0",
     "@types/swagger-ui-express": "^4.1.2",
     "@zerollup/ts-transform-paths": "^1.7.18",
+    "axios": "^1.6.7",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",

@@ -15,6 +15,7 @@ import {
 
 import Project from "../models/Project";
 import { findUserTeam } from "./TeamController";
+import axios from "axios";
 
 export const recalculatePoints = async (
   req: Request,
@@ -281,8 +282,7 @@ export const checkInUser = async (
       const team = await findUserTeam(user._id);
       const project = await Project.findOne({ team: team._id });
       const judgingUrl = process.env.JUDGING_URL;
-      fetch(`${judgingUrl}/checkin?helixProjectId=${project._id}`, {
-        method: "PUT",
+      axios.put(`${judgingUrl}/checkin?helixProjectId=${project._id}`, {
         headers: {
           authorization: process.env.JUDGING_TOKEN,
         },
