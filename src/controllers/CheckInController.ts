@@ -13,6 +13,11 @@ import {
   getPointsPipeline,
 } from "../aggregations/checkin";
 
+import { ObjectId } from "bson";
+import Team from "src/models/Team";
+import Project from "src/models/Project";
+import { findUserTeam } from "./TeamController";
+
 export const recalculatePoints = async (
   req: Request,
   res: Response
@@ -272,6 +277,19 @@ export const checkInUser = async (
 
     await checkIn.save();
     await profile.save();
+
+    if (item._id.equals(process.env.EXPO_EVENT_ID)) {
+      // checking into judging expo
+      const team = await findUserTeam(user._id)
+      const project = await Project.findOne({ team: team._id });
+      const judgingUrl = process.env.JUDGING_URL;
+      fetch(`${judgingUrl}/checkin?helixProjectId=${project._id}`, {
+        method: "PUT",
+        headers: {
+          authorization: process.env.JUDGING_TOKEN,
+        },
+      });
+    }
 
     const json = checkIn.toJSON();
     res.json(json);

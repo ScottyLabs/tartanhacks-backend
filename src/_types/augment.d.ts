@@ -16,6 +16,10 @@ declare global {
       JWT_SECRET: string;
       AUTH_TOKEN_EXPIRY: string;
       MONGODB_URI: string;
+      JUDGING_URL: string;
+      JUDGING_TOKEN: string;
+      // object id for the judging expo checkin item
+      EXPO_EVENT_ID: string;
       // Email config
       EMAIL_HOST?: string;
       EMAIL_USER?: string;
