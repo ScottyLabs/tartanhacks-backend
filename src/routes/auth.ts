@@ -96,7 +96,8 @@ router.post("/login", asyncCatch(login));
  *   post:
  *     summary: Login user, returning data in the format expected by judging
  *     tags: [Authentication Module]
- *     description: > Verifies user credentials. Username and password must be specified
+ *     description: >
+ *       Verifies user credentials. Username and password must be specified
  *     requestBody:
  *       required: true
  *       content:
