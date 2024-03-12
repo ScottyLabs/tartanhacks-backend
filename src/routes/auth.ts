@@ -86,8 +86,6 @@ router.post("/register", asyncCatch(register));
  *          description: Success.
  *       403:
  *          description: Unauthorized.
- *       404:
- *          description: User does not exist.
  *       500:
  *          description: Internal Server Error.
  */
@@ -118,9 +116,7 @@ router.post("/login", asyncCatch(login));
  *       400:
  *          description: Malformed request.
  *       403:
- *          description: Incorrect password
- *       404:
- *          description: User does not exist.
+ *          description: Incorrect email or password
  *       500:
  *          description: Internal Server Error.
  */

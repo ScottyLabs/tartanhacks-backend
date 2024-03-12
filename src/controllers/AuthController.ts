@@ -72,11 +72,12 @@ const loginWithInfo = async (
   } else {
     try {
       const user = await User.findOne({ email });
+      const incorrectString = "Incorrect email or password";
       if (!user) {
-        return notFound(res, "Unknown account");
+        return unauthorized(res, incorrectString);
       } else {
         if (!user.checkPassword(password)) {
-          return bad(res, "Incorrect password");
+          return unauthorized(res, incorrectString);
         } else {
           // Return json of user without password hash
           const token = user.generateAuthToken();
@@ -110,13 +111,14 @@ export const loginJudging = async (
   if (!email || !password) {
     return bad(res, "Missing email or password");
   } else {
+    const incorrectString = "Incorrect email or password";
     try {
       const user = await User.findOne({ email });
       if (!user) {
-        return notFound(res, "Unknown account");
+        return unauthorized(res, incorrectString);
       } else {
         if (!user.checkPassword(password)) {
-          return unauthorized(res, "Incorrect password");
+          return unauthorized(res, incorrectString);
         } else {
           // Return json of user without password hash
           const json = {
