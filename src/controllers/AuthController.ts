@@ -72,12 +72,11 @@ const loginWithInfo = async (
   } else {
     try {
       const user = await User.findOne({ email });
-      const incorrectString = "Incorrect email or password";
       if (!user) {
-        return unauthorized(res, incorrectString);
+        return notFound(res, "Unknown account");
       } else {
         if (!user.checkPassword(password)) {
-          return unauthorized(res, incorrectString);
+          return bad(res, "Incorrect password");
         } else {
           // Return json of user without password hash
           const token = user.generateAuthToken();
