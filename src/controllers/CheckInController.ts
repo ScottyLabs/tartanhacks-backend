@@ -15,7 +15,6 @@ import {
 
 import Project from "../models/Project";
 import { findUserTeam } from "./TeamController";
-import axios from "axios";
 
 export const recalculatePoints = async (
   req: Request,
@@ -276,18 +275,6 @@ export const checkInUser = async (
 
     await checkIn.save();
     await profile.save();
-
-    if (item._id.equals(process.env.EXPO_EVENT_ID)) {
-      // checking into judging expo
-      const team = await findUserTeam(user._id);
-      const project = await Project.findOne({ team: team._id });
-      const judgingUrl = process.env.JUDGING_URL;
-      axios.put(`${judgingUrl}/checkin?helixProjectId=${project._id}`, {
-        headers: {
-          authorization: process.env.JUDGING_TOKEN,
-        },
-      });
-    }
 
     const json = checkIn.toJSON();
     res.json(json);

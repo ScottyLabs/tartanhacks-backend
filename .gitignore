@@ -25,3 +25,6 @@ npm-debug.log*
 .nyc_output/
 .vscode/
 coverage
+
+# asdf
+.tool-versions

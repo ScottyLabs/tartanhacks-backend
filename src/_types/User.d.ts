@@ -10,6 +10,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   admin: boolean;
+  judge?: boolean;
   name?: string;
   company?: ObjectId;
   lastLogin?: Date;

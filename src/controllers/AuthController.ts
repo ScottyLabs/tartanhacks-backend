@@ -4,7 +4,7 @@
 import { Request, Response } from "express";
 import { ObjectId } from "bson";
 import User from "../models/User";
-import { bad, error, notFound } from "../util/error";
+import { bad, error, notFound, unauthorized } from "../util/error";
 import * as EmailController from "./EmailController";
 import { isRegistrationOpen } from "./SettingsController";
 import { getByCode, getByToken } from "./UserController";
@@ -83,6 +83,48 @@ const loginWithInfo = async (
           const json = user.toJSON();
           delete json.password;
           res.json({ ...json, token });
+        }
+      }
+    } catch (err) {
+      error(res, err);
+    }
+  }
+};
+
+/**
+ * Login with email and password, returning data
+ * in the format expected by judging
+ * @param email email of the account to login
+ * @param password email of the password to login
+ */
+export const loginJudging = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { email: emailRaw, password } = req.body as {
+    email: string;
+    password: string;
+  };
+  const email = emailRaw?.trim()?.toLowerCase();
+  // Login with email & password
+  if (!email || !password) {
+    return bad(res, "Missing email or password");
+  } else {
+    const incorrectString = "Incorrect email or password";
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return unauthorized(res, incorrectString);
+      } else {
+        if (!user.checkPassword(password)) {
+          return unauthorized(res, incorrectString);
+        } else {
+          // Return json of user without password hash
+          const json = {
+            isAdmin: user.admin,
+            userType: user.judge ? "JUDGE" : "PARTICIPANT",
+          };
+          res.json(json);
         }
       }
     } catch (err) {
