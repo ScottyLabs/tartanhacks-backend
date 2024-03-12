@@ -6,6 +6,7 @@ import {
   resetPassword,
   sendPasswordResetEmail,
   verify,
+  loginJudging,
 } from "../controllers/AuthController";
 import { asyncCatch } from "../util/asyncCatch";
 import { getUserByVerificationCode } from "../controllers/AuthController";
@@ -91,6 +92,39 @@ router.post("/register", asyncCatch(register));
  *          description: Internal Server Error.
  */
 router.post("/login", asyncCatch(login));
+/**
+ * @swagger
+ * /auth/login/judging:
+ *   post:
+ *     summary: Login user, returning data in the format expected by judging
+ *     tags: [Authentication Module]
+ *     description: > Verifies user credentials. Username and password must be specified
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 format: password
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Malformed request.
+ *       403:
+ *          description: Incorrect password
+ *       404:
+ *          description: User does not exist.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.post("/login/judging", asyncCatch(loginJudging));
 
 /**
  * @swagger
