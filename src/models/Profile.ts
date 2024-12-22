@@ -139,6 +139,30 @@ const Profile: Schema<IProfile> = new Schema(
     city: String,
     country: String,
     diversityStatement: String,
+    tartanHacksCodeOfConductAcknowledgement: {
+      type: Boolean,
+      required: true,
+    },
+    tartanHacksMediaReleaseAcknowledgement: {
+      type: Boolean,
+      required: true,
+    },
+    tartanHacksMediaReleaseSignature: {
+      type: String,
+      required: true,
+    },
+    tartanHacksMediaReleaseDate: {
+      type: Date,
+      required: true,
+    },
+    mlhCodeOfConductAcknowledgement: {
+      type: Boolean,
+      required: true,
+    },
+    mlhTermsAndConditionsAcknowledgement: {
+      type: Boolean,
+      required: true,
+    },
     mlhEmailSubscription: {
       type: Boolean,
       default: false,
