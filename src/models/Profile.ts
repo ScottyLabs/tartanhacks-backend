@@ -90,23 +90,6 @@ const Profile: Schema<IProfile> = new Schema(
       required: true,
       validate: {
         validator: function (v: string) {
-          /*
-         18005551234
-         1 800 555 1234
-         +1 800 555-1234
-         +86 800 555 1234
-         1-800-555-1234
-         1 (800) 555-1234
-         (800)555-1234
-         (800) 555-1234
-         (800)5551234
-         800-555-1234
-         800.555.1234
-         800 555 1234x5678
-         8005551234 x5678
-         1    800    555-1234
-         1----800----555-1234
-        */
           return /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/.test(
             v
           );
@@ -137,7 +120,6 @@ const Profile: Schema<IProfile> = new Schema(
     },
     design: String,
     website: String,
-    essays: [String],
     dietaryRestrictions: [String],
     shirtSize: {
       type: String,
@@ -148,6 +130,18 @@ const Profile: Schema<IProfile> = new Schema(
     region: {
       type: String,
       enum: Object.values(Region).concat([null]),
+    },
+    wantsTravelReimbursement: {
+      type: Boolean,
+      default: false,
+    },
+    travelDetails: String,
+    city: String,
+    country: String,
+    diversityStatement: String,
+    mlhEmailSubscription: {
+      type: Boolean,
+      default: false,
     },
     confirmation: Confirmation,
     attendingPhysically: {
