@@ -1,6 +1,6 @@
 export enum StorageBucket {
-  RESUME = "2024-resumes",
-  PROFILE_PICTURES = "2024-profile-pictures",
+  RESUME = "2025-resumes",
+  PROFILE_PICTURES = "2025-profile-pictures",
 }
 
 /**
