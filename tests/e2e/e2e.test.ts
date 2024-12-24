@@ -36,7 +36,6 @@ const TEST_PROFILE = {
 
 const TEST_CONFIRMATION = {
   signatureLiability: true,
-  signatureCodeOfConduct: true,
   willMentor: false,
 };
 
