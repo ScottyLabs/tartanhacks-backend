@@ -64,7 +64,6 @@ export async function createTestAccountWithStatus(
     if (doesStatusImply(status, Status.CONFIRMED)) {
       profile.confirmation = {
         signatureLiability: true,
-        signatureCodeOfConduct: true,
         willMentor: false,
       };
       await profile.save();

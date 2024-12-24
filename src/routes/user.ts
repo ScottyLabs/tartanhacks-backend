@@ -130,6 +130,11 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *               age:
  *                 type: integer
  *                 required: true
+ *               city:
+ *                 type: string
+ *               country:
+ *                 type: string
+ *                 required: true
  *               school:
  *                 type: string
  *                 required: true
@@ -168,10 +173,6 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *                 enum: [Citizen, Sponsorship, No sponsorship]
  *               workLocation:
  *                 type: string
- *               workStrengths:
- *                 type: string
- *                 items:
- *                   type: string
  *               github:
  *                 type: string
  *                 required: true
@@ -181,10 +182,12 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *                 type: string
  *               website:
  *                 type: string
- *               essays:
- *                 type: array
- *                 items:
- *                   type: string
+ *               wantsTravelReimbursement:
+ *                 type: boolean
+ *               travelDetails:
+ *                 type: string
+ *               diversityStatement:
+ *                 type: string
  *               dietaryRestrictions:
  *                 type: array
  *                 items:
@@ -203,6 +206,26 @@ router.get("/team", isAuthenticated, asyncCatch(getOwnTeam));
  *                 type: boolean
  *               notes:
  *                 type: string
+ *               tartanHacksCodeOfConductAcknowledgement:
+ *                 type: boolean
+ *                 required: true
+ *               tartanHacksMediaReleaseAcknowledgement:
+ *                 type: boolean
+ *                 required: true
+ *               tartanHacksMediaReleaseSignature:
+ *                 type: string
+ *                 required: true
+ *               tartanHacksMediaReleaseDate:
+ *                 type: Date
+ *                 required: true
+ *               mlhCodeOfConductAcknowledgement:
+ *                 type: boolean
+ *                 required: true
+ *               mlhTermsAndConditionsAcknowledgement:
+ *                 type: boolean
+ *                 required: true
+ *               mlhEmailSubscription:
+ *                 type: boolean
  *     responses:
  *       200:
  *           description: Success.
@@ -332,8 +355,6 @@ router.delete(
  *            type: object
  *            properties:
  *              signatureLiability:
- *                type: boolean
- *              signatureCodeOfConduct:
  *                type: boolean
  *              willMentor:
  *                type: boolean
