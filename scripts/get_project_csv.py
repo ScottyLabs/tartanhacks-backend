@@ -13,8 +13,8 @@ TARTANHACKS_DB = "tartanhacks-24"
 PROJECT_FILE = "24_projects.csv"
 
 # Prizes to consider
-# The script will only write projects
-# that have submitted to at least one of these prizes
+# The script will only write projects that have submitted to at least one of these prizes
+# Leave empty to consider all prizes
 PRIZES_TO_CONSIDER = ["PLS Logistics Prize", "Ripple XRP Ledger Prize"]
 
 # connect to mongo
@@ -89,10 +89,10 @@ def load_project_info():
 
             for field in fields:
                 if field == "prizes_of_interest":
-                    prizes = [
-                        prize["name"] for prize in proj["prizes"]
-                        if prize["name"] in PRIZES_TO_CONSIDER
-                    ]
+                    prizes = [prize["name"] for prize in proj["prizes"]]
+                    if PRIZES_TO_CONSIDER:
+                        prizes = filter(lambda x: x in PRIZES_TO_CONSIDER, prizes)
+
                     if prizes:
                         submitted_to_prizes_to_consider = True
 
