@@ -306,8 +306,9 @@ export const enterProject = async (
           });
           const hasCheckedIn = histories.length !== 0;
           if (
-            hasCheckedIn &&
-            checkInItems[i].description === prize.eligibility // Check if this is the correct field
+            prize.eligibility == undefined ||
+            prize.eligibility == "" ||
+            (hasCheckedIn && checkInItems[i].description === prize.eligibility) // Check if this is the correct field
           ) {
             eligible = true;
           }
