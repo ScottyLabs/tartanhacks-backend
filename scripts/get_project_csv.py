@@ -1,9 +1,9 @@
 import pymongo
-import python_dotenv
+import dotenv
 import os
 
 # load env variables
-python_dotenv.load_dotenv("../.env")
+dotenv.load_dotenv("../.env")
 
 MONGO_CONNECTION_STRING = os.getenv("MONGODB_URI")
 # Project Database - Change to tartanhacks-25
