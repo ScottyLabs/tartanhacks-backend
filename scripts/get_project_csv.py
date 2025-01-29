@@ -6,6 +6,10 @@ import os
 dotenv.load_dotenv("../.env")
 
 MONGO_CONNECTION_STRING = os.getenv("MONGODB_URI")
+
+if not MONGO_CONNECTION_STRING:
+    raise ValueError("MONGODB_URI not set in .env")
+
 # Project Database - Change to tartanhacks-25
 TARTANHACKS_DB = "tartanhacks-24"
 
@@ -105,7 +109,7 @@ def load_project_info():
 
             if not submitted_to_prizes_to_consider:
                 continue
-                
+
             writer.writerow(proj_cleaned)
 
 if __name__ == "__main__":
