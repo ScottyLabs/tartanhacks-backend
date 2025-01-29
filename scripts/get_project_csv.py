@@ -14,7 +14,7 @@ if not MONGO_CONNECTION_STRING:
 TARTANHACKS_DB = "tartanhacks-24"
 
 # Output file
-PROJECT_FILE = "24_projects.csv"
+PROJECT_FILE = "../data/24_projects.csv"
 
 # Prizes to consider
 # The script will only write projects that have submitted to at least one of these prizes
@@ -79,6 +79,10 @@ def load_project_info():
 
     # write to CSV
     import csv
+    # Check if directory exists
+    if not os.path.exists("../data"):
+        os.makedirs("../data")
+
     with open(PROJECT_FILE, "w") as f:
         fields = ["name", "description", "url", "slides", "video", "team_name", "prizes_of_interest"]
         writer = csv.DictWriter(
