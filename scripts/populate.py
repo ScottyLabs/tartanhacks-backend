@@ -159,12 +159,49 @@ def delete_judging_database():
 
 def synchronize():
     delete_judging_database()
-    response = requests.get(f"{JUDGING_URL}/api/synchronize")
+    requests.get(f"{JUDGING_URL}/api/synchronize")
+
+
+def create_sponsors():
+    with open('../data/sponsors.csv', mode='r') as sponsors_file:
+        csv_reader = csv.DictReader(sponsors_file)
+        for row in csv_reader:
+            sponsor_data = {
+                "name": row["name"],
+            }
+            sponsor_response = requests.post(
+                f"{API_URL}/sponsor",
+                json=sponsor_data,
+                headers={"x-access-token": JWT_SECRET}
+            )
+
+            print(f"Response for sponsor creation: {sponsor_response.status_code} - {sponsor_response.text}")
+
+
+def create_prizes():
+    with open('../data/prizes.csv', mode='r') as prizes_file:
+        csv_reader = csv.DictReader(prizes_file)
+        for row in csv_reader:
+            prize_data = {
+                "name": row["name"],
+                "description": row["description"],
+                "eligibility": row["eligibility"],
+                "sponsorName": row["sponsorName"],
+            }
+            prize_response = requests.post(
+                f"{API_URL}/prizes",
+                json=prize_data,
+                headers={"x-access-token": JWT_SECRET}
+            )
+
+            print(f"Response for prize creation: {prize_response.status_code} - {prize_response.text}")
 
 
 if __name__=='__main__':
     # create_users(3)
     # create_judges(3)
-    create_projects(3)
+    # create_projects(3)
     # delete_projects()
     # synchronize()
+    # create_sponsors()
+    create_prizes()
