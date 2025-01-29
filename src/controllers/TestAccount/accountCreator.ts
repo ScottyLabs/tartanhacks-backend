@@ -103,6 +103,13 @@ export async function createTestProfileForUser(user: IUser): Promise<IProfile> {
     ethnicity: pickRandom(Object.values(Ethnicity)),
     phoneNumber: "1234567890",
     github: displayName,
+    tartanHacksCodeOfConductAcknowledgement: true,
+    tartanHacksMediaReleaseAcknowledgement: true,
+    tartanHacksMediaReleaseSignature: true,
+    tartanHacksMediaReleaseDate: new Date(),
+    mlhCodeOfConductAcknowledgement: true,
+    mlhTermsAndConditionsAcknowledgement: true,
+    mlhEmailSubscription: true,
   });
   await profile.save();
 
