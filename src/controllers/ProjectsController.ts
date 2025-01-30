@@ -6,10 +6,8 @@ import Team from "../models/Team";
 import { bad, error, notFound } from "../util/error";
 import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
-import Profile from "src/models/Profile";
 import CheckinItem from "src/models/CheckinItem";
 import Checkin from "src/models/Checkin";
-import { ICheckinItem } from "src/_types/CheckinItem";
 
 const GRAND_PRIZE_NAME = "Scott Krulcik Grand Prize";
 
@@ -294,27 +292,32 @@ export const enterProject = async (
     const members = team.members;
     let eligible = false;
 
-    await Promise.all(
-      members.map(async (member) => {
-        const checkInItems = await CheckinItem.find({
-          event: project.event,
-        }).sort("startTime");
-        for (let i = 0; i < checkInItems.length; i++) {
-          const histories = await Checkin.find({
-            user: member,
-            item: checkInItems[i]._id,
-          });
-          const hasCheckedIn = histories.length !== 0;
-          if (
-            prize.eligibility == undefined ||
-            prize.eligibility == "" ||
-            (hasCheckedIn && checkInItems[i].description === prize.eligibility) // Check if this is the correct field
-          ) {
-            eligible = true;
+    const requiredTalk = await CheckinItem.findById(prize.requiredTalk);
+
+    if (!requiredTalk) {
+      eligible = true;
+    } else {
+      await Promise.all(
+        members.map(async (member) => {
+          const checkInItems = await CheckinItem.find({
+            event: project.event,
+          }).sort("startTime");
+          for (let i = 0; i < checkInItems.length; i++) {
+            const histories = await Checkin.find({
+              user: member,
+              item: checkInItems[i]._id,
+            });
+            const hasCheckedIn = histories.length !== 0;
+            if (
+              hasCheckedIn &&
+              checkInItems[i]._id.toString() === prize.requiredTalk.toString()
+            ) {
+              eligible = true;
+            }
           }
-        }
-      })
-    );
+        })
+      );
+    }
 
     if (!eligible) {
       return bad(

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Prize from "../models/Prize";
 import Sponsor from "../models/Sponsor";
+import CheckinItem from "src/models/CheckinItem";
 import { bad, error, notFound } from "../util/error";
 import { getTartanHacks } from "./EventController";
 
@@ -49,7 +50,8 @@ export const createNewPrize = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { name, description, eligibility, sponsorName } = req.body;
+    const { name, description, eligibility, sponsorName, requiredTalk } =
+      req.body;
 
     const sponsor = await Sponsor.findOne({ name: sponsorName });
     if (sponsor == null) {
@@ -65,6 +67,11 @@ export const createNewPrize = async (
       eligibility: eligibility,
       provider: sponsor._id,
     });
+
+    const talk = await CheckinItem.findOne({ name: requiredTalk });
+    if (talk != null) {
+      prize.requiredTalk = talk._id;
+    }
 
     await prize.save();
 
