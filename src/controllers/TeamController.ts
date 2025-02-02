@@ -313,10 +313,8 @@ export const joinTeam = async (req: Request, res: Response): Promise<void> => {
   });
 
   if (existingRequest) {
-    return bad(
-      res,
-      "You already have an existing team request/invite for that team!"
-    );
+    res.json(existingRequest.toJSON());
+    return;
   }
 
   const teamRequest = new TeamRequest({
