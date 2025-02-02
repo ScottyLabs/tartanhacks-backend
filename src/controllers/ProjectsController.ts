@@ -342,3 +342,44 @@ export async function assignProjectLocations(
     return error(res);
   }
 }
+
+export const updateProjectTableNumber = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+  const { tableNumber } = req.body;
+
+  if (!id) {
+    return bad(res, "Missing Project ID");
+  }
+
+  if (!tableNumber) {
+    return bad(res, "Missing table number in request body");
+  }
+
+  try {
+    const project = await Project.findById(id);
+
+    if (!project) {
+      return notFound(res, "Project not found");
+    }
+
+    await project.updateOne({
+      $set: { tableNumber },
+    });
+
+    const updatedProject = await Project.findById(id);
+    const json = updatedProject.toJSON();
+    res.json({
+      ...json,
+    });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res, err.message);
+    } else {
+      console.error(err);
+      return error(res);
+    }
+  }
+};

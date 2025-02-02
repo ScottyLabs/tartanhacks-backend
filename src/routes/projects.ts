@@ -6,6 +6,7 @@ import {
   enterProject,
   getAllProjects,
   getProjectByID,
+  updateProjectTableNumber,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin, isAuthenticated, isProjectOwnerOrAdmin } from "./middleware";
@@ -221,5 +222,47 @@ router.get("/", isAdmin, asyncCatch(getAllProjects));
  *          description: Internal Server Error.
  */
 router.delete("/:id", isProjectOwnerOrAdmin, asyncCatch(deleteProject));
+
+/**
+ * @swagger
+ * /projects/{id}/location:
+ *   patch:
+ *     summary: Update project location/table number
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Projects Module]
+ *     description: Update a project's location/table number. Access - User(own)/Admin.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Project ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               location:
+ *                 type: string
+ *                 description: The new table number/location
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       403:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.patch(
+  "/:id/table-number",
+  isProjectOwnerOrAdmin,
+  asyncCatch(updateProjectTableNumber)
+);
 
 export default router;

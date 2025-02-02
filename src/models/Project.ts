@@ -33,6 +33,9 @@ const Project: Schema<IProject> = new Schema(
       required: true,
       default: false,
     },
+    tableNumber: {
+      type: String,
+    },
   },
   {
     timestamps: {
