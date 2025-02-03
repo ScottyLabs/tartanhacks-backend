@@ -6,6 +6,7 @@ import {
   handleGetSettings,
   handleGetWaitlistStatus,
   updateSettings,
+  getExpoConfig,
 } from "../controllers/SettingsController";
 import { asyncCatch } from "../util/asyncCatch";
 import { isAdmin } from "./middleware";
@@ -170,5 +171,33 @@ router.get("/time/confirm", asyncCatch(getConfirmTime));
  *          description: Internal Server Error.
  */
 router.get("/waitlist", asyncCatch(handleGetWaitlistStatus));
+
+/**
+ * @swagger
+ * /config/expo:
+ *   get:
+ *     summary: Get expo configuration
+ *     tags: [Settings Module]
+ *     description: Get expo start time and submission deadline
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 expoStartTime:
+ *                   type: string
+ *                   format: date-time
+ *                 submissionDeadline:
+ *                   type: string
+ *                   format: date-time
+ *       404:
+ *         description: Configuration not found
+ *       500:
+ *         description: Internal Server Error
+ */
+router.get("/expo", asyncCatch(getExpoConfig));
 
 export default router;

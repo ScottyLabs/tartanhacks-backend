@@ -178,3 +178,21 @@ export const getConfirmTime = async (
     res.status(404).send();
   }
 };
+
+/**
+ * Get the expo configuration
+ */
+export const getExpoConfig = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const settings = await getSettings();
+  if (settings && settings.expoStartTime && settings.submissionDeadline) {
+    res.json({
+      expoStartTime: settings.expoStartTime,
+      submissionDeadline: settings.submissionDeadline,
+    });
+  } else {
+    res.status(404).send();
+  }
+};

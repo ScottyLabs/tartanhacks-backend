@@ -10,6 +10,8 @@ export interface ISettings extends Document {
   timeOpen?: string;
   timeClose?: string;
   timeConfirm?: string;
+  expoStartTime?: Date;
+  submissionDeadline?: Date;
   enableWhitelist?: number;
   whitelistedEmails?: string[];
   maxParticipants?: number;
