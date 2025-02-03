@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 import express, { Express } from "express";
 import MongoMemoryServer from "mongodb-memory-server-core";
 import mongoose from "mongoose";
-import router from "src/routes";
-import { startup } from "src/util/startup";
+import router from "../src/routes";
+import { startup } from "../src/util/startup";
 
 let DB: MongoMemoryServer;
 
