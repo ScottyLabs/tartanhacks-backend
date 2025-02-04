@@ -6,8 +6,8 @@ import Team from "../models/Team";
 import { bad, error, notFound } from "../util/error";
 import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
-import CheckinItem from "src/models/CheckinItem";
-import Checkin from "src/models/Checkin";
+import CheckinItem from "../models/CheckinItem";
+import Checkin from "../models/Checkin";
 
 const GRAND_PRIZE_NAME = "Scott Krulcik Grand Prize";
 
