@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Prize from "../models/Prize";
 import Sponsor from "../models/Sponsor";
-import CheckinItem from "src/models/CheckinItem";
+import CheckinItem from "../models/CheckinItem";
 import { bad, error, notFound } from "../util/error";
 import { getTartanHacks } from "./EventController";
 
