@@ -2,7 +2,7 @@
   "name": "tartanhacks-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc --build && copyfiles -u 1 **/*.mjml dist",
     "start": "doppler setup -p tartanhacks-backend -c prd && doppler run -- node . || echo \"Did you run 'npm run build'?\"",
