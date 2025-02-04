@@ -25,6 +25,11 @@ const Prize: Schema<IPrize> = new Schema(
       ref: "Project",
       required: false,
     },
+    requiredTalk: {
+      type: Schema.Types.ObjectId,
+      ref: "CheckinItem",
+      required: false,
+    },
   },
   {
     timestamps: {

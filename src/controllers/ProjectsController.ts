@@ -6,6 +6,8 @@ import Team from "../models/Team";
 import { bad, error, notFound } from "../util/error";
 import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
+import CheckinItem from "src/models/CheckinItem";
+import Checkin from "src/models/Checkin";
 
 const GRAND_PRIZE_NAME = "Scott Krulcik Grand Prize";
 
@@ -277,6 +279,51 @@ export const enterProject = async (
     const prize = await Prize.findById(prizeID);
     if (!prize) {
       return bad(res, "Invalid Prize ID");
+    }
+
+    const teamID = project.team;
+
+    const team = await Team.findById(teamID);
+
+    if (!team) {
+      return bad(res, "Team not found");
+    }
+
+    const members = team.members;
+    let eligible = false;
+
+    const requiredTalk = await CheckinItem.findById(prize.requiredTalk);
+
+    if (!requiredTalk) {
+      eligible = true;
+    } else {
+      await Promise.all(
+        members.map(async (member) => {
+          const checkInItems = await CheckinItem.find({
+            event: project.event,
+          }).sort("startTime");
+          for (let i = 0; i < checkInItems.length; i++) {
+            const histories = await Checkin.find({
+              user: member,
+              item: checkInItems[i]._id,
+            });
+            const hasCheckedIn = histories.length !== 0;
+            if (
+              hasCheckedIn &&
+              checkInItems[i]._id.toString() === prize.requiredTalk.toString()
+            ) {
+              eligible = true;
+            }
+          }
+        })
+      );
+    }
+
+    if (!eligible) {
+      return bad(
+        res,
+        "You must have attended the sponsor talk to be eligible for this prize"
+      );
     }
 
     await project.updateOne({
