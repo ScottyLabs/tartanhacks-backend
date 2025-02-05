@@ -6,7 +6,7 @@ import pymongo
 
 load_dotenv()
 
-API_URL = 'http://localhost:4000'
+API_URL = 'https://dev.backend.tartanhacks.com'
 JUDGING_URL = 'http://localhost:3000'
 JWT_SECRET = os.getenv('JWT_SECRET')
 MONGO_CONNECTION_STRING = os.getenv("MONGODB_URI")
@@ -160,7 +160,6 @@ def delete_judging_database():
 
 
 def synchronize():
-    delete_judging_database()
     response = requests.get(f"{JUDGING_URL}/api/synchronize")
     print(f"Response for synchronization: {response.status_code} - {response.text}")
 
@@ -297,12 +296,13 @@ if __name__=='__main__':
     # create_judges(3)
     # create_projects(3)
     # delete_projects()
+    # delete_judging_database()
     # synchronize()
     # create_sponsors()
     # create_talks()
     # delete_checkins()
-    # delete_prizes()
-    # create_prizes()
+    delete_prizes()
+    create_prizes()
     # check_in_user()
     # submit_to_prize()
     # check_in_user(get_user_id("deny-brown@tartanhacks.com"), get_check_in_item_id("Talk 1"))
