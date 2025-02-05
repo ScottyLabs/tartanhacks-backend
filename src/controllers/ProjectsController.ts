@@ -108,8 +108,18 @@ export const editProject = async (
   }
 
   try {
-    await Project.findByIdAndUpdate(
-      id,
+    const project = await Project.findById(id);
+
+    if (!project) {
+      return notFound(res, "Project not found");
+    }
+
+    if (project.submitted) {
+      return bad(res, "Project already submitted");
+    }
+
+    await Project.updateOne(
+      { _id: id },
       { $set: req.body },
       { new: true },
       function (err, result) {
@@ -367,6 +377,45 @@ export const getPresentingTeams = async (
   } catch (err) {
     console.error(err);
     return error(res);
+  }
+};
+
+/**
+ * Submit a project
+ */
+export const submitProject = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params;
+
+  if (!id) {
+    return bad(res, "Missing Project ID");
+  }
+
+  try {
+    const project = await Project.findById(id);
+
+    if (!project) {
+      return notFound(res, "Project not found");
+    }
+
+    await project.updateOne({
+      $set: { submitted: true },
+    });
+
+    const updatedProject = await Project.findById(id);
+    const json = updatedProject.toJSON();
+    res.json({
+      ...json,
+    });
+  } catch (err) {
+    if (err.name === "CastError" || err.name === "ValidationError") {
+      return bad(res, err.message);
+    } else {
+      console.error(err);
+      return error(res);
+    }
   }
 };
 
