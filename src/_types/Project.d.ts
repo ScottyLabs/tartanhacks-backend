@@ -17,4 +17,6 @@ export interface IProject extends Document {
   createdAt: Date;
   updatedAt?: Date;
   presentingVirtually: boolean;
+  tableNumber?: string;
+  submitted: boolean;
 }

@@ -33,8 +33,11 @@ const Project: Schema<IProject> = new Schema(
       required: true,
       default: false,
     },
-    tableNumber: {
-      type: String,
+    tableNumber: String,
+    submitted: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
   {
