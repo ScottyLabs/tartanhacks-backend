@@ -38,6 +38,18 @@ export const createNewProject = async (
 
     const event = await getTartanHacks();
 
+    const expoConfig = await getExpoConfig();
+    if (!expoConfig) {
+      return bad(res, "Expo configuration not found");
+    }
+
+    if (Date.now() > expoConfig.submissionDeadline) {
+      return bad(
+        res,
+        "Project submission deadline has passed. Please contact the organizers if you need to save your project."
+      );
+    }
+
     const existingProjects = await Project.findOne({
       team: team,
       event: event._id,

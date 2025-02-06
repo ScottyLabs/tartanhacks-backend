@@ -247,6 +247,9 @@ def submit_to_prize(project_id, prize_id):
     print(f"Response for submitting project to prize: {response.status_code} - {response.text}")
 
 
+def delete_talks():
+    helix_db.drop_collection("checkin-items")
+
 def delete_checkins():
     helix_db.drop_collection("checkins")
 
@@ -291,20 +294,49 @@ def get_prize_id(name):
     return prize["_id"]
 
 
+def delete_schedule_items():
+    helix_db.drop_collection("schedule-items")
+
+
+def create_schedule_items():
+    with open('../data/events.csv', mode='r') as events_file:
+        csv_reader = csv.DictReader(events_file)
+        for row in csv_reader:
+            schedule_data = {
+                "name": row["name"],
+                "description": row["description"],
+                "startTime": int(row["startTime"]),
+                "endTime": int(row["endTime"]),
+                "location": row["location"],
+                "lat": 0,
+                "lng": 0,
+                "platform": "IN_PERSON",
+                "platformUrl": ""
+            }
+            response = requests.post(
+                f"{API_URL}/schedule",
+                json=schedule_data,
+                headers={"x-access-token": JWT_SECRET}
+            )
+            print(f"Response for schedule item creation: {response.status_code} - {response.text}")
+
+
+
 if __name__=='__main__':
     # create_users(3)
     # create_judges(3)
-    # create_projects(3)
     # delete_projects()
-    # delete_judging_database()
-    # synchronize()
+    create_projects(10)
+    delete_judging_database()
+    synchronize()
     # create_sponsors()
-    # create_talks()
     # delete_checkins()
-    delete_prizes()
-    create_prizes()
-    # check_in_user()
-    # submit_to_prize()
-    # check_in_user(get_user_id("deny-brown@tartanhacks.com"), get_check_in_item_id("Talk 1"))
-    # submit_to_prize(get_project_id("Project for Team deny-brown@tartanhacks.com"), get_prize_id("Best Use of AI"))
+    # delete_talks()
+    # create_talks()
+    # delete_prizes()
+    # create_prizes()
+    # check_in_user(get_user_id("jorey-amber@tartanhacks.com"), get_check_in_item_id("Sponsor Event: AppLovin (Tech Talk/Networking)"))
+    # submit_to_prize(get_project_id("Project for Team ealasaid-cyan@tartanhacks.com"), get_prize_id("Making Waves"))
+    # delete_schedule_items()
+    # create_schedule_items()
     ...
