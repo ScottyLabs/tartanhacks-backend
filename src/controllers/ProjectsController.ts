@@ -530,8 +530,28 @@ async function getExpoConfig(): Promise<{
   if (!settings || !settings.expoStartTime || !settings.submissionDeadline) {
     return null;
   }
+
+  // Convert dates to EST
+  const estFormatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
+
+  const expoStartTimeEST = new Date(
+    estFormatter.format(settings.expoStartTime)
+  );
+  const submissionDeadlineEST = new Date(
+    estFormatter.format(settings.submissionDeadline)
+  );
+
   return {
-    expoStartTime: settings.expoStartTime,
-    submissionDeadline: settings.submissionDeadline,
+    expoStartTime: expoStartTimeEST,
+    submissionDeadline: submissionDeadlineEST,
   };
 }
