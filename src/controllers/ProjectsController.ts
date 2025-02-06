@@ -124,7 +124,7 @@ export const saveProject = async (
       return bad(res, "Expo configuration not found");
     }
 
-    if (new Date() > expoConfig.submissionDeadline) {
+    if (Date.now() > expoConfig.submissionDeadline) {
       return bad(
         res,
         "Project submission deadline has passed. Please contact the organizers if you need to save your project."
@@ -419,7 +419,7 @@ export const submitProject = async (
       return bad(res, "Expo configuration not found");
     }
 
-    if (new Date() > expoConfig.submissionDeadline) {
+    if (Date.now() > expoConfig.submissionDeadline) {
       return bad(
         res,
         "Project submission deadline has passed. Please contact the organizers if you need to submit your project."
@@ -496,7 +496,7 @@ export const updateProjectTableNumber = async (
       return bad(res, "Expo configuration not found");
     }
 
-    if (new Date() > expoConfig.expoStartTime) {
+    if (Date.now() > expoConfig.expoStartTime) {
       return bad(
         res,
         "Cannot assign table numbers after expo start time. Please contact the organizers if you need to change your table number."
@@ -523,35 +523,15 @@ export const updateProjectTableNumber = async (
 };
 
 async function getExpoConfig(): Promise<{
-  expoStartTime: Date;
-  submissionDeadline: Date;
+  expoStartTime: number;
+  submissionDeadline: number;
 } | null> {
   const settings = await Settings.findOne({});
   if (!settings || !settings.expoStartTime || !settings.submissionDeadline) {
     return null;
   }
-
-  // Convert dates to EST
-  const estFormatter = new Intl.DateTimeFormat("en-US", {
-    timeZone: "America/New_York",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
-
-  const expoStartTimeEST = new Date(
-    estFormatter.format(settings.expoStartTime)
-  );
-  const submissionDeadlineEST = new Date(
-    estFormatter.format(settings.submissionDeadline)
-  );
-
   return {
-    expoStartTime: expoStartTimeEST,
-    submissionDeadline: submissionDeadlineEST,
+    expoStartTime: settings.expoStartTime,
+    submissionDeadline: settings.submissionDeadline,
   };
 }
