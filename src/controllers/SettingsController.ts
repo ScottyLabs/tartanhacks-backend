@@ -41,9 +41,7 @@ export const updateSettings = async (
 ): Promise<void> => {
   const setting = await Settings.findOneAndUpdate(
     {},
-    {
-      $set: req.body,
-    },
+    { $set: req.body },
     { new: true, runValidators: true }
   );
   res.json(setting.toJSON());
