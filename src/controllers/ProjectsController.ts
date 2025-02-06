@@ -8,6 +8,7 @@ import { getTartanHacks } from "./EventController";
 import { findUserTeam } from "./TeamController";
 import CheckinItem from "../models/CheckinItem";
 import Checkin from "../models/Checkin";
+import Settings from "../models/Settings";
 
 const GRAND_PRIZE_NAME = "Scott Krulcik Grand Prize";
 
@@ -116,6 +117,18 @@ export const saveProject = async (
 
     if (project.submitted) {
       return bad(res, "Project already submitted");
+    }
+
+    const expoConfig = await getExpoConfig();
+    if (!expoConfig) {
+      return bad(res, "Expo configuration not found");
+    }
+
+    if (new Date() > expoConfig.submissionDeadline) {
+      return bad(
+        res,
+        "Project submission deadline has passed. Please contact the organizers if you need to save your project."
+      );
     }
 
     await Project.findByIdAndUpdate(
@@ -400,6 +413,19 @@ export const submitProject = async (
       return notFound(res, "Project not found");
     }
 
+    const expoConfig = await getExpoConfig();
+
+    if (!expoConfig) {
+      return bad(res, "Expo configuration not found");
+    }
+
+    if (new Date() > expoConfig.submissionDeadline) {
+      return bad(
+        res,
+        "Project submission deadline has passed. Please contact the organizers if you need to submit your project."
+      );
+    }
+
     await project.updateOne({
       $set: { submitted: true },
     });
@@ -465,6 +491,18 @@ export const updateProjectTableNumber = async (
       return bad(res, "Project already has a table number");
     }
 
+    const expoConfig = await getExpoConfig();
+    if (!expoConfig) {
+      return bad(res, "Expo configuration not found");
+    }
+
+    if (new Date() > expoConfig.expoStartTime) {
+      return bad(
+        res,
+        "Cannot assign table numbers after expo start time. Please contact the organizers if you need to change your table number."
+      );
+    }
+
     await project.updateOne({
       $set: { tableNumber },
     });
@@ -483,3 +521,17 @@ export const updateProjectTableNumber = async (
     }
   }
 };
+
+async function getExpoConfig(): Promise<{
+  expoStartTime: Date;
+  submissionDeadline: Date;
+} | null> {
+  const settings = await Settings.findOne({});
+  if (!settings || !settings.expoStartTime || !settings.submissionDeadline) {
+    return null;
+  }
+  return {
+    expoStartTime: settings.expoStartTime,
+    submissionDeadline: settings.submissionDeadline,
+  };
+}
