@@ -97,7 +97,7 @@ export const createNewProject = async (
   }
 };
 
-export const editProject = async (
+export const saveProject = async (
   req: Request,
   res: Response
 ): Promise<void> => {
@@ -459,6 +459,10 @@ export const updateProjectTableNumber = async (
 
     if (!project) {
       return notFound(res, "Project not found");
+    }
+
+    if (project.tableNumber) {
+      return bad(res, "Project already has a table number");
     }
 
     await project.updateOne({

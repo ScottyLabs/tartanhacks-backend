@@ -2,7 +2,7 @@ import express, { Router } from "express";
 import {
   createNewProject,
   deleteProject,
-  editProject,
+  saveProject,
   enterProject,
   getAllProjects,
   getProjectByID,
@@ -145,7 +145,7 @@ router.post("/", isAuthenticated, asyncCatch(createNewProject));
  *       500:
  *          description: Internal Server Error.
  */
-router.patch("/:id", isProjectOwnerOrAdmin, asyncCatch(editProject));
+router.patch("/:id", isProjectOwnerOrAdmin, asyncCatch(saveProject));
 
 /**
  * @swagger
