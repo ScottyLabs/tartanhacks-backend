@@ -118,8 +118,8 @@ export const editProject = async (
       return bad(res, "Project already submitted");
     }
 
-    await Project.updateOne(
-      { _id: id },
+    await Project.findByIdAndUpdate(
+      id,
       { $set: req.body },
       { new: true },
       function (err, result) {
@@ -136,7 +136,7 @@ export const editProject = async (
     );
   } catch (err) {
     if (err.name === "CastError" || err.name === "ValidationError") {
-      return bad(res);
+      return bad(res, err.message);
     } else {
       console.error(err);
       return error(res);
