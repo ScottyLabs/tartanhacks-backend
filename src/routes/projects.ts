@@ -6,6 +6,7 @@ import {
   enterProject,
   getAllProjects,
   getProjectByID,
+  submitProject,
   updateProjectTableNumber,
 } from "../controllers/ProjectsController";
 import { asyncCatch } from "../util/asyncCatch";
@@ -264,5 +265,33 @@ router.patch(
   isProjectOwnerOrAdmin,
   asyncCatch(updateProjectTableNumber)
 );
+
+/**
+ * @swagger
+ * /projects/{id}/submit:
+ *   post:
+ *     summary: Submit a project
+ *     security:
+ *     - apiKeyAuth: []
+ *     tags: [Projects Module]
+ *     description: Submit a project. Access - User(Own)/Admin.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Project ID
+ *     responses:
+ *       200:
+ *          description: Success.
+ *       400:
+ *          description: Bad request
+ *       403:
+ *          description: Unauthorized.
+ *       500:
+ *          description: Internal Server Error.
+ */
+router.post("/:id/submit", isProjectOwnerOrAdmin, asyncCatch(submitProject));
 
 export default router;
