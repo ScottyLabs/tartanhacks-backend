@@ -323,15 +323,15 @@ def create_schedule_items():
 
 def append_shirt_size_to_dietary_restrictions():
     for document in helix_db["profiles"].find():
-        dietary_restrictions = document.get('dietary_restrictions', '')
-        shirt_size = document.get('shirt_size', '')
+        dietary_restrictions = document.get('dietaryRestrictions', '')
+        shirt_size = document.get('shirtSize', '')
 
         if dietary_restrictions:
             updated_dietary_restrictions = f"{dietary_restrictions}, {shirt_size}"
         else:
             updated_dietary_restrictions = shirt_size
 
-        print(updated_dietary_restrictions)
+        print(updated_dietary_restrictions) 
         # helix_db.update_one(
         #     {'_id': document['_id']},
         #     {'$set': {'dietary_restrictions': updated_dietary_restrictions}}
