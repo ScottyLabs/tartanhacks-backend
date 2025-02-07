@@ -6,8 +6,8 @@ import pymongo
 
 load_dotenv()
 
-API_URL = 'https://dev.backend.tartanhacks.com'
-JUDGING_URL = 'http://localhost:3000'
+API_URL = 'https://backend.tartanhacks.com'
+JUDGING_URL = 'https://judging.tartanhacks.com'
 JWT_SECRET = os.getenv('JWT_SECRET')
 MONGO_CONNECTION_STRING = os.getenv("MONGODB_URI")
 HELIX_DB = "tartanhacks-25-dev"
@@ -15,7 +15,7 @@ JUDGING_DB = "tartanhacks-25-judging-dev"
 
 client = pymongo.MongoClient(MONGO_CONNECTION_STRING)
 helix_db = client[HELIX_DB]
-judging_db = client[JUDGING_DB]
+# judging_db = client[JUDGING_DB]
 
 # Check if directory exists
 if not os.path.exists("../data"):
@@ -155,8 +155,8 @@ def create_judges(n):
         print(f"Response for judge creation: {judge_response.status_code} - {judge_response.text}")
 
 
-def delete_judging_database():
-    client.drop_database(JUDGING_DB)
+# def delete_judging_database():
+#     client.drop_database(JUDGING_DB)
 
 
 def synchronize():
@@ -247,11 +247,11 @@ def submit_to_prize(project_id, prize_id):
     print(f"Response for submitting project to prize: {response.status_code} - {response.text}")
 
 
-def delete_talks():
-    helix_db.drop_collection("checkin-items")
-
-def delete_checkins():
-    helix_db.drop_collection("checkins")
+# def delete_talks():
+#     helix_db.drop_collection("checkin-items")
+#
+# def delete_checkins():
+#     helix_db.drop_collection("checkins")
 
 
 def check_in_user(user_id, check_in_item_id):
@@ -267,35 +267,35 @@ def check_in_user(user_id, check_in_item_id):
     print(f"Response for checking in user: {response.status_code} - {response.text}")
 
 
-def get_user_id(email):
-    user = helix_db.users.find_one({"email": email})
-    if user is None:
-        return None
-    return user["_id"]
-
-def get_check_in_item_id(name):
-    check_in_item = helix_db["checkin-items"].find_one({"name": name})
-    if check_in_item is None:
-        return None
-    return check_in_item["_id"]
-
-
-def get_project_id(name):
-    project = helix_db.projects.find_one({"name": name})
-    if project is None:
-        return None
-    return project["_id"]
+# def get_user_id(email):
+#     user = helix_db.users.find_one({"email": email})
+#     if user is None:
+#         return None
+#     return user["_id"]
+#
+# def get_check_in_item_id(name):
+#     check_in_item = helix_db["checkin-items"].find_one({"name": name})
+#     if check_in_item is None:
+#         return None
+#     return check_in_item["_id"]
 
 
-def get_prize_id(name):
-    prize = helix_db.prizes.find_one({"name": name})
-    if prize is None:
-        return None
-    return prize["_id"]
-
-
-def delete_schedule_items():
-    helix_db.drop_collection("schedule-items")
+# def get_project_id(name):
+#     project = helix_db.projects.find_one({"name": name})
+#     if project is None:
+#         return None
+#     return project["_id"]
+#
+#
+# def get_prize_id(name):
+#     prize = helix_db.prizes.find_one({"name": name})
+#     if prize is None:
+#         return None
+#     return prize["_id"]
+#
+#
+# def delete_schedule_items():
+#     helix_db.drop_collection("schedule-items")
 
 
 def create_schedule_items():
@@ -321,14 +321,30 @@ def create_schedule_items():
             print(f"Response for schedule item creation: {response.status_code} - {response.text}")
 
 
+def append_shirt_size_to_dietary_restrictions():
+    for document in helix_db["profiles"].find():
+        dietary_restrictions = document.get('dietary_restrictions', '')
+        shirt_size = document.get('shirt_size', '')
+
+        if dietary_restrictions:
+            updated_dietary_restrictions = f"{dietary_restrictions}, {shirt_size}"
+        else:
+            updated_dietary_restrictions = shirt_size
+
+        print(updated_dietary_restrictions)
+        # helix_db.update_one(
+        #     {'_id': document['_id']},
+        #     {'$set': {'dietary_restrictions': updated_dietary_restrictions}}
+        # )
+
 
 if __name__=='__main__':
     # create_users(3)
     # create_judges(3)
     # delete_projects()
-    create_projects(10)
-    delete_judging_database()
-    synchronize()
+    # create_projects(10)
+    # delete_judging_database()
+    # synchronize()
     # create_sponsors()
     # delete_checkins()
     # delete_talks()
@@ -339,4 +355,5 @@ if __name__=='__main__':
     # submit_to_prize(get_project_id("Project for Team ealasaid-cyan@tartanhacks.com"), get_prize_id("Making Waves"))
     # delete_schedule_items()
     # create_schedule_items()
+    append_shirt_size_to_dietary_restrictions()
     ...
