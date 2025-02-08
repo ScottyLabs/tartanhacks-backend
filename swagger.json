@@ -1771,6 +1771,100 @@
         }
       }
     },
+    "/projects/{id}/location": {
+      "patch": {
+        "summary": "Update project location/table number",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Projects Module"
+        ],
+        "description": "Update a project's location/table number. Access - User(own)/Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Project ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string",
+                    "description": "The new table number/location"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/projects/{id}/submit": {
+      "post": {
+        "summary": "Submit a project",
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Projects Module"
+        ],
+        "description": "Submit a project. Access - User(Own)/Admin.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Project ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "403": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
     "/recruiter": {
       "post": {
         "summary": "Create a new recruiter",
@@ -2615,6 +2709,43 @@
           },
           "500": {
             "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/config/expo": {
+      "get": {
+        "summary": "Get expo configuration",
+        "tags": [
+          "Settings Module"
+        ],
+        "description": "Get expo start time and submission deadline",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "expoStartTime": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "submissionDeadline": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Configuration not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3652,7 +3783,7 @@
                 }
               }
             }
-          },
+          }
         },
         "responses": {
           "200": {

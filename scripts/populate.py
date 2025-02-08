@@ -7,11 +7,11 @@ from bson import ObjectId
 
 load_dotenv()
 
-API_URL = "https://backend.tartanhacks.com"
-JUDGING_URL = "https://judging.tartanhacks.com"
+API_URL = "https://dev.backend.tartanhacks.com"
+JUDGING_URL = "https://dev.judging.tartanhacks.com"
 JWT_SECRET = os.getenv("JWT_SECRET")
 MONGO_CONNECTION_STRING = os.getenv("MONGODB_URI")
-HELIX_DB = "tartanhacks-25"
+HELIX_DB = "tartanhacks-25-dev"
 JUDGING_DB = "tartanhacks-25-judging-dev"
 
 print(f"MONGO_CONNECTION_STRING: {MONGO_CONNECTION_STRING}")
@@ -132,8 +132,17 @@ def create_projects(n):
                 headers={"x-access-token": JWT_SECRET},
             )
 
+            table_number_response = requests.patch(
+                f"{API_URL}/projects/{project_response.json()['_id']}/table-number",
+                json={"tableNumber": 1},
+                headers={"x-access-token": JWT_SECRET},
+            )
+
             print(
                 f"Response for project creation: {project_response.status_code} - {project_response.text}"
+            )
+            print(
+                f"Response for table number assignment: {table_number_response.status_code} - {table_number_response.text}"
             )
 
 
@@ -186,8 +195,8 @@ def create_judges(n):
         )
 
 
-# def delete_judging_database():
-#     client.drop_database(JUDGING_DB)
+def delete_judging_database():
+    client.drop_database(JUDGING_DB)
 
 
 def synchronize():
@@ -436,12 +445,42 @@ def get_pitt_checkins(event_id):
     # print(f"Email: {user['email']}")
 
 
+def add_judges():
+    with open("../data/add_judges.csv", mode="r") as users_file:
+        csv_reader = csv.DictReader(users_file)
+        judges = []
+        for row in csv_reader:
+            if row["email"]:
+                judges.append(row["email"])
+
+        judge_response = requests.post(
+            f"{API_URL}/judges/", json=judges, headers={"x-access-token": JWT_SECRET}
+        )
+
+        # Copy users file to judges file using os but only the email and passwords by opening the csv and copying
+        with open("../data/users.csv", mode="r") as users_file, open(
+                "../data/judges.csv", mode="w", newline=""
+        ) as judges_file:
+            csv_reader = csv.DictReader(users_file)
+            fieldnames = ["email", "password"]
+            writer = csv.DictWriter(judges_file, fieldnames=fieldnames)
+            writer.writeheader()
+
+            for row in csv_reader:
+                writer.writerow({"email": row["email"], "password": row["password"]})
+
+        print(
+            f"Response for judge creation: {judge_response.status_code} - {judge_response.text}"
+        )
+
+
 if __name__ == "__main__":
     # create_users(3)
     # create_judges(3)
     # delete_projects()
     # create_projects(10)
     # delete_judging_database()
+    # add_judges()
     # synchronize()
     # create_sponsors()
     # delete_checkins()
