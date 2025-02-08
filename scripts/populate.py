@@ -312,33 +312,33 @@ def check_in_user(user_id, check_in_item_id):
     print(f"Response for checking in user: {response.status_code} - {response.text}")
 
 
-# def get_user_id(email):
-#     user = helix_db.users.find_one({"email": email})
-#     if user is None:
-#         return None
-#     return user["_id"]
-#
-# def get_check_in_item_id(name):
-#     check_in_item = helix_db["checkin-items"].find_one({"name": name})
-#     if check_in_item is None:
-#         return None
-#     return check_in_item["_id"]
+def get_user_id(email):
+    user = helix_db.users.find_one({"email": email})
+    if user is None:
+        return None
+    return user["_id"]
+
+def get_check_in_item_id(name):
+    check_in_item = helix_db["checkin-items"].find_one({"name": name})
+    if check_in_item is None:
+        return None
+    return check_in_item["_id"]
 
 
-# def get_project_id(name):
-#     project = helix_db.projects.find_one({"name": name})
-#     if project is None:
-#         return None
-#     return project["_id"]
-#
-#
-# def get_prize_id(name):
-#     prize = helix_db.prizes.find_one({"name": name})
-#     if prize is None:
-#         return None
-#     return prize["_id"]
-#
-#
+def get_project_id(name):
+    project = helix_db.projects.find_one({"name": name})
+    if project is None:
+        return None
+    return project["_id"]
+
+
+def get_prize_id(name):
+    prize = helix_db.prizes.find_one({"name": name})
+    if prize is None:
+        return None
+    return prize["_id"]
+
+
 # def delete_schedule_items():
 #     helix_db.drop_collection("schedule-items")
 
@@ -474,6 +474,21 @@ def add_judges():
         )
 
 
+def migrate_required_talk_to_list():
+    prizes_collection = helix_db["prizes"]
+    prizes = prizes_collection.find({"requiredTalk": {"$exists": True}})
+
+    for prize in prizes:
+        required_talk = prize.get("requiredTalk")
+        if required_talk and not isinstance(required_talk, list):
+            prizes_collection.update_one(
+                {"_id": prize["_id"]},
+                {"$set": {"requiredTalk": [required_talk]}}
+            )
+            print(f"Updated prize {prize['_id']} with requiredTalk as a list")
+
+
+
 if __name__ == "__main__":
     # create_users(3)
     # create_judges(3)
@@ -488,8 +503,13 @@ if __name__ == "__main__":
     # create_talks()
     # delete_prizes()
     # create_prizes()
-    # check_in_user(get_user_id("jorey-amber@tartanhacks.com"), get_check_in_item_id("Sponsor Event: AppLovin (Tech Talk/Networking)"))
-    # submit_to_prize(get_project_id("Project for Team ealasaid-cyan@tartanhacks.com"), get_prize_id("Making Waves"))
+    check_in_user(get_user_id("madeline-apricot@tartanhacks.com"), get_check_in_item_id("Sponsor Event: AppLovin (Tech Talk/Networking)"))
+    check_in_user(get_user_id("madeline-apricot@tartanhacks.com"), get_check_in_item_id("Sponsor Event: AppLovin (Recruiting)"))
+    check_in_user(get_user_id("xavilien@gmail.com"), get_check_in_item_id("Sponsor Event: AppLovin (Tech Talk/Networking)"))
+    check_in_user(get_user_id("xavilien@gmail.com"), get_check_in_item_id("Sponsor Event: AppLovin (Recruiting)"))
+    # migrate_required_talk_to_list()
+    submit_to_prize(get_project_id("Project for Team madeline-apricot@tartanhacks.com"), get_prize_id("Best Content Creation Hack"))
+    # submit_to_prize(get_project_id("Project for Team madeline-apricot@tartanhacks.com"), get_prize_id("Scott Krulcik Grand Prize"))
     # delete_schedule_items()
     # create_schedule_items()
     # append_shirt_size_to_dietary_restrictions()
