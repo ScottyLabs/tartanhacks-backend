@@ -26,7 +26,7 @@ const Prize: Schema<IPrize> = new Schema(
       required: false,
     },
     requiredTalk: {
-      type: Schema.Types.ObjectId,
+      type: [Schema.Types.ObjectId],
       ref: "CheckinItem",
       required: false,
     },

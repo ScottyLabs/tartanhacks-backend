@@ -70,7 +70,7 @@ export const createNewPrize = async (
 
     const talk = await CheckinItem.findOne({ name: requiredTalk });
     if (talk != null) {
-      prize.requiredTalk = talk._id;
+      prize.requiredTalk = [talk._id];
     }
 
     await prize.save();

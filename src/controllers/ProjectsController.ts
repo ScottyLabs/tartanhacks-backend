@@ -327,9 +327,11 @@ export const enterProject = async (
     const members = team.members;
     let eligible = false;
 
-    const requiredTalk = await CheckinItem.findById(prize.requiredTalk);
+    const requiredTalks = await CheckinItem.find({
+      _id: { $in: prize.requiredTalk },
+    });
 
-    if (!requiredTalk) {
+    if (requiredTalks.length === 0) {
       eligible = true;
     } else {
       await Promise.all(
@@ -343,9 +345,12 @@ export const enterProject = async (
               item: checkInItems[i]._id,
             });
             const hasCheckedIn = histories.length !== 0;
+            const requiredTalksString = prize.requiredTalk?.map((t) =>
+              t.toString()
+            );
             if (
               hasCheckedIn &&
-              checkInItems[i]._id.toString() === prize.requiredTalk.toString()
+              requiredTalksString?.includes(checkInItems[i]._id.toString())
             ) {
               eligible = true;
             }

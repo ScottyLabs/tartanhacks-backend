@@ -10,7 +10,7 @@ export interface IPrize extends Document {
   name: string;
   description: string;
   eligibility?: string;
-  requiredTalk?: ObjectId;
+  requiredTalk?: ObjectId[];
   provider: ObjectId;
   winner?: ObjectId;
   createdAt: Date;
