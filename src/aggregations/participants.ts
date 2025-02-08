@@ -117,7 +117,6 @@ export const getParticipantsPipeline = (
         password: 0,
         verificationCode: 0,
         verificationExpiry: 0,
-        company: 0,
         "team.event": 0,
         "team.__v": 0,
         "team.createdAt": 0,
