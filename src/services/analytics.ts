@@ -121,7 +121,7 @@ export const computeAnalytics = async (): Promise<Stats> => {
       stats.submitted += isProfileComplete ? 1 : 0;
 
       if (isProfileComplete && !isCMU) {
-        isCMU = profile.school.includes("Carnegie Mellon");
+        isCMU = profile?.school?.includes("Carnegie Mellon");
       }
 
       // Count accepted
